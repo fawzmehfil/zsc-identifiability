@@ -83,9 +83,7 @@ def solve_observation_restricted(
     observation but cannot use any earlier interaction history.
     """
     keys = _reachable_local_keys(game, commitment_states, mask_observations)
-    choices = {
-        key: _choices_for_key(game, key, commitment_states) for key in sorted(keys)
-    }
+    choices = {key: _choices_for_key(game, key, commitment_states) for key in sorted(keys)}
     if any(not value for value in choices.values()):
         empty = next(key for key, value in choices.items() if not value)
         raise ValueError(f"restricted policy has no feasible choice at {empty}")

@@ -10,12 +10,8 @@ def population(benchmark_set, identifier: str):
 
 
 def test_binary_matched_cells_isolate_precommitment_dri(benchmark_set) -> None:
-    early = compute(
-        population(benchmark_set, "binary-role-allocation--passive_early--identity")
-    )
-    active = compute(
-        population(benchmark_set, "binary-role-allocation--active_only--identity")
-    )
+    early = compute(population(benchmark_set, "binary-role-allocation--passive_early--identity"))
+    active = compute(population(benchmark_set, "binary-role-allocation--active_only--identity"))
     inseparable = compute(
         population(
             benchmark_set,
@@ -67,9 +63,7 @@ def test_factorized_signals_match_identity_information_but_not_decision_value(
 
 
 def test_raw_and_code_normalized_zsceval_determinants_are_distinct(benchmark_set) -> None:
-    item = compute(
-        population(benchmark_set, "binary-role-allocation--active_only--identity")
-    )
+    item = compute(population(benchmark_set, "binary-role-allocation--active_only--identity"))
     assert item.values["zsceval_br_div_raw"] == 1
     assert item.values["zsceval_br_div_code"] == Fraction(10**12, 1004006004001)
     assert item.brdiv_matrices["zsceval_float_slogdet_raw"]["sign"] == 1.0

@@ -68,13 +68,9 @@ def compute(population: GeneratedPopulation, backend: Backend = "fraction") -> P
     representative_indices = _response_representatives(population)
     representative_gram = _gram(tuple(raw_features[index] for index in representative_indices))
     representative_determinant = _determinant(representative_gram)
-    active_returns = _per_mode_returns(
-        population, active_solution.policy, base_return, backend
-    )
+    active_returns = _per_mode_returns(population, active_solution.policy, base_return, backend)
     known_mode_returns = {mode: base_return for mode in game.mode_ids}
-    brprox = {
-        mode: active_returns[mode] / known_mode_returns[mode] for mode in game.mode_ids
-    }
+    brprox = {mode: active_returns[mode] / known_mode_returns[mode] for mode in game.mode_ids}
     brprox_values = tuple(brprox[mode] for mode in game.mode_ids)
     prediction = prediction_metrics(population, reference_policy, backend)
     prefix_curves, threshold_steps, deterministic_edp = prefix_tv_metrics(
@@ -131,9 +127,7 @@ def compute(population: GeneratedPopulation, backend: Backend = "fraction") -> P
         "eventual_dri": reference_evaluation.dri_eventual,
         "active_intervention_cost": active_evaluation.expected_intervention_cost,
         "active_net_regret": active_evaluation.net_oracle_regret,
-        "identity_mutual_information_bits": (
-            reference_evaluation.identity_mutual_information_bits
-        ),
+        "identity_mutual_information_bits": (reference_evaluation.identity_mutual_information_bits),
         "decision_signature_mutual_information_bits": (
             reference_evaluation.decision_signature_mutual_information_bits
         ),
@@ -168,9 +162,7 @@ def compute(population: GeneratedPopulation, backend: Backend = "fraction") -> P
         "zsceval_gram_raw": [list(row) for row in raw_gram],
         "zsceval_float_slogdet_raw": {
             "sign": raw_float_sign,
-            "log_abs_determinant": (
-                raw_float_logabs if math.isfinite(raw_float_logabs) else None
-            ),
+            "log_abs_determinant": (raw_float_logabs if math.isfinite(raw_float_logabs) else None),
         },
         "zsceval_feature_matrix_code_normalized": [list(row) for row in code_features],
         "zsceval_gram_code_normalized": [list(row) for row in code_gram],

@@ -12,9 +12,7 @@ from zsc_identifiability.models import FiniteConventionGame, load_game_file
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 GAMES = PROJECT_ROOT / "phase-2-exact-model" / "games"
-BENCHMARK_SUITE = (
-    PROJECT_ROOT / "phase-3-matched-benchmarks" / "suites" / "canonical.json"
-)
+BENCHMARK_SUITE = PROJECT_ROOT / "phase-3-matched-benchmarks" / "suites" / "canonical.json"
 
 
 @pytest.fixture

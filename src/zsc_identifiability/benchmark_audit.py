@@ -219,9 +219,7 @@ def _structural_checks(
             == right.descriptor.response_signature_by_mode
         ),
         "decision_losses": left_game.decision_losses == right_game.decision_losses,
-        "base_team_return": (
-            left.descriptor.base_team_return == right.descriptor.base_team_return
-        ),
+        "base_team_return": (left.descriptor.base_team_return == right.descriptor.base_team_return),
         "horizon": left_game.horizon == right_game.horizon,
         "states": left_game.states == right_game.states,
         "observations": left_game.observations == right_game.observations,
@@ -232,8 +230,7 @@ def _structural_checks(
             == right.descriptor.best_response_event_features
         ),
         "passive_reference_policy": (
-            left.descriptor.passive_reference_actions
-            == right.descriptor.passive_reference_actions
+            left.descriptor.passive_reference_actions == right.descriptor.passive_reference_actions
         ),
         "commitment_states": (
             left.descriptor.commitment_states == right.descriptor.commitment_states

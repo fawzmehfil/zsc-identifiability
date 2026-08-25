@@ -166,8 +166,7 @@ class MatchedBenchmarkSuite(FrozenBenchmarkModel):
         for family in self.families:
             maximum = max(
                 maximum,
-                parse_rational(family.intervention_cost)
-                + parse_rational(family.mismatch_loss),
+                parse_rational(family.intervention_cost) + parse_rational(family.mismatch_loss),
             )
             for cell in family.cells:
                 if cell.intervention_cost is not None:
@@ -390,9 +389,7 @@ def _serialize(value: Any) -> Any:
     if isinstance(value, dict):
         return {str(key): _serialize(item) for key, item in value.items()}
     if hasattr(value, "__dataclass_fields__"):
-        return {
-            name: _serialize(getattr(value, name)) for name in value.__dataclass_fields__
-        }
+        return {name: _serialize(getattr(value, name)) for name in value.__dataclass_fields__}
     if hasattr(value, "to_dict"):
         return value.to_dict()
     raise TypeError(f"cannot serialize {type(value)!r}")

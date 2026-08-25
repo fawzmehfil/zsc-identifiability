@@ -106,9 +106,7 @@ def execute_benchmark_suite(
         if population.descriptor.symmetry_id == "identity"
     )
     shortcut_audits = tuple(audit_shortcuts(population, "fraction") for population in canonical)
-    _write_json(
-        output / "shortcut-audit.json", [audit.to_dict() for audit in shortcut_audits]
-    )
+    _write_json(output / "shortcut-audit.json", [audit.to_dict() for audit in shortcut_audits])
     calibrations = tuple(
         calibrate_pair(
             populations[contract.left_population_id],
@@ -134,9 +132,7 @@ def execute_benchmark_suite(
     _write_json(output / "scientific-checks.json", scientific_checks)
     _plot_all(output / "figures", populations, metrics, shortcut_audits)
     scientific_pass = all(scientific_checks.values())
-    verdict: Literal["continue", "redesign", "stop"] = (
-        "continue" if scientific_pass else "redesign"
-    )
+    verdict: Literal["continue", "redesign", "stop"] = "continue" if scientific_pass else "redesign"
     project_root = Path(__file__).resolve().parents[2]
     dependencies = _dependency_versions()
     generated_files = tuple(
@@ -245,18 +241,10 @@ def _scientific_checks(
 ) -> dict[str, bool]:
     binary_early = metrics["binary-role-allocation--passive_early--identity"]
     binary_active = metrics["binary-role-allocation--active_only--identity"]
-    binary_inseparable = metrics[
-        "binary-role-allocation--precommit_inseparable--identity"
-    ]
-    factor_response = metrics[
-        "factorized-identity-memory--remember_response--identity"
-    ]
-    factor_subtype = metrics[
-        "factorized-identity-memory--remember_subtype--identity"
-    ]
-    no_identification = metrics[
-        "binary-role-allocation--no_identification_needed--identity"
-    ]
+    binary_inseparable = metrics["binary-role-allocation--precommit_inseparable--identity"]
+    factor_response = metrics["factorized-identity-memory--remember_response--identity"]
+    factor_subtype = metrics["factorized-identity-memory--remember_subtype--identity"]
+    no_identification = metrics["binary-role-allocation--no_identification_needed--identity"]
     expensive_id = "binary-role-allocation--active_too_expensive--identity"
     boundary_id = "binary-role-allocation--active_boundary--identity"
     expensive_population = benchmark.by_id()[expensive_id]
@@ -292,13 +280,11 @@ def _scientific_checks(
                 binary_early.values["lobp_action_oracle_score_nats"],
                 binary_active.values["lobp_action_oracle_score_nats"],
             )
-            and binary_early.values["passive_dri"]
-            - binary_active.values["passive_dri"]
+            and binary_early.values["passive_dri"] - binary_active.values["passive_dri"]
             == Fraction(3, 5)
         ),
         "active_separability_gap": (
-            binary_active.values["active_dri"]
-            - binary_inseparable.values["active_dri"]
+            binary_active.values["active_dri"] - binary_inseparable.values["active_dri"]
             == Fraction(3, 5)
         ),
         "identity_information_matched_with_decision_gap": (
@@ -306,13 +292,11 @@ def _scientific_checks(
                 factor_response.values["identity_mutual_information_bits"],
                 factor_subtype.values["identity_mutual_information_bits"],
             )
-            and factor_response.values["passive_dri"]
-            - factor_subtype.values["passive_dri"]
+            and factor_response.values["passive_dri"] - factor_subtype.values["passive_dri"]
             == Fraction(3, 5)
         ),
         "late_evidence_excluded": (
-            binary_active.values["passive_dri"] == 0
-            and binary_active.values["eventual_dri"] == 1
+            binary_active.values["passive_dri"] == 0 and binary_active.values["eventual_dri"] == 1
         ),
         "no_identification_needed_is_null": no_identification.values["passive_dri"] is None,
         "expensive_intervention_rejected": expensive.policy.kind == "commit",
@@ -502,9 +486,7 @@ def _plot_dri_brdiv(output: Path, metrics: dict[str, PopulationMetrics]) -> None
     _save_figure(fig, output, "dri-vs-brdiv")
 
 
-def _plot_dri_predictability(
-    output: Path, metrics: dict[str, PopulationMetrics]
-) -> None:
+def _plot_dri_predictability(output: Path, metrics: dict[str, PopulationMetrics]) -> None:
     identifiers = [
         "binary-role-allocation--passive_early--identity",
         "binary-role-allocation--active_only--identity",
@@ -535,8 +517,7 @@ def _plot_identity(output: Path, metrics: dict[str, PopulationMetrics]) -> None:
     )
     labels = [identifier.split("--")[1] for identifier in identifiers]
     identity = [
-        float(metrics[item].values["identity_mutual_information_bits"])
-        for item in identifiers
+        float(metrics[item].values["identity_mutual_information_bits"]) for item in identifiers
     ]
     decision = [
         float(metrics[item].values["decision_signature_mutual_information_bits"])
@@ -576,8 +557,7 @@ def _plot_memory(output: Path, shortcut_audits: tuple[Any, ...]) -> None:
     item = next(
         audit
         for audit in shortcut_audits
-        if audit.population_id
-        == "factorized-identity-memory--remember_response--identity"
+        if audit.population_id == "factorized-identity-memory--remember_response--identity"
     )
     fig, ax = plt.subplots(figsize=(5.5, 4.0))
     ax.bar(

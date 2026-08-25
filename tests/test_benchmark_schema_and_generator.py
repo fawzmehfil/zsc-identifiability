@@ -18,8 +18,7 @@ def test_canonical_suite_generates_every_declared_population(benchmark_set) -> N
     assert all(item.game.schema_version == 1 for item in benchmark_set.populations)
     assert all(item.descriptor.game_hash for item in benchmark_set.populations)
     assert all(
-        item.descriptor.suite_hash == benchmark_set.suite_hash
-        for item in benchmark_set.populations
+        item.descriptor.suite_hash == benchmark_set.suite_hash for item in benchmark_set.populations
     )
 
 
@@ -49,9 +48,7 @@ def test_canonical_suite_generates_every_declared_population(benchmark_set) -> N
         ),
     ],
 )
-def test_invalid_suite_parameters_are_rejected(
-    benchmark_suite, mutation, message: str
-) -> None:
+def test_invalid_suite_parameters_are_rejected(benchmark_suite, mutation, message: str) -> None:
     data = benchmark_suite.model_dump(mode="json")
     mutation(data)
     with pytest.raises(ValidationError, match=message):

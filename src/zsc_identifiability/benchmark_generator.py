@@ -146,9 +146,7 @@ def _apply_binary_sweep(
     elif sweep.parameter == "active_signal_target":
         cell = cell.model_copy(update={"active_signal_target": value})
     else:
-        raise ValueError(
-            f"sweep parameter {sweep.parameter!r} is invalid for binary family"
-        )
+        raise ValueError(f"sweep parameter {sweep.parameter!r} is invalid for binary family")
     return cell, reliability, cost
 
 
@@ -198,9 +196,7 @@ def _binary_population(
     )
     kernels: list[KernelRow] = []
     for mode in modes:
-        passive_target: SignalTarget = (
-            "response" if cell.passive_evidence_slot == "0" else "null"
-        )
+        passive_target: SignalTarget = "response" if cell.passive_evidence_slot == "0" else "null"
         kernels.append(
             _kernel_row(
                 0,
@@ -231,9 +227,7 @@ def _binary_population(
                 signal_flip,
             )
         )
-        second_target: SignalTarget = (
-            "response" if cell.passive_evidence_slot == "1" else "null"
-        )
+        second_target: SignalTarget = "response" if cell.passive_evidence_slot == "1" else "null"
         kernels.append(
             _kernel_row(
                 1,
@@ -269,11 +263,7 @@ def _binary_population(
         LossSpec(
             mode=mode,
             decision=decision,
-            loss=(
-                "0"
-                if decisions[correct_bit[mode]] == decision
-                else family.mismatch_loss
-            ),
+            loss=("0" if decisions[correct_bit[mode]] == decision else family.mismatch_loss),
         )
         for mode in modes
         for decision in decisions
@@ -307,9 +297,7 @@ def _binary_population(
             AnalyticalExpectation(name="reliability", value=reliability),
         ),
     )
-    response_signatures = {
-        mode: decisions[correct_bit[mode]] for mode in modes
-    }
+    response_signatures = {mode: decisions[correct_bit[mode]] for mode in modes}
     features: dict[str, tuple[str, ...]] = {
         mode: ("1", "0") if correct_bit[mode] == 0 else ("0", "1") for mode in modes
     }
@@ -350,9 +338,7 @@ def _generate_factorized_family(
     suite_hash: str,
 ) -> list[GeneratedPopulation]:
     populations: list[GeneratedPopulation] = []
-    symmetries = (
-        FACTORIZED_SYMMETRIES if family.generate_symmetries else FACTORIZED_SYMMETRIES[:1]
-    )
+    symmetries = FACTORIZED_SYMMETRIES if family.generate_symmetries else FACTORIZED_SYMMETRIES[:1]
     for cell in family.cells:
         for symmetry_id, role_flip, subtype_flip, signal_flip in symmetries:
             populations.append(
@@ -416,9 +402,7 @@ def _apply_factorized_sweep(
     elif sweep.parameter == "active_signal_target":
         cell = cell.model_copy(update={"active_signal_target": value})
     else:
-        raise ValueError(
-            f"sweep parameter {sweep.parameter!r} is invalid for factorized family"
-        )
+        raise ValueError(f"sweep parameter {sweep.parameter!r} is invalid for factorized family")
     return cell, reliability, cost, distractors
 
 
@@ -517,11 +501,7 @@ def _factorized_population(
             )
         )
         for index in range(1, distractor_steps + 1):
-            next_state = (
-                "commit_ready"
-                if index == distractor_steps
-                else f"preparing_{index + 1}"
-            )
+            next_state = "commit_ready" if index == distractor_steps else f"preparing_{index + 1}"
             kernels.append(
                 KernelRow(
                     time=index,

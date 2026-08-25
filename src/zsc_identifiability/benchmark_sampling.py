@@ -138,9 +138,7 @@ def _sample_sequences_per_mode(
     backend: Backend,
     include_post: bool = True,
 ) -> dict[str, tuple[tuple[str, ...], ...]]:
-    conditional = _float_sequence_distributions_by_mode(
-        population, policy, backend, include_post
-    )
+    conditional = _float_sequence_distributions_by_mode(population, policy, backend, include_post)
     result: dict[str, tuple[tuple[str, ...], ...]] = {}
     for mode_index, mode in enumerate(population.game.mode_ids):
         distribution = conditional[mode]
@@ -229,9 +227,7 @@ def _float_sequence_distributions_by_mode(
                         float(probability) * post_probability
                     )
             else:
-                conditional[observations] = conditional.get(observations, 0.0) + float(
-                    probability
-                )
+                conditional[observations] = conditional.get(observations, 0.0) + float(probability)
         result[mode] = conditional
     return result
 
@@ -243,8 +239,7 @@ def _sampled_dri(
     game = population.game
     prior_losses = [
         sum(
-            float(Fraction(mode_spec.probability))
-            * float(game.loss_exact(mode_spec.id, decision))
+            float(Fraction(mode_spec.probability)) * float(game.loss_exact(mode_spec.id, decision))
             for mode_spec in game.modes
         )
         for decision in game.decisions

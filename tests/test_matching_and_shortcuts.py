@@ -22,9 +22,7 @@ def test_every_canonical_matching_contract_passes(benchmark_set) -> None:
 
 
 def test_memory_and_evidence_blind_shortcuts_fail_as_intended(benchmark_set) -> None:
-    item = benchmark_set.by_id()[
-        "factorized-identity-memory--remember_response--identity"
-    ]
+    item = benchmark_set.by_id()["factorized-identity-memory--remember_response--identity"]
     audit = audit_shortcuts(item)
     assert audit.passed
     assert audit.best_fixed_risk == 20
@@ -35,12 +33,8 @@ def test_memory_and_evidence_blind_shortcuts_fail_as_intended(benchmark_set) -> 
 
 def test_late_evidence_and_boundary_do_not_leak_into_policy_choice(benchmark_set) -> None:
     populations = benchmark_set.by_id()
-    late = audit_shortcuts(
-        populations["binary-role-allocation--precommit_inseparable--identity"]
-    )
-    boundary = audit_shortcuts(
-        populations["binary-role-allocation--active_boundary--identity"]
-    )
+    late = audit_shortcuts(populations["binary-role-allocation--precommit_inseparable--identity"])
+    boundary = audit_shortcuts(populations["binary-role-allocation--active_boundary--identity"])
     assert late.postcommit_leak_free
     assert late.history_aware_risk == 20
     assert boundary.valueless_probe_tie_break_ok
@@ -60,9 +54,7 @@ def test_response_dri_is_monotone_in_reliability(
     binary = data["families"][0]
     binary["reliability"] = str(q)
     binary["generate_symmetries"] = False
-    binary["cells"] = [
-        cell for cell in binary["cells"] if cell["cell_id"] == "active_only"
-    ]
+    binary["cells"] = [cell for cell in binary["cells"] if cell["cell_id"] == "active_only"]
     binary["sweeps"] = []
     data["families"] = [binary]
     data["matching_contracts"] = []
