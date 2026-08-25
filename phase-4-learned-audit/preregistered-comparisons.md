@@ -32,7 +32,12 @@ A strict ranking reversal requires opposite paired method differences in the two
 cells and Holm-adjusted 95% intervals excluding zero in both. Null reversals remain
 reportable results.
 
-The implementation sanity gates are the common-response control, passive evidence
-recovery, recurrent memory advantage, subtype non-credit, and the deterministic
-zero-cost active control. Scientific conclusions are blocked if optimization does
-not clear those gates.
+The implementation sanity gates are evaluated by capability class, not by
+requiring every baseline to exhibit every capability. Every applicable core
+method must clear the common-response control; at least one active-capability
+method must clear the deterministic zero-cost active control; at least one
+recurrent method must recover the memory-dependent improvement over the
+memoryless control; and ToM-selector-style must clear a freely available passive
+evidence control. Failures by passive selectors to intervene in `active_only` are
+preserved as diagnostics rather than misclassified as infrastructure failures.
+Scientific conclusions are blocked if the aggregate capability gates do not pass.

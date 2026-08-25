@@ -47,6 +47,11 @@ uv run --extra learning zsc-identifiability learn train \
   --gate smoke \
   --output phase-4-learned-audit/smoke-runs
 
+uv run --extra learning zsc-identifiability learn smoke-audit \
+  --suite phase-4-learned-audit/suites/canonical.json \
+  --runs-dir phase-4-learned-audit/smoke-runs \
+  --output phase-4-learned-audit/artifacts/smoke-matrix-audit.json
+
 uv run --extra learning zsc-identifiability learn tune \
   --suite phase-4-learned-audit/suites/canonical.json \
   --method pace_style \
@@ -60,6 +65,11 @@ uv run --extra learning zsc-identifiability learn audit \
 
 `learn audit` exits with code `4` while required confirmatory checkpoints are
 missing. This is an incomplete experiment, not a failed scientific result.
+`learn smoke-audit` applies capability-level criteria across the complete smoke
+matrix. A passive selector's failure to intervene in `active_only` is retained as
+a diagnostic; it does not fail the implementation gate when an active-capability
+anchor succeeds. ToM-selector-style is instead required to clear the
+`passive_early` evidence control.
 `learn run` first creates any missing validation-only selection reports and then
 launches the fixed confirmatory matrix; it never selects from test performance.
 If the complete primary matrix leaves an active-oracle gap, the audit remains

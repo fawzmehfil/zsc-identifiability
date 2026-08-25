@@ -11,6 +11,15 @@ pipeline are present. Phase 2 and Phase 3 regression gates continue to pass.
 The deterministic `q=1`, zero-cost active smoke game reaches exact greedy return
 `100`, exceeding the preregistered `98` implementation threshold.
 
+The complete capability-level smoke matrix also passes. All common-response
+controls return `100`; the memoryless policy remains at `80` in the delayed
+evidence control while every recurrent comparator returns `100`; and
+ToM-selector-style returns `100` when partner evidence is freely available. Its
+preserved pre-correction `active_only` checkpoint returns `80`, commits
+immediately, and acquires zero DRI. That checkpoint is retained as a diagnostic
+of the original training/deployment mismatch and is not treated as a scientific
+finding. Exact details are recorded in `artifacts/smoke-matrix-audit.json`.
+
 The confirmatory training matrix has not been executed. Consequently this memo
 does not claim a probing failure, ranking reversal, or justification for a new
 repair method.

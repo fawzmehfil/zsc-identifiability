@@ -12,7 +12,7 @@ single-encounter protocol.
 | `odits_style` | Online proxy latent aligned to a training-only full-trajectory posterior, with response reconstruction | Passive representation adaptation |
 | `pace_aux` | Recurrent context plus identity classifier, external reward only | Representation versus exploration ablation |
 | `pace_style` | PACE-style training-only peer-identification reward | Active information seeking |
-| `tom_selector_style` | Exact training cross-play clusters, global/cluster response predictors, and cluster-weighted specialists | Strategy selection from visible behavior |
+| `tom_selector_style` | Exact training cross-play clusters, global/cluster response predictors, a one-quarter-budget training-only routing warm-up, and deployment-aligned cluster-weighted specialists for the remaining updates | Strategy selection from visible behavior |
 | `talents_style` | Balanced training-only trajectory collection, unsupervised sequence-VAE bootstrap, deterministic latent clustering, fixed-share updates, and a specialist mixture | Latent within-encounter adaptation |
 | `csp_style_reconnaissance` | Identification-oriented probing followed by a same-partner scored encounter | Relaxed-protocol upper comparison |
 
@@ -23,6 +23,6 @@ interactions and are excluded from central single-encounter rankings.
 
 The TALENTS-style bootstrap records its behavior-mixture counts and certifies
 `hidden_mode_labels_used=false` in each checkpoint. The ToM-selector-style policy
-uses exact training cross-play return rows to define specialist clusters during
-training, then removes that routing signal and selects from visible-response
-predictors at evaluation.
+uses exact training cross-play return rows to define specialist clusters. Hidden
+cluster routing is limited to the first quarter of training; the remaining
+updates and all evaluation route from visible-response predictors only.
