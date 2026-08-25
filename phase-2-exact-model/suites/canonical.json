@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "suite_id": "phase-2-canonical",
+  "games": [
+    "../games/no-identification-needed.json",
+    "../games/passive-easy.json",
+    "../games/active-separable.json",
+    "../games/intervention-too-expensive.json",
+    "../games/threshold-boundary.json",
+    "../games/fundamentally-inseparable.json",
+    "../games/late-reveal.json",
+    "../games/decision-irrelevant-identity.json",
+    "../games/multitype-asymmetric-loss.json",
+    "../games/repeated-noisy-interaction.json"
+  ],
+  "action_classes": ["passive", "task", "reconnaissance"],
+  "backends": ["fraction", "float"],
+  "parameter_sweeps": {
+    "q": ["1/2", "3/5", "4/5", "1"],
+    "cost": ["0", "5", "12", "15"],
+    "remaining_decisions": ["1", "4", "8"],
+    "mismatch_loss": ["1", "10"],
+    "horizon": ["1", "2", "4"],
+    "priors": ["1/2", "3/4"]
+  }
+}

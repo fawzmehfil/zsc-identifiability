@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "game_id": "decision-irrelevant-identity",
+  "description": "One ordinary action reveals subtype parity but not the response class needed for commitment.",
+  "horizon": 1,
+  "modes": [
+    {"id": "a_one", "probability": "1/4"}, {"id": "a_two", "probability": "1/4"},
+    {"id": "b_one", "probability": "1/4"}, {"id": "b_two", "probability": "1/4"}
+  ],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["quiet", "parity_one", "parity_two", "class_a", "class_b"],
+  "actions": [
+    {"id": "advance_task", "description": "Advance the shared task without staging.", "task_semantics": "advance ordinary shared task progress", "passive": true, "available": [{"state": "ready", "times": [0]}]},
+    {"id": "yield_role", "description": "Yield an ordinary role and observe which sub-role the partner takes.", "task_semantics": "yield an ordinary shared task role", "passive": false, "available": [{"state": "ready", "times": [0]}]},
+    {"id": "stage_shared_item", "description": "Stage a shared item and observe the partner response class.", "task_semantics": "stage a shared item for ordinary coordination", "passive": false, "available": [{"state": "ready", "times": [0]}]}
+  ],
+  "decisions": ["choose_a", "choose_b"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "a_one", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "a_two", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "b_one", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "b_two", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "yield_role", "mode": "a_one", "outcomes": [{"next_state": "ready", "observation": "parity_one", "probability": "1", "cost": "1"}]},
+    {"time": 0, "state": "ready", "action": "yield_role", "mode": "a_two", "outcomes": [{"next_state": "ready", "observation": "parity_two", "probability": "1", "cost": "1"}]},
+    {"time": 0, "state": "ready", "action": "yield_role", "mode": "b_one", "outcomes": [{"next_state": "ready", "observation": "parity_one", "probability": "1", "cost": "1"}]},
+    {"time": 0, "state": "ready", "action": "yield_role", "mode": "b_two", "outcomes": [{"next_state": "ready", "observation": "parity_two", "probability": "1", "cost": "1"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "a_one", "outcomes": [{"next_state": "ready", "observation": "class_a", "probability": "4/5", "cost": "5"}, {"next_state": "ready", "observation": "class_b", "probability": "1/5", "cost": "5"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "a_two", "outcomes": [{"next_state": "ready", "observation": "class_a", "probability": "4/5", "cost": "5"}, {"next_state": "ready", "observation": "class_b", "probability": "1/5", "cost": "5"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "b_one", "outcomes": [{"next_state": "ready", "observation": "class_a", "probability": "1/5", "cost": "5"}, {"next_state": "ready", "observation": "class_b", "probability": "4/5", "cost": "5"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "b_two", "outcomes": [{"next_state": "ready", "observation": "class_a", "probability": "1/5", "cost": "5"}, {"next_state": "ready", "observation": "class_b", "probability": "4/5", "cost": "5"}]}
+  ],
+  "decision_losses": [
+    {"mode": "a_one", "decision": "choose_a", "loss": "0"}, {"mode": "a_one", "decision": "choose_b", "loss": "40"},
+    {"mode": "a_two", "decision": "choose_a", "loss": "0"}, {"mode": "a_two", "decision": "choose_b", "loss": "40"},
+    {"mode": "b_one", "decision": "choose_a", "loss": "40"}, {"mode": "b_one", "decision": "choose_b", "loss": "0"},
+    {"mode": "b_two", "decision": "choose_a", "loss": "40"}, {"mode": "b_two", "decision": "choose_b", "loss": "0"}
+  ],
+  "metadata": {"purpose": "separate identity information from decision information"},
+  "analytical_expectations": [{"name": "yield_identity_mi_bits", "value": "1"}, {"name": "yield_dri", "value": "0"}, {"name": "stage_dri", "value": "3/5"}]
+}

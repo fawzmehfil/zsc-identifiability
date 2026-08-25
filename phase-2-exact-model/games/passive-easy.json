@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "game_id": "passive-easy",
+  "description": "Default task progress and a costly staging action reveal the response class equally well.",
+  "horizon": 1,
+  "modes": [
+    {"id": "left_mode", "probability": "1/2"},
+    {"id": "right_mode", "probability": "1/2"}
+  ],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["left_signal", "right_signal"],
+  "actions": [
+    {"id": "advance_task", "description": "Advance the shared task normally.", "task_semantics": "advance ordinary shared task progress", "passive": true, "available": [{"state": "ready", "times": [0]}]},
+    {"id": "stage_shared_item", "description": "Stage a shared item before choosing a route.", "task_semantics": "stage a shared item for ordinary coordination", "passive": false, "available": [{"state": "ready", "times": [0]}]}
+  ],
+  "decisions": ["choose_left", "choose_right"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "left_signal", "probability": "4/5", "cost": "0"}, {"next_state": "ready", "observation": "right_signal", "probability": "1/5", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "left_signal", "probability": "1/5", "cost": "0"}, {"next_state": "ready", "observation": "right_signal", "probability": "4/5", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "left_signal", "probability": "4/5", "cost": "5"}, {"next_state": "ready", "observation": "right_signal", "probability": "1/5", "cost": "5"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "left_signal", "probability": "1/5", "cost": "5"}, {"next_state": "ready", "observation": "right_signal", "probability": "4/5", "cost": "5"}]}
+  ],
+  "decision_losses": [
+    {"mode": "left_mode", "decision": "choose_left", "loss": "0"},
+    {"mode": "left_mode", "decision": "choose_right", "loss": "40"},
+    {"mode": "right_mode", "decision": "choose_left", "loss": "40"},
+    {"mode": "right_mode", "decision": "choose_right", "loss": "0"}
+  ],
+  "metadata": {"q": "4/5", "remaining_decisions": "4", "mismatch_loss_each": "10"},
+  "analytical_expectations": [
+    {"name": "prior_risk", "value": "20"},
+    {"name": "passive_residual_risk", "value": "8"},
+    {"name": "passive_dri", "value": "3/5"}
+  ]
+}

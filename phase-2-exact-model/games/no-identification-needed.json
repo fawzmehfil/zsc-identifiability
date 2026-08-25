@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "game_id": "no-identification-needed",
+  "description": "Partner identities differ, but a common commitment has zero loss for every mode.",
+  "horizon": 1,
+  "modes": [
+    {"id": "mode_a", "probability": "1/2"},
+    {"id": "mode_b", "probability": "1/2"}
+  ],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["quiet", "signal_a", "signal_b"],
+  "actions": [
+    {
+      "id": "advance_task",
+      "description": "Advance along the ordinary shared route.",
+      "task_semantics": "advance shared work along the default route",
+      "passive": true,
+      "available": [{"state": "ready", "times": [0]}]
+    },
+    {
+      "id": "stage_shared_item",
+      "description": "Stage a shared task item and observe which side the partner supports.",
+      "task_semantics": "stage a shared item for the next task step",
+      "passive": false,
+      "available": [{"state": "ready", "times": [0]}]
+    }
+  ],
+  "decisions": ["common_plan", "special_a", "special_b"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "mode_a", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "mode_b", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "mode_a", "outcomes": [{"next_state": "ready", "observation": "signal_a", "probability": "1", "cost": "2"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "mode_b", "outcomes": [{"next_state": "ready", "observation": "signal_b", "probability": "1", "cost": "2"}]}
+  ],
+  "decision_losses": [
+    {"mode": "mode_a", "decision": "common_plan", "loss": "0"},
+    {"mode": "mode_a", "decision": "special_a", "loss": "0"},
+    {"mode": "mode_a", "decision": "special_b", "loss": "4"},
+    {"mode": "mode_b", "decision": "common_plan", "loss": "0"},
+    {"mode": "mode_b", "decision": "special_a", "loss": "4"},
+    {"mode": "mode_b", "decision": "special_b", "loss": "0"}
+  ],
+  "metadata": {"purpose": "task-irrelevant identity control"},
+  "analytical_expectations": [
+    {"name": "prior_risk", "value": "0"},
+    {"name": "dri", "text": "unavailable"},
+    {"name": "identification_required", "text": "false"}
+  ]
+}

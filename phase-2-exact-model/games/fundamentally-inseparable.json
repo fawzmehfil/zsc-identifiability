@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "game_id": "fundamentally-inseparable",
+  "description": "Every permitted task interaction has the same response distribution under both conflicting modes.",
+  "horizon": 1,
+  "modes": [{"id": "left_mode", "probability": "1/2"}, {"id": "right_mode", "probability": "1/2"}],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["quiet"],
+  "actions": [
+    {"id": "advance_task", "description": "Advance ordinary shared work.", "task_semantics": "advance ordinary shared task progress", "passive": true, "available": [{"state": "ready", "times": [0]}]},
+    {"id": "stage_shared_item", "description": "Stage a shared item before route selection.", "task_semantics": "stage a shared item for ordinary coordination", "passive": false, "available": [{"state": "ready", "times": [0]}]}
+  ],
+  "decisions": ["choose_left", "choose_right"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "1"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "1"}]}
+  ],
+  "decision_losses": [
+    {"mode": "left_mode", "decision": "choose_left", "loss": "0"}, {"mode": "left_mode", "decision": "choose_right", "loss": "40"},
+    {"mode": "right_mode", "decision": "choose_left", "loss": "40"}, {"mode": "right_mode", "decision": "choose_right", "loss": "0"}
+  ],
+  "metadata": {"purpose": "observational-equivalence impossibility"},
+  "analytical_expectations": [{"name": "maximum_tv", "value": "0"}, {"name": "prior_and_residual_risk", "value": "20"}]
+}

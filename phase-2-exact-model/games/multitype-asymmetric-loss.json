@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "game_id": "multitype-asymmetric-loss",
+  "description": "Three non-uniform modes with asymmetric losses and overlapping but non-equivalent optimal response sets.",
+  "horizon": 1,
+  "modes": [{"id": "mode_zero", "probability": "1/2"}, {"id": "mode_one", "probability": "3/10"}, {"id": "mode_two", "probability": "1/5"}],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["obs_zero", "obs_one", "obs_two"],
+  "actions": [{"id": "share_resource", "description": "Offer the ordinary shared resource and observe allocation behavior.", "task_semantics": "share an ordinary task resource", "passive": true, "available": [{"state": "ready", "times": [0]}]}],
+  "decisions": ["decision_zero", "decision_one", "decision_two"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "share_resource", "mode": "mode_zero", "outcomes": [{"next_state": "ready", "observation": "obs_zero", "probability": "3/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_one", "probability": "1/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_two", "probability": "1/5", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "share_resource", "mode": "mode_one", "outcomes": [{"next_state": "ready", "observation": "obs_zero", "probability": "1/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_one", "probability": "3/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_two", "probability": "1/5", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "share_resource", "mode": "mode_two", "outcomes": [{"next_state": "ready", "observation": "obs_zero", "probability": "1/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_one", "probability": "1/5", "cost": "0"}, {"next_state": "ready", "observation": "obs_two", "probability": "3/5", "cost": "0"}]}
+  ],
+  "decision_losses": [
+    {"mode": "mode_zero", "decision": "decision_zero", "loss": "0"}, {"mode": "mode_zero", "decision": "decision_one", "loss": "0"}, {"mode": "mode_zero", "decision": "decision_two", "loss": "4"},
+    {"mode": "mode_one", "decision": "decision_zero", "loss": "5"}, {"mode": "mode_one", "decision": "decision_one", "loss": "0"}, {"mode": "mode_one", "decision": "decision_two", "loss": "0"},
+    {"mode": "mode_two", "decision": "decision_zero", "loss": "9"}, {"mode": "mode_two", "decision": "decision_one", "loss": "7"}, {"mode": "mode_two", "decision": "decision_two", "loss": "0"}
+  ],
+  "metadata": {"purpose": "multi-type lower bound and response compatibility"},
+  "analytical_expectations": [{"name": "mode_zero_compatible_mode_one", "text": "true"}, {"name": "mode_zero_conflicts_mode_two", "text": "true"}]
+}

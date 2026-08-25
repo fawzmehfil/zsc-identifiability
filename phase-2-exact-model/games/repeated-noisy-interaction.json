@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "game_id": "repeated-noisy-interaction",
+  "description": "Repeated staging may reveal a decisive response; the ego should stop immediately after decisive evidence.",
+  "horizon": 4,
+  "modes": [{"id": "left_mode", "probability": "1/2"}, {"id": "right_mode", "probability": "1/2"}],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["quiet", "ambiguous", "clear_left", "clear_right"],
+  "actions": [
+    {"id": "advance_task", "description": "Advance ordinary shared work without staging.", "task_semantics": "advance ordinary shared task progress", "passive": true, "available": [{"state": "ready", "times": [0, 1, 2, 3]}]},
+    {"id": "stage_shared_item", "description": "Stage a shared item that may elicit a decisive response.", "task_semantics": "stage a shared item for ordinary coordination", "passive": false, "available": [{"state": "ready", "times": [0, 1, 2, 3]}]}
+  ],
+  "decisions": ["choose_left", "choose_right"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 1, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 1, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 2, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 2, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 3, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 3, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "clear_left", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 0, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "clear_right", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 1, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "clear_left", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 1, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "clear_right", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 2, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "clear_left", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 2, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "clear_right", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 3, "state": "ready", "action": "stage_shared_item", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "clear_left", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]},
+    {"time": 3, "state": "ready", "action": "stage_shared_item", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "clear_right", "probability": "1/2", "cost": "2"}, {"next_state": "ready", "observation": "ambiguous", "probability": "1/2", "cost": "2"}]}
+  ],
+  "decision_losses": [
+    {"mode": "left_mode", "decision": "choose_left", "loss": "0"}, {"mode": "left_mode", "decision": "choose_right", "loss": "40"},
+    {"mode": "right_mode", "decision": "choose_left", "loss": "40"}, {"mode": "right_mode", "decision": "choose_right", "loss": "0"}
+  ],
+  "metadata": {"probe_cost": "2", "decisive_probability": "1/2"},
+  "analytical_expectations": [{"name": "root_action", "text": "stage_shared_item"}, {"name": "stop_after_clear_signal", "text": "true"}]
+}

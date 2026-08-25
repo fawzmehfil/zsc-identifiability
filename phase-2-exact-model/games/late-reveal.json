@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "game_id": "late-reveal",
+  "description": "The partner mode becomes perfectly visible only after the irreversible commitment.",
+  "horizon": 1,
+  "modes": [{"id": "left_mode", "probability": "1/2"}, {"id": "right_mode", "probability": "1/2"}],
+  "states": ["ready"],
+  "initial_state": "ready",
+  "observations": ["quiet"],
+  "actions": [{"id": "advance_task", "description": "Advance to the route commitment point.", "task_semantics": "advance ordinary shared task progress", "passive": true, "available": [{"state": "ready", "times": [0]}]}],
+  "decisions": ["choose_left", "choose_right"],
+  "kernels": [
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "left_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]},
+    {"time": 0, "state": "ready", "action": "advance_task", "mode": "right_mode", "outcomes": [{"next_state": "ready", "observation": "quiet", "probability": "1", "cost": "0"}]}
+  ],
+  "decision_losses": [
+    {"mode": "left_mode", "decision": "choose_left", "loss": "0"}, {"mode": "left_mode", "decision": "choose_right", "loss": "40"},
+    {"mode": "right_mode", "decision": "choose_left", "loss": "40"}, {"mode": "right_mode", "decision": "choose_right", "loss": "0"}
+  ],
+  "post_commitment_observations": [
+    {"mode": "left_mode", "observations": [{"id": "late_left", "probability": "1"}]},
+    {"mode": "right_mode", "observations": [{"id": "late_right", "probability": "1"}]}
+  ],
+  "metadata": {"purpose": "commitment timing control"},
+  "analytical_expectations": [{"name": "precommitment_dri", "value": "0"}, {"name": "eventual_dri", "value": "1"}]
+}
