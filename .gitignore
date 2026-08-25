@@ -21,3 +21,12 @@ phase-2-exact-model/artifacts/*
 !phase-2-exact-model/artifacts/summary.csv
 !phase-2-exact-model/artifacts/summary.json
 !phase-2-exact-model/artifacts/theorem-checks.json
+
+# Stage 4 raw training state is reproducible but too large and machine-specific
+# for source control. Compact summaries and publication figures remain tracked.
+phase-4-learned-audit/runs/
+phase-4-learned-audit/smoke-runs/
+phase-4-learned-audit/rescue-runs/
+phase-4-learned-audit/development/runs/
+phase-4-learned-audit/artifacts/checkpoints/
+phase-4-learned-audit/artifacts/raw-rollouts/
