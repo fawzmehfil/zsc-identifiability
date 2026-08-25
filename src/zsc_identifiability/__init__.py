@@ -1,6 +1,7 @@
 """Exact finite convention games for zero-shot coordination research."""
 
 from zsc_identifiability.api import (
+    audit_learning_smoke_matrix,
     audit_population_pair,
     audit_shortcuts,
     compute_frontier,
@@ -72,6 +73,7 @@ __all__ = [
     "TrainingRunManifest",
     "ValidationReport",
     "audit_population_pair",
+    "audit_learning_smoke_matrix",
     "audit_shortcuts",
     "compute_frontier",
     "compute_history_distributions",

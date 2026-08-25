@@ -137,6 +137,12 @@ def _parser() -> argparse.ArgumentParser:
     )
     learn_evaluate.add_argument("--run", required=True)
     learn_evaluate.add_argument("--suite", default="phase-4-learned-audit/suites/canonical.json")
+    learn_smoke_audit = learn_commands.add_parser(
+        "smoke-audit", help="apply aggregate capability gates to smoke checkpoints"
+    )
+    learn_smoke_audit.add_argument("--suite", required=True)
+    learn_smoke_audit.add_argument("--runs-dir", required=True)
+    learn_smoke_audit.add_argument("--output", required=True)
     for name in ("audit", "run"):
         item = learn_commands.add_parser(
             name,
@@ -326,6 +332,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                     for mode in evaluation_modes
                 ]
                 print(json.dumps(results, indent=2, sort_keys=True))
+            elif args.learn_command == "smoke-audit":
+                from zsc_identifiability.learning_runner import audit_smoke_matrix
+
+                report = audit_smoke_matrix(args.suite, args.runs_dir, args.output)
+                print(json.dumps(report, indent=2, sort_keys=True))
+                if report["status"] == "incomplete":
+                    return 4
+                if not report["passed"]:
+                    return 3
             else:
                 runs_dir = args.runs_dir or str(Path(args.output).resolve().parent / "runs")
                 if args.learn_command == "run":

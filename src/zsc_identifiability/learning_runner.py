@@ -56,6 +56,50 @@ from zsc_identifiability.population_metrics import compute as compute_population
 
 Gate = Literal["smoke", "development", "confirmatory", "rescue"]
 
+SMOKE_NO_IDENTIFICATION_METHODS = (
+    "mlp_ppo",
+    "gru_ppo_passive",
+    "gru_ppo_active",
+    "odits_style",
+    "pace_aux",
+    "pace_style",
+)
+SMOKE_ACTIVE_METHODS = (
+    "mlp_ppo",
+    "gru_ppo_active",
+    "odits_style",
+    "pace_aux",
+    "pace_style",
+    "talents_style",
+)
+SMOKE_ACTIVE_DIAGNOSTICS = (
+    "tom_selector_style",
+    "csp_style_reconnaissance",
+)
+SMOKE_MEMORYLESS_METHOD = "mlp_ppo"
+SMOKE_RECURRENT_METHODS = (
+    "gru_ppo_passive",
+    "gru_ppo_active",
+    "odits_style",
+    "pace_aux",
+    "pace_style",
+    "talents_style",
+    "tom_selector_style",
+)
+SMOKE_TOM_PASSIVE_CONTROL = ("tom_selector_style", "passive_early")
+
+
+def _planned_smoke_pairs() -> tuple[tuple[str, str], ...]:
+    pairs = [
+        *((method, "no_identification_needed") for method in SMOKE_NO_IDENTIFICATION_METHODS),
+        *((method, "active_only") for method in SMOKE_ACTIVE_METHODS),
+        *((method, "active_only") for method in SMOKE_ACTIVE_DIAGNOSTICS),
+        SMOKE_TOM_PASSIVE_CONTROL,
+        (SMOKE_MEMORYLESS_METHOD, "remember_response"),
+        *((method, "remember_response") for method in SMOKE_RECURRENT_METHODS),
+    ]
+    return tuple(pairs)
+
 
 def materialize_learning_pools(
     pools: GeneratedLearningPools, output_dir: str | Path
@@ -186,12 +230,16 @@ def execute_training_matrix(
                         int(item) for item in checkpoint["partner_response_classes"]
                     ),
                 )
-                required = _smoke_threshold(cell.cell_id, method.method_id)
+                criterion, required = _smoke_expectation(cell.cell_id, method.method_id)
                 passed = required is None or evaluation.team_return >= required
                 payload["smoke_gate"] = {
+                    "criterion": criterion,
+                    "enforced_per_run": required is not None,
                     "team_return": evaluation.team_return,
                     "required_return": required,
                     "passed": passed,
+                    "probe_probability": evaluation.probe_probability,
+                    "policy_dri": evaluation.policy_dri,
                 }
                 if not passed:
                     raise RuntimeError(
@@ -202,14 +250,150 @@ def execute_training_matrix(
     return tuple(manifests)
 
 
-def _smoke_threshold(cell_id: str, method_id: str) -> float | None:
+def _smoke_expectation(cell_id: str, method_id: str) -> tuple[str, float | None]:
     if cell_id == "no_identification_needed":
-        return 99.0
-    if cell_id == "active_only" and method_id != "gru_ppo_passive":
-        return 98.0
-    if cell_id == "remember_response" and method_id != "mlp_ppo":
-        return 98.0
-    return None
+        return "universal_response_per_method", 99.0
+    if (method_id, cell_id) == SMOKE_TOM_PASSIVE_CONTROL:
+        return "tom_passive_evidence_sanity", 98.0
+    if cell_id == "active_only":
+        if method_id in SMOKE_ACTIVE_METHODS:
+            return "aggregate_active_capability", None
+        return "active_identifiability_diagnostic", None
+    if cell_id == "remember_response":
+        if method_id == SMOKE_MEMORYLESS_METHOD:
+            return "memoryless_negative_control", None
+        if method_id in SMOKE_RECURRENT_METHODS:
+            return "aggregate_recurrent_memory", None
+    return "diagnostic_only", None
+
+
+def audit_smoke_matrix(
+    suite_path: str | Path,
+    runs_dir: str | Path,
+    output_path: str | Path | None = None,
+) -> dict[str, Any]:
+    """Evaluate completed smoke checkpoints and apply capability-level gates."""
+    suite = load_learning_suite_file(suite_path)
+    smoke_cells = {
+        cell.cell_id: make_smoke_pool(cell)
+        for cell in generate_learning_pools(suite, suite_path=suite_path).cells
+    }
+    evaluations: dict[str, dict[str, Any]] = {}
+    run_root = Path(runs_dir).resolve()
+    for manifest_path in sorted(run_root.glob("*--seed-101/manifest.json")):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        method_id = str(manifest["method_id"])
+        cell_id = str(manifest["cell_id"])
+        if cell_id not in smoke_cells:
+            continue
+        checkpoint_path = Path(str(manifest["checkpoint_path"]))
+        if not checkpoint_path.exists():
+            checkpoint_path = manifest_path.parent / "best.pt"
+        if not checkpoint_path.exists():
+            continue
+        model, checkpoint = load_checkpoint(checkpoint_path)
+        action_class: Literal["passive", "task"] = (
+            "passive" if method_id == "gru_ppo_passive" else "task"
+        )
+        evaluation = evaluate_neural_policy_exact(
+            model,
+            smoke_cells[cell_id].test[0],
+            method_id=method_id,
+            mode="greedy",
+            action_class=action_class,
+            base_team_return=float(parse_rational(suite.base_team_return)),
+            loss_scale=float(parse_rational(suite.loss_scale)),
+            identity_label_response_classes=tuple(
+                int(item) for item in checkpoint["partner_response_classes"]
+            ),
+        )
+        criterion, required = _smoke_expectation(cell_id, method_id)
+        key = _smoke_key(method_id, cell_id)
+        evaluations[key] = {
+            "method_id": method_id,
+            "cell_id": cell_id,
+            "criterion": criterion,
+            "required_return": required,
+            "checkpoint_path": str(checkpoint_path),
+            "checkpoint_hash": manifest["checkpoint_hash"],
+            "source_tree_hash": manifest["source_tree_hash"],
+            "evaluation": evaluation.to_dict(),
+        }
+    report = assess_smoke_matrix(evaluations)
+    report.update(
+        {
+            "schema_version": 1,
+            "suite_id": suite.suite_id,
+            "runs_directory": str(run_root),
+            "evaluations": evaluations,
+        }
+    )
+    if output_path is not None:
+        _write_json(Path(output_path).resolve(), report)
+    return report
+
+
+def assess_smoke_matrix(evaluations: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """Apply the preregistered smoke criteria to exact checkpoint evaluations."""
+    planned = tuple(_smoke_key(method, cell) for method, cell in _planned_smoke_pairs())
+    missing = tuple(key for key in planned if key not in evaluations)
+
+    def team_return(method: str, cell: str) -> float | None:
+        payload = evaluations.get(_smoke_key(method, cell))
+        if payload is None:
+            return None
+        return float(payload["evaluation"]["team_return"])
+
+    universal_returns = {
+        method: team_return(method, "no_identification_needed")
+        for method in SMOKE_NO_IDENTIFICATION_METHODS
+    }
+    active_returns = {method: team_return(method, "active_only") for method in SMOKE_ACTIVE_METHODS}
+    memoryless_return = team_return(SMOKE_MEMORYLESS_METHOD, "remember_response")
+    recurrent_returns = {
+        method: team_return(method, "remember_response") for method in SMOKE_RECURRENT_METHODS
+    }
+    tom_passive_return = team_return(*SMOKE_TOM_PASSIVE_CONTROL)
+    available_active = tuple(value for value in active_returns.values() if value is not None)
+    available_recurrent = tuple(value for value in recurrent_returns.values() if value is not None)
+    checks = {
+        "matrix_complete": not missing,
+        "universal_response_control": (
+            all(value is not None for value in universal_returns.values())
+            and all(value >= 99.0 for value in universal_returns.values() if value is not None)
+        ),
+        "active_capability_anchor": bool(available_active) and max(available_active) >= 98.0,
+        "tom_passive_evidence_sanity": tom_passive_return is not None
+        and tom_passive_return >= 98.0,
+        "recurrent_memory_capability": (
+            memoryless_return is not None
+            and bool(available_recurrent)
+            and max(available_recurrent) >= 98.0
+            and max(available_recurrent) > memoryless_return
+        ),
+        "tom_active_diagnostic_preserved": (
+            _smoke_key("tom_selector_style", "active_only") in evaluations
+        ),
+    }
+    required_checks = tuple(key for key in checks if key != "tom_active_diagnostic_preserved")
+    return {
+        "status": "incomplete" if missing else "complete",
+        "passed": not missing and all(checks[key] for key in required_checks),
+        "checks": checks,
+        "missing_runs": list(missing),
+        "planned_runs": list(planned),
+        "summary": {
+            "universal_response_returns": universal_returns,
+            "active_capability_returns": active_returns,
+            "tom_passive_return": tom_passive_return,
+            "memoryless_return": memoryless_return,
+            "recurrent_memory_returns": recurrent_returns,
+        },
+    }
+
+
+def _smoke_key(method_id: str, cell_id: str) -> str:
+    return f"{method_id}/{cell_id}"
 
 
 def execute_rescue_matrix(

@@ -237,3 +237,13 @@ def run_learning_audit(
         runs_dir=runs_dir,
         rescue_runs_dir=rescue_runs_dir,
     )
+
+
+def audit_learning_smoke_matrix(
+    suite_config: str | Path,
+    runs_dir: str | Path,
+    output_path: str | Path | None = None,
+) -> dict[str, object]:
+    from zsc_identifiability.learning_runner import audit_smoke_matrix
+
+    return audit_smoke_matrix(suite_config, runs_dir, output_path)

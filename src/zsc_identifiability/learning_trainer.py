@@ -129,6 +129,9 @@ def train_method(
     next_checkpoint = min(next_checkpoint, transitions)
     while completed < transitions:
         target = min(method.config.transitions_per_update, transitions - completed)
+        tom_oracle_routing = isinstance(model, TomSelectorStylePolicy) and _tom_oracle_routing(
+            completed, transitions
+        )
         episodes, collected = _collect_complete_episodes(
             model,
             environment,
@@ -137,11 +140,21 @@ def train_method(
             completed,
             transitions,
             device,
+            tom_oracle_routing=tom_oracle_routing,
         )
         _compute_advantages(episodes, method)
-        losses = _ppo_update(model, optimizer, episodes, method, device)
+        losses = _ppo_update(
+            model,
+            optimizer,
+            episodes,
+            method,
+            device,
+            tom_oracle_routing=tom_oracle_routing,
+        )
         completed += collected
         row: dict[str, float | int] = {"transitions": completed, **losses}
+        if isinstance(model, TomSelectorStylePolicy):
+            row["tom_oracle_routing"] = int(tom_oracle_routing)
         training_rows.append(row)
         if completed >= next_checkpoint or completed >= transitions:
             validation = evaluate_neural_policy_exact(
@@ -506,6 +519,8 @@ def _collect_complete_episodes(
     completed_transitions: int,
     total_transitions: int,
     device: torch.device,
+    *,
+    tom_oracle_routing: bool = False,
 ) -> tuple[list[EpisodeRecord], int]:
     episodes: list[EpisodeRecord] = []
     transitions = 0
@@ -524,7 +539,11 @@ def _collect_complete_episodes(
             masks = torch.as_tensor(safe_masks, device=device)
             with torch.no_grad():
                 if isinstance(model, TomSelectorStylePolicy):
-                    model.training_clusters = torch.as_tensor(batch.strategy_cluster, device=device)
+                    model.training_clusters = (
+                        torch.as_tensor(batch.strategy_cluster, device=device)
+                        if tom_oracle_routing
+                        else None
+                    )
                 output = model.forward_step(observations, hidden, masks)
                 distribution = action_distribution(output)
                 sampled_actions = distribution.sample()  # type: ignore[no-untyped-call]
@@ -566,6 +585,11 @@ def _collect_complete_episodes(
     if isinstance(model, TomSelectorStylePolicy):
         model.training_clusters = None
     return episodes, transitions
+
+
+def _tom_oracle_routing(completed_transitions: int, total_transitions: int) -> bool:
+    """Limit hidden cluster routing to specialist warm-up, never deployment."""
+    return completed_transitions < total_transitions // 4
 
 
 def _pace_bonus(
@@ -635,6 +659,8 @@ def _ppo_update(
     episodes: list[EpisodeRecord],
     method: LearningMethodSpec,
     device: torch.device,
+    *,
+    tom_oracle_routing: bool = False,
 ) -> dict[str, float]:
     model.train()
     order_rng = np.random.default_rng(sum(len(item.actions) for item in episodes))
@@ -661,7 +687,9 @@ def _ppo_update(
             outputs = []
             for time in range(batch["observations"].shape[1]):
                 if isinstance(model, TomSelectorStylePolicy):
-                    model.training_clusters = batch["strategy_clusters"][:, time]
+                    model.training_clusters = (
+                        batch["strategy_clusters"][:, time] if tom_oracle_routing else None
+                    )
                 output = model.forward_step(
                     batch["observations"][:, time], hidden, batch["action_masks"][:, time]
                 )
