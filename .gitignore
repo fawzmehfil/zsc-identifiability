@@ -1,0 +1,23 @@
+.hypothesis/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Internal research process documents are kept locally, not published.
+identifiability-gap-research-plan.md
+phase-1-literature/
+phase-2-exact-model/phase-2-exit-memo.md
+
+# Generated internals are reproducible from the suite command. Keep only the
+# presentation-facing summaries, theorem report, and publication figures.
+phase-2-exact-model/artifacts/*
+!phase-2-exact-model/artifacts/figures/
+!phase-2-exact-model/artifacts/figures/*.pdf
+!phase-2-exact-model/artifacts/figures/*.png
+!phase-2-exact-model/artifacts/summary.csv
+!phase-2-exact-model/artifacts/summary.json
+!phase-2-exact-model/artifacts/theorem-checks.json

@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "zsc-identifiability"
+version = "0.1.0"
+description = "Exact finite convention games for commitment-timed zero-shot coordination research"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [{ name = "Zero-Shot Coordination Research Project" }]
+dependencies = [
+  "matplotlib>=3.9,<4",
+  "numpy>=2.0,<3",
+  "pandas>=2.2,<3",
+  "pydantic>=2.8,<3",
+]
+
+[project.scripts]
+zsc-identifiability = "zsc_identifiability.cli:main"
+
+[dependency-groups]
+dev = [
+  "hypothesis>=6.112,<7",
+  "mypy>=1.11,<2",
+  "pandas-stubs>=2.2,<3",
+  "pytest>=8.3,<9",
+  "ruff>=0.6,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zsc_identifiability"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["zsc_identifiability"]
