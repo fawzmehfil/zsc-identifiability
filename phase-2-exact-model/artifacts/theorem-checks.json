@@ -1,0 +1,128 @@
+[
+  {
+    "explanation": "Bayes residual risk equals the weighted overlap of mode-conditioned histories.",
+    "left": "8",
+    "name": "binary_weighted_overlap_identity",
+    "passed": true,
+    "right": "8"
+  },
+  {
+    "explanation": "Equal-prior symmetric binary risk equals M/2 times one minus total variation.",
+    "left": "8",
+    "name": "binary_total_variation_corollary",
+    "passed": true,
+    "right": "8"
+  },
+  {
+    "explanation": "Bayes residual risk equals the weighted overlap of mode-conditioned histories.",
+    "left": "20",
+    "name": "binary_weighted_overlap_identity",
+    "passed": true,
+    "right": "20"
+  },
+  {
+    "explanation": "Equal-prior symmetric binary risk equals M/2 times one minus total variation.",
+    "left": "20",
+    "name": "binary_total_variation_corollary",
+    "passed": true,
+    "right": "20"
+  },
+  {
+    "explanation": "Bayes residual risk equals the weighted overlap of mode-conditioned histories.",
+    "left": "8",
+    "name": "binary_weighted_overlap_identity",
+    "passed": true,
+    "right": "8"
+  },
+  {
+    "explanation": "Equal-prior symmetric binary risk equals M/2 times one minus total variation.",
+    "left": "8",
+    "name": "binary_total_variation_corollary",
+    "passed": true,
+    "right": "8"
+  },
+  {
+    "explanation": "The full Bayes risk is no smaller than the conflicting-pair overlap bound.",
+    "left": "24/25",
+    "name": "multitype_pairwise_lower_bound",
+    "passed": true,
+    "right": "18/25"
+  },
+  {
+    "explanation": "Strict intervention choice follows c < NM(q - 1/2).",
+    "left": "true",
+    "name": "one_intervention_threshold_cost_5",
+    "passed": true,
+    "right": "true"
+  },
+  {
+    "explanation": "Strict intervention choice follows c < NM(q - 1/2).",
+    "left": "false",
+    "name": "one_intervention_threshold_cost_12",
+    "passed": true,
+    "right": "false"
+  },
+  {
+    "explanation": "Strict intervention choice follows c < NM(q - 1/2).",
+    "left": "false",
+    "name": "one_intervention_threshold_cost_15",
+    "passed": true,
+    "right": "false"
+  },
+  {
+    "explanation": "Conflicting modes with identical pre-commitment histories retain positive risk.",
+    "left": "tv=0,risk=20",
+    "name": "observational_equivalence_impossibility",
+    "passed": true,
+    "right": "tv=0,risk>0"
+  },
+  {
+    "explanation": "Expanding the action class cannot worsen optimal information risk.",
+    "left": "8",
+    "name": "policy_class_enlargement",
+    "passed": true,
+    "right": "20"
+  },
+  {
+    "explanation": "The Bayes decision maker can ignore evidence, so usable evidence cannot add risk.",
+    "left": "8",
+    "name": "usable_evidence_nonincrease",
+    "passed": true,
+    "right": "20"
+  },
+  {
+    "explanation": "The best attainable DRI cannot fall as the permitted cost budget grows.",
+    "left": "0,3/5",
+    "name": "frontier_budget_monotonicity",
+    "passed": true,
+    "right": "non-decreasing"
+  },
+  {
+    "explanation": "When prior risk is positive, normalized Bayes-risk reduction lies in [0,1].",
+    "left": "true",
+    "name": "dri_bounds",
+    "passed": true,
+    "right": "true"
+  },
+  {
+    "explanation": "Episode-start randomization linearly interpolates deterministic cost and risk.",
+    "left": "cost=3,risk=64/5",
+    "name": "episode_randomization_linearity",
+    "passed": true,
+    "right": "cost=3,risk=64/5"
+  },
+  {
+    "explanation": "At exact value equality, lower cost and earlier commitment select stopping.",
+    "left": "commit,20",
+    "name": "threshold_equality_tie_break",
+    "passed": true,
+    "right": "commit,20"
+  },
+  {
+    "explanation": "Post-commitment revelation is not credited to the earlier decision.",
+    "left": "pre=0,eventual=1",
+    "name": "late_evidence_exclusion",
+    "passed": true,
+    "right": "pre=0,eventual=1"
+  }
+]
