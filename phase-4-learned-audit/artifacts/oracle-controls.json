@@ -1,0 +1,2914 @@
+{
+  "active_boundary": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "12",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "12",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "12",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "12",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "12",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "12",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "binary-role-allocation--active_boundary--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "1",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "binary-role-allocation--active_boundary--identity",
+    "random_intervention": {
+      "active_frontier_distance": 5.268356073674832e-09,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.06951797834995657,
+      "decision_utilization_gap": 3.000000089406967,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 3.0000000894069676,
+      "identity_mutual_information_bits": 0.06951797834995657,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.14999998956918717,
+      "population_id": "binary-role-allocation--active_boundary--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 17.000000208616257,
+      "response_signature_accuracy": null,
+      "team_return": 76.99999961256981,
+      "total_regret": 23.00000038743019
+    },
+    "task_active_oracle_return": "80"
+  },
+  "active_identity_only": {
+    "active_dri": "0",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "game_id": "factorized-identity-memory--active_identity_only--identity",
+      "removed_points": [
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "reason": "dominated by act:advance_shared_task[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "0",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "20",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "factorized-identity-memory--active_identity_only--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.0625,
+      "actual_confusion_loss": 20.0,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "2": 1.0
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 0.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 2.0,
+      "expected_intervention_cost": 2.5,
+      "identity_mutual_information_bits": 0.2780719051126377,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.0,
+      "population_id": "factorized-identity-memory--active_identity_only--identity",
+      "probe_probability": 0.5,
+      "residual_bayes_risk": 20.0,
+      "response_signature_accuracy": null,
+      "team_return": 77.5,
+      "total_regret": 22.5
+    },
+    "task_active_oracle_return": "80"
+  },
+  "active_null": {
+    "active_dri": "0",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "game_id": "factorized-identity-memory--active_null--identity",
+      "removed_points": [
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "reason": "dominated by act:advance_shared_task[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "0",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "20",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "factorized-identity-memory--active_null--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.0625,
+      "actual_confusion_loss": 20.0,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "2": 1.0
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 0.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 2.0,
+      "expected_intervention_cost": 2.5,
+      "identity_mutual_information_bits": 0.13903595255631884,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.0,
+      "population_id": "factorized-identity-memory--active_null--identity",
+      "probe_probability": 0.5,
+      "residual_bayes_risk": 20.0,
+      "response_signature_accuracy": null,
+      "team_return": 77.5,
+      "total_regret": 22.5
+    },
+    "task_active_oracle_return": "80"
+  },
+  "active_only": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "5",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "5",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "binary-role-allocation--active_only--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "1",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "87",
+    "known_mode_return": "100",
+    "memoryless_risk": "8",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "binary-role-allocation--active_only--identity",
+    "random_intervention": {
+      "active_frontier_distance": 2.8656079144211253e-09,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": true,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.06951797834995657,
+      "decision_utilization_gap": 3.000000089406967,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.06951797834995657,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": -0.17857147646801813,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.14999998956918717,
+      "population_id": "binary-role-allocation--active_only--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 17.000000208616257,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "87"
+  },
+  "active_response": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "5",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "1/10",
+                    "2/5",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "1/10",
+                          "2/5",
+                          "2/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "2/5",
+                    "1/10",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "2/5",
+                          "1/10",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "5",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "1/10",
+                    "2/5",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "1/10",
+                          "2/5",
+                          "2/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "2/5",
+                    "1/10",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "2/5",
+                          "1/10",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "5",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "factorized-identity-memory--active_response--identity",
+      "removed_points": []
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "0",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "87",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "factorized-identity-memory--active_response--identity",
+    "random_intervention": {
+      "active_frontier_distance": 1.3877787807814457e-17,
+      "actual_confusion_loss": 20.0,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": true,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "2": 1.0
+      },
+      "decision_signature_mutual_information_bits": 0.13903595255631887,
+      "decision_utilization_gap": 6.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 2.0,
+      "expected_intervention_cost": 2.5,
+      "identity_mutual_information_bits": 0.2780719051126377,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": -0.35714285714285715,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.3,
+      "population_id": "factorized-identity-memory--active_response--identity",
+      "probe_probability": 0.5,
+      "residual_bayes_risk": 14.0,
+      "response_signature_accuracy": null,
+      "team_return": 77.5,
+      "total_regret": 22.5
+    },
+    "task_active_oracle_return": "87"
+  },
+  "active_too_expensive": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "15",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "15",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "15",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        },
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "15",
+          "policy": {
+            "action": "stage_shared_item",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "15",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "15",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "binary-role-allocation--active_too_expensive--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "1",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "77",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "binary-role-allocation--active_too_expensive--identity",
+    "random_intervention": {
+      "active_frontier_distance": 5.8179260003792515e-09,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.06951797834995657,
+      "decision_utilization_gap": 3.000000089406967,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 3.750000111758709,
+      "identity_mutual_information_bits": 0.06951797834995657,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.14999998956918717,
+      "population_id": "binary-role-allocation--active_too_expensive--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 17.000000208616257,
+      "response_signature_accuracy": null,
+      "team_return": 76.24999959021807,
+      "total_regret": 23.750000409781933
+    },
+    "task_active_oracle_return": "80"
+  },
+  "fundamentally_inseparable": {
+    "active_dri": "0",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "game_id": "binary-role-allocation--fundamentally_inseparable--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "dominated by commit:take_role_a",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "0",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "20",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "binary-role-allocation--fundamentally_inseparable--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.03125000093132346,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 0.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.0,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": -1.4901161193847656e-08,
+      "population_id": "binary-role-allocation--fundamentally_inseparable--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 20.000000298023224,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "80"
+  },
+  "no_identification_needed": {
+    "active_dri": null,
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": null,
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "0"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": null,
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "0"
+        }
+      ],
+      "game_id": "binary-role-allocation--no_identification_needed--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "0"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "dominated by commit:take_role_a",
+          "residual_risk": "40"
+        },
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "dominated by commit:take_role_a",
+          "residual_risk": "0"
+        }
+      ]
+    },
+    "best_fixed_response_return": "100",
+    "eventual_dri": null,
+    "evidence_blind_risk": "0",
+    "history_aware_risk": "0",
+    "information_only_return": "100",
+    "known_mode_return": "100",
+    "memoryless_risk": "0",
+    "passive_dri": null,
+    "passive_oracle_return": "100",
+    "population_id": "binary-role-allocation--no_identification_needed--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.031250000931322575,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": false,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.33333334326744085,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 20.000000298023224,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.0,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": null,
+      "population_id": "binary-role-allocation--no_identification_needed--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 0.0,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "100"
+  },
+  "passive_early": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "1",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "belief": [
+                    "1/5",
+                    "4/5"
+                  ],
+                  "decision": "take_role_b",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "belief": [
+                    "4/5",
+                    "1/5"
+                  ],
+                  "decision": "take_role_a",
+                  "kind": "commit",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "binary-role-allocation--passive_early--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_a",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:commit:take_role_b,preparing/signal_zero:commit:take_role_a]",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:commit:take_role_b,preparing/signal_zero:commit:take_role_a]",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing/signal_one:commit:take_role_b,preparing/signal_zero:commit:take_role_a]",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:commit:take_role_b,preparing/signal_zero:commit:take_role_a]",
+          "residual_risk": "8"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "3/5",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "92",
+    "known_mode_return": "100",
+    "memoryless_risk": "8",
+    "passive_dri": "3/5",
+    "passive_oracle_return": "92",
+    "population_id": "binary-role-allocation--passive_early--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.153220636509177,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": true,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.33333334326744085,
+        "2": 0.16666667163372043
+      },
+      "decision_signature_mutual_information_bits": 0.13903595669991317,
+      "decision_utilization_gap": 6.000000178813934,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.13903595669991317,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": -0.10416669460634391,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.29999999403953553,
+      "population_id": "binary-role-allocation--passive_early--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 14.00000011920929,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "92"
+  },
+  "passive_late": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/2",
+                    "1/2"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/5",
+                          "4/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_one",
+                      "probability": "1/2"
+                    },
+                    {
+                      "child": {
+                        "belief": [
+                          "4/5",
+                          "1/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_zero",
+                      "probability": "1/2"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/2",
+                    "1/2"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/5",
+                          "4/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_one",
+                      "probability": "1/2"
+                    },
+                    {
+                      "child": {
+                        "belief": [
+                          "4/5",
+                          "1/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_zero",
+                      "probability": "1/2"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/2",
+                    "1/2"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/5",
+                          "4/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_one",
+                      "probability": "1/2"
+                    },
+                    {
+                      "child": {
+                        "belief": [
+                          "4/5",
+                          "1/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_zero",
+                      "probability": "1/2"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/2",
+                    "1/2"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/5",
+                          "4/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_one",
+                      "probability": "1/2"
+                    },
+                    {
+                      "child": {
+                        "belief": [
+                          "4/5",
+                          "1/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "signal_zero",
+                      "probability": "1/2"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "binary-role-allocation--passive_late--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_a",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a],preparing/signal_zero:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a]]",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a],preparing/signal_zero:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a]]",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing/signal_one:commit:take_role_b,preparing/signal_zero:commit:take_role_a]",
+          "reason": "dominated by act:advance_shared_task[preparing/signal_one:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a],preparing/signal_zero:act:complete_preparation[commit_ready/signal_one:commit:take_role_b,commit_ready/signal_zero:commit:take_role_a]]",
+          "residual_risk": "8"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "3/5",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "92",
+    "known_mode_return": "100",
+    "memoryless_risk": "8",
+    "passive_dri": "3/5",
+    "passive_oracle_return": "92",
+    "population_id": "binary-role-allocation--passive_late--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.2024266888193032,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": true,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.16666667163372045
+      },
+      "decision_signature_mutual_information_bits": 0.10789508515616422,
+      "decision_utilization_gap": 4.0000001192092896,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.10789508515616422,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": -0.10416669460634391,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.19999999105930327,
+      "population_id": "binary-role-allocation--passive_late--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 16.000000178813934,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "92"
+  },
+  "precommit_inseparable": {
+    "active_dri": "0",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "0",
+          "expected_cost": "0",
+          "policy": {
+            "belief": [
+              "1/2",
+              "1/2"
+            ],
+            "decision": "take_role_a",
+            "kind": "commit",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "game_id": "binary-role-allocation--precommit_inseparable--identity",
+      "removed_points": [
+        {
+          "expected_cost": "0",
+          "policy_signature": "commit:take_role_b",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "0",
+          "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "duplicate coordinates; deterministic tie-break lost",
+          "residual_risk": "20"
+        },
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+          "reason": "dominated by commit:take_role_a",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "1",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "20",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "binary-role-allocation--precommit_inseparable--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.03125000093132346,
+      "actual_confusion_loss": 20.000000298023224,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "0": 0.5,
+        "1": 0.3333333432674408,
+        "2": 0.1666666716337204
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 0.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 0.6666666865348816,
+      "expected_intervention_cost": 1.250000037252903,
+      "identity_mutual_information_bits": 0.0,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": -1.4901161193847656e-08,
+      "population_id": "binary-role-allocation--precommit_inseparable--identity",
+      "probe_probability": 0.2500000074505806,
+      "residual_bayes_risk": 20.000000298023224,
+      "response_signature_accuracy": null,
+      "team_return": 78.74999966472387,
+      "total_regret": 21.250000335276127
+    },
+    "task_active_oracle_return": "80"
+  },
+  "remember_response": {
+    "active_dri": "3/5",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "1/10",
+                    "2/5",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "1/10",
+                          "2/5",
+                          "2/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "2/5",
+                    "1/10",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "2/5",
+                          "1/10",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "3/5",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "1/10",
+                    "2/5",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "1/10",
+                          "2/5",
+                          "2/5"
+                        ],
+                        "decision": "take_role_b",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "2/5",
+                    "1/10",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "2/5",
+                          "1/10",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "8"
+        }
+      ],
+      "game_id": "factorized-identity-memory--remember_response--identity",
+      "removed_points": [
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_b],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "reason": "dominated by act:advance_shared_task[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_b],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "residual_risk": "8"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "3/5",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "8",
+    "information_only_return": "92",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "3/5",
+    "passive_oracle_return": "92",
+    "population_id": "factorized-identity-memory--remember_response--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.0625,
+      "actual_confusion_loss": 20.0,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": true,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "2": 1.0
+      },
+      "decision_signature_mutual_information_bits": 0.2780719051126377,
+      "decision_utilization_gap": 12.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 2.0,
+      "expected_intervention_cost": 2.5,
+      "identity_mutual_information_bits": 0.2780719051126377,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": -0.20833333333333334,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.6,
+      "population_id": "factorized-identity-memory--remember_response--identity",
+      "probe_probability": 0.5,
+      "residual_bayes_risk": 8.0,
+      "response_signature_accuracy": null,
+      "team_return": 77.5,
+      "total_regret": 22.5
+    },
+    "task_active_oracle_return": "92"
+  },
+  "remember_subtype": {
+    "active_dri": "0",
+    "active_frontier": {
+      "action_class": "task",
+      "backend": "fraction",
+      "convexified_envelope": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "deterministic_points": [
+        {
+          "dri": "0",
+          "expected_commitment_time": "2",
+          "expected_cost": "0",
+          "policy": {
+            "action": "advance_shared_task",
+            "belief": [
+              "1/4",
+              "1/4",
+              "1/4",
+              "1/4"
+            ],
+            "branches": [
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "1/10",
+                    "2/5",
+                    "1/10",
+                    "2/5"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "1/10",
+                          "2/5",
+                          "1/10",
+                          "2/5"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_one",
+                "probability": "1/2"
+              },
+              {
+                "child": {
+                  "action": "complete_preparation",
+                  "belief": [
+                    "2/5",
+                    "1/10",
+                    "2/5",
+                    "1/10"
+                  ],
+                  "branches": [
+                    {
+                      "child": {
+                        "belief": [
+                          "2/5",
+                          "1/10",
+                          "2/5",
+                          "1/10"
+                        ],
+                        "decision": "take_role_a",
+                        "kind": "commit",
+                        "state": "commit_ready",
+                        "time": 2
+                      },
+                      "expected_immediate_cost": "0",
+                      "next_state": "commit_ready",
+                      "observation": "neutral",
+                      "probability": "1"
+                    }
+                  ],
+                  "kind": "act",
+                  "state": "preparing_1",
+                  "time": 1
+                },
+                "expected_immediate_cost": "0",
+                "next_state": "preparing_1",
+                "observation": "signal_zero",
+                "probability": "1/2"
+              }
+            ],
+            "kind": "act",
+            "state": "start",
+            "time": 0
+          },
+          "residual_risk": "20"
+        }
+      ],
+      "game_id": "factorized-identity-memory--remember_subtype--identity",
+      "removed_points": [
+        {
+          "expected_cost": "5",
+          "policy_signature": "act:stage_shared_item[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "reason": "dominated by act:advance_shared_task[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+          "residual_risk": "20"
+        }
+      ]
+    },
+    "best_fixed_response_return": "80",
+    "eventual_dri": "0",
+    "evidence_blind_risk": "20",
+    "history_aware_risk": "20",
+    "information_only_return": "80",
+    "known_mode_return": "100",
+    "memoryless_risk": "20",
+    "passive_dri": "0",
+    "passive_oracle_return": "80",
+    "population_id": "factorized-identity-memory--remember_subtype--identity",
+    "random_intervention": {
+      "active_frontier_distance": 0.0625,
+      "actual_confusion_loss": 20.0,
+      "applicability_flags": {
+        "active_frontier_distance": true,
+        "belief_calibration": false,
+        "oracle_normalized_return": false,
+        "partner_response_prediction_loss": false,
+        "policy_dri": true,
+        "response_signature_accuracy": false
+      },
+      "belief_brier_score": null,
+      "commitment_time_distribution": {
+        "2": 1.0
+      },
+      "decision_signature_mutual_information_bits": 0.0,
+      "decision_utilization_gap": 0.0,
+      "evaluator": "exact_neural_policy_tree",
+      "expected_calibration_error": null,
+      "expected_commitment_time": 2.0,
+      "expected_intervention_cost": 2.5,
+      "identity_mutual_information_bits": 0.2780719051126377,
+      "method_id": "random_intervention",
+      "mode": "stochastic",
+      "oracle_normalized_return": null,
+      "partner_response_prediction_loss": null,
+      "policy_dri": 0.0,
+      "population_id": "factorized-identity-memory--remember_subtype--identity",
+      "probe_probability": 0.5,
+      "residual_bayes_risk": 20.0,
+      "response_signature_accuracy": null,
+      "team_return": 77.5,
+      "total_regret": 22.5
+    },
+    "task_active_oracle_return": "80"
+  }
+}

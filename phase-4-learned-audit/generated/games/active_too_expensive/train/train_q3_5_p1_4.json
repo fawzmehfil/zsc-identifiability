@@ -1,0 +1,262 @@
+{
+  "actions": [
+    {
+      "available": [
+        {
+          "state": "start",
+          "times": [
+            0
+          ]
+        }
+      ],
+      "description": "Advance the shared task along its default route.",
+      "id": "advance_shared_task",
+      "kind": "task",
+      "passive": true,
+      "task_semantics": "Make ordinary progress on the shared preparation."
+    },
+    {
+      "available": [
+        {
+          "state": "start",
+          "times": [
+            0
+          ]
+        }
+      ],
+      "description": "Place a shared item where either role may claim it.",
+      "id": "stage_shared_item",
+      "kind": "task",
+      "passive": false,
+      "task_semantics": "Stage an ordinary shared resource before role allocation."
+    },
+    {
+      "available": [
+        {
+          "state": "preparing",
+          "times": [
+            1
+          ]
+        }
+      ],
+      "description": "Finish the preparation before assigning roles.",
+      "id": "complete_preparation",
+      "kind": "task",
+      "passive": true,
+      "task_semantics": "Complete the ordinary preparation sequence."
+    }
+  ],
+  "analytical_expectations": [
+    {
+      "name": "prior_risk",
+      "text": null,
+      "value": "20"
+    },
+    {
+      "name": "reliability",
+      "text": null,
+      "value": "4/5"
+    }
+  ],
+  "decision_losses": [
+    {
+      "decision": "take_role_a",
+      "loss": "0",
+      "mode": "partner_alpha"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "40",
+      "mode": "partner_alpha"
+    },
+    {
+      "decision": "take_role_a",
+      "loss": "40",
+      "mode": "partner_beta"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "0",
+      "mode": "partner_beta"
+    }
+  ],
+  "decisions": [
+    "take_role_a",
+    "take_role_b"
+  ],
+  "description": "Matched binary role-allocation population with ordinary task evidence and an auditable commitment boundary.",
+  "game_id": "binary-role-allocation--active_too_expensive--identity--learn-train-train-q3-5-p1-4",
+  "horizon": 2,
+  "initial_state": "start",
+  "kernels": [
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_alpha",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing",
+          "observation": "signal_zero",
+          "probability": "3/4"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing",
+          "observation": "signal_one",
+          "probability": "1/4"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_alpha",
+      "outcomes": [
+        {
+          "cost": "15",
+          "next_state": "preparing",
+          "observation": "signal_zero",
+          "probability": "3/5"
+        },
+        {
+          "cost": "15",
+          "next_state": "preparing",
+          "observation": "signal_one",
+          "probability": "2/5"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_alpha",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "signal_zero",
+          "probability": "3/4"
+        },
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "signal_one",
+          "probability": "1/4"
+        }
+      ],
+      "state": "preparing",
+      "time": 1
+    },
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_beta",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing",
+          "observation": "signal_zero",
+          "probability": "3/4"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing",
+          "observation": "signal_one",
+          "probability": "1/4"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_beta",
+      "outcomes": [
+        {
+          "cost": "15",
+          "next_state": "preparing",
+          "observation": "signal_zero",
+          "probability": "2/5"
+        },
+        {
+          "cost": "15",
+          "next_state": "preparing",
+          "observation": "signal_one",
+          "probability": "3/5"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_beta",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "signal_zero",
+          "probability": "3/4"
+        },
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "signal_one",
+          "probability": "1/4"
+        }
+      ],
+      "state": "preparing",
+      "time": 1
+    }
+  ],
+  "metadata": {
+    "cell": "active_too_expensive",
+    "family": "binary-role-allocation",
+    "learning_profile": "train_q3_5_p1_4",
+    "learning_split": "train",
+    "ordinary_task_intervention": "stage_shared_item",
+    "phase": "3",
+    "symmetry": "identity"
+  },
+  "modes": [
+    {
+      "id": "partner_alpha",
+      "probability": "1/2"
+    },
+    {
+      "id": "partner_beta",
+      "probability": "1/2"
+    }
+  ],
+  "observations": [
+    "signal_zero",
+    "signal_one"
+  ],
+  "post_commitment_observations": [
+    {
+      "mode": "partner_alpha",
+      "observations": [
+        {
+          "id": "signal_zero",
+          "probability": "1"
+        }
+      ]
+    },
+    {
+      "mode": "partner_beta",
+      "observations": [
+        {
+          "id": "signal_one",
+          "probability": "1"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "states": [
+    "start",
+    "preparing",
+    "commit_ready"
+  ]
+}

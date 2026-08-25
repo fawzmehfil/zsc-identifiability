@@ -1,0 +1,14 @@
+{
+  "cell_id": "active_only",
+  "checkpoint_hash": "dd45013d5e601a07b613e6b2f82c5dc156c48fffd9a392ac543e9d4a4c012609",
+  "completed_transitions": 20319,
+  "configuration_hash": "20d1f87412d6c57ebb089b1d5c5116604d813a52fd10d84cf27e61f95ef48e91",
+  "gate": "deterministic_q1_zero_cost",
+  "method_id": "gru_ppo_active",
+  "passed": true,
+  "requested_transitions": 20000,
+  "required_return": 98.0,
+  "seed": 101,
+  "source_tree_hash": "289d7a838b2080f78853cd4b6f25853ad2833fb3b90cc5e7706974c8d38e0b5e",
+  "team_return": 100.0
+}

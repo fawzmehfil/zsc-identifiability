@@ -1,0 +1,368 @@
+{
+  "actions": [
+    {
+      "available": [
+        {
+          "state": "start",
+          "times": [
+            0
+          ]
+        }
+      ],
+      "description": "Advance the shared role-allocation task normally.",
+      "id": "advance_shared_task",
+      "kind": "task",
+      "passive": true,
+      "task_semantics": "Make ordinary progress before assigning complementary roles."
+    },
+    {
+      "available": [
+        {
+          "state": "start",
+          "times": [
+            0
+          ]
+        }
+      ],
+      "description": "Stage a resource and observe the partner's ordinary reaction.",
+      "id": "stage_shared_item",
+      "kind": "task",
+      "passive": false,
+      "task_semantics": "Place an ordinary shared resource before complementary work begins."
+    },
+    {
+      "available": [
+        {
+          "state": "preparing_1",
+          "times": [
+            1
+          ]
+        }
+      ],
+      "description": "Continue preparation after the partner response.",
+      "id": "complete_preparation",
+      "kind": "task",
+      "passive": true,
+      "task_semantics": "Complete ordinary intervening preparation before role assignment."
+    }
+  ],
+  "analytical_expectations": [
+    {
+      "name": "prior_risk",
+      "text": null,
+      "value": "20"
+    },
+    {
+      "name": "distractor_steps",
+      "text": null,
+      "value": "1"
+    }
+  ],
+  "decision_losses": [
+    {
+      "decision": "take_role_a",
+      "loss": "0",
+      "mode": "partner_a0"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "40",
+      "mode": "partner_a0"
+    },
+    {
+      "decision": "take_role_a",
+      "loss": "0",
+      "mode": "partner_a1"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "40",
+      "mode": "partner_a1"
+    },
+    {
+      "decision": "take_role_a",
+      "loss": "40",
+      "mode": "partner_b0"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "0",
+      "mode": "partner_b0"
+    },
+    {
+      "decision": "take_role_a",
+      "loss": "40",
+      "mode": "partner_b1"
+    },
+    {
+      "decision": "take_role_b",
+      "loss": "0",
+      "mode": "partner_b1"
+    }
+  ],
+  "decisions": [
+    "take_role_a",
+    "take_role_b"
+  ],
+  "description": "Factorized identity/response population with a declared memory gap before role commitment.",
+  "game_id": "factorized-identity-memory--active_null--identity--learn-train-train-q1-p1-3",
+  "horizon": 2,
+  "initial_state": "start",
+  "kernels": [
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_a0",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "1"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "0"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_a0",
+      "outcomes": [
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "2/3"
+        },
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1/3"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_a0",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "neutral",
+          "probability": "1"
+        }
+      ],
+      "state": "preparing_1",
+      "time": 1
+    },
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_a1",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "0"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_a1",
+      "outcomes": [
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "2/3"
+        },
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1/3"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_a1",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "neutral",
+          "probability": "1"
+        }
+      ],
+      "state": "preparing_1",
+      "time": 1
+    },
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_b0",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "1"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "0"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_b0",
+      "outcomes": [
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "2/3"
+        },
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1/3"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_b0",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "neutral",
+          "probability": "1"
+        }
+      ],
+      "state": "preparing_1",
+      "time": 1
+    },
+    {
+      "action": "advance_shared_task",
+      "mode": "partner_b1",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "0"
+        },
+        {
+          "cost": "0",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "stage_shared_item",
+      "mode": "partner_b1",
+      "outcomes": [
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_zero",
+          "probability": "2/3"
+        },
+        {
+          "cost": "5",
+          "next_state": "preparing_1",
+          "observation": "signal_one",
+          "probability": "1/3"
+        }
+      ],
+      "state": "start",
+      "time": 0
+    },
+    {
+      "action": "complete_preparation",
+      "mode": "partner_b1",
+      "outcomes": [
+        {
+          "cost": "0",
+          "next_state": "commit_ready",
+          "observation": "neutral",
+          "probability": "1"
+        }
+      ],
+      "state": "preparing_1",
+      "time": 1
+    }
+  ],
+  "metadata": {
+    "cell": "active_null",
+    "commitment_state": "commit_ready",
+    "family": "factorized-identity-memory",
+    "learning_profile": "train_q1_p1_3",
+    "learning_split": "train",
+    "phase": "3",
+    "symmetry": "identity"
+  },
+  "modes": [
+    {
+      "id": "partner_a0",
+      "probability": "1/4"
+    },
+    {
+      "id": "partner_a1",
+      "probability": "1/4"
+    },
+    {
+      "id": "partner_b0",
+      "probability": "1/4"
+    },
+    {
+      "id": "partner_b1",
+      "probability": "1/4"
+    }
+  ],
+  "observations": [
+    "signal_zero",
+    "signal_one",
+    "neutral"
+  ],
+  "post_commitment_observations": [],
+  "schema_version": 1,
+  "states": [
+    "start",
+    "preparing_1",
+    "commit_ready"
+  ]
+}
