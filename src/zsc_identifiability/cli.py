@@ -16,6 +16,12 @@ from zsc_identifiability.api import (
     run_suite,
     solve_bayes,
 )
+from zsc_identifiability.benchmark_generator import generate as generate_benchmarks
+from zsc_identifiability.benchmark_models import load_benchmark_suite_file
+from zsc_identifiability.benchmark_runner import (
+    execute_benchmark_suite,
+    materialize_benchmark_set,
+)
 from zsc_identifiability.runner import _theory_checks
 
 
@@ -50,6 +56,30 @@ def _parser() -> argparse.ArgumentParser:
     suite = commands.add_parser("run-suite", help="reproduce the complete Phase 2 artifact suite")
     suite.add_argument("--suite", required=True)
     suite.add_argument("--output", required=True)
+    benchmark = commands.add_parser(
+        "benchmark", help="validate, generate, audit, or reproduce Phase 3 benchmarks"
+    )
+    benchmark_commands = benchmark.add_subparsers(dest="benchmark_command", required=True)
+    benchmark_validate = benchmark_commands.add_parser(
+        "validate", help="validate and instantiate a matched benchmark suite"
+    )
+    benchmark_validate.add_argument("--suite", required=True)
+    benchmark_generate = benchmark_commands.add_parser(
+        "generate", help="materialize generated v1 games and descriptors"
+    )
+    benchmark_generate.add_argument("--suite", required=True)
+    benchmark_generate.add_argument("--output", required=True)
+    for name in ("audit", "run"):
+        item = benchmark_commands.add_parser(
+            name,
+            help=(
+                "run matching and shortcut audits"
+                if name == "audit"
+                else "reproduce the complete Phase 3 artifact suite"
+            ),
+        )
+        item.add_argument("--suite", required=True)
+        item.add_argument("--output", required=True)
     return parser
 
 
@@ -84,6 +114,41 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(
                 json.dumps(run_suite(args.suite, args.output).to_dict(), indent=2, sort_keys=True)
             )
+        elif args.command == "benchmark":
+            if args.benchmark_command == "validate":
+                spec = load_benchmark_suite_file(args.suite)
+                generated = generate_benchmarks(spec)
+                print(
+                    json.dumps(
+                        {
+                            "valid": True,
+                            "suite_id": spec.suite_id,
+                            "population_count": len(generated.populations),
+                            "matching_contract_count": len(spec.matching_contracts),
+                        },
+                        indent=2,
+                        sort_keys=True,
+                    )
+                )
+            elif args.benchmark_command == "generate":
+                spec = load_benchmark_suite_file(args.suite)
+                generated = generate_benchmarks(spec)
+                files = materialize_benchmark_set(generated, args.output)
+                print(
+                    json.dumps(
+                        {
+                            "suite_id": spec.suite_id,
+                            "population_count": len(generated.populations),
+                            "generated_files": list(files),
+                        },
+                        indent=2,
+                        sort_keys=True,
+                    )
+                )
+            else:
+                manifest = execute_benchmark_suite(args.suite, args.output)
+                print(json.dumps(manifest.to_dict(), indent=2, sort_keys=True))
+                return 0 if manifest.scientific_audit_passed else 3
     except (ValidationError, ValueError, RuntimeError, AssertionError) as exc:
         print(json.dumps({"error": str(exc)}, indent=2))
         return 2

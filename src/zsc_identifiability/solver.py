@@ -49,6 +49,7 @@ def solve(
     action_class: ActionClass,
     objective: Objective,
     backend: Backend,
+    commitment_states: frozenset[str] | None = None,
 ) -> PolicySolution:
     memo: dict[tuple[int, str, tuple[Number, ...]], Candidate] = {}
 
@@ -56,15 +57,19 @@ def solve(
         key = (time, state, belief)
         if key in memo:
             return memo[key]
-        decision, risk = best_decision(game, belief, backend)
-        best = Candidate(
-            cost=zero(backend),
-            risk=risk,
-            commitment_time=number(str(time), backend),
-            policy=PolicyNode(
-                kind="commit", time=time, state=state, belief=belief, decision=decision
-            ),
-        )
+        commitment_allowed = commitment_states is None or state in commitment_states
+        if commitment_allowed:
+            decision, risk = best_decision(game, belief, backend)
+            best: Candidate | None = Candidate(
+                cost=zero(backend),
+                risk=risk,
+                commitment_time=number(str(time), backend),
+                policy=PolicyNode(
+                    kind="commit", time=time, state=state, belief=belief, decision=decision
+                ),
+            )
+        else:
+            best = None
         if time < game.horizon:
             passive_only = action_class == "passive"
             for action in game.available_actions(state, time, passive_only=passive_only):
@@ -104,8 +109,13 @@ def solve(
                         branches=tuple(policy_branches),
                     ),
                 )
-                if _candidate_better(candidate, best, objective):
+                if best is None or _candidate_better(candidate, best, objective):
                     best = candidate
+        if best is None:
+            raise ValueError(
+                f"no feasible action or commitment at time={time}, state={state}; "
+                "check benchmark commitment states"
+            )
         memo[key] = best
         return best
 

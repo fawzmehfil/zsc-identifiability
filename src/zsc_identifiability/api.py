@@ -6,11 +6,31 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
+from zsc_identifiability.benchmark_audit import (
+    audit_pair as _audit_population_pair,
+)
+from zsc_identifiability.benchmark_audit import (
+    audit_shortcuts as _audit_shortcuts,
+)
+from zsc_identifiability.benchmark_generator import generate as _generate_benchmark_suite
+from zsc_identifiability.benchmark_models import (
+    BenchmarkRunManifest,
+    GeneratedBenchmarkSet,
+    GeneratedPopulation,
+    MatchedBenchmarkSuite,
+    MatchingAudit,
+    MatchingContractSpec,
+    PopulationMetrics,
+    ShortcutAudit,
+    load_benchmark_suite_file,
+)
+from zsc_identifiability.benchmark_runner import execute_benchmark_suite
 from zsc_identifiability.frontier import compute as _compute_frontier
 from zsc_identifiability.metrics import compute_distributions, evaluate
 from zsc_identifiability.models import FiniteConventionGame, load_game_file
 from zsc_identifiability.numeric import Backend
 from zsc_identifiability.policy import PolicyNode
+from zsc_identifiability.population_metrics import compute as _compute_population_metrics
 from zsc_identifiability.results import (
     FrontierResult,
     HistoryDistributions,
@@ -66,3 +86,44 @@ def compute_history_distributions(
 
 def run_suite(suite_config: str | Path, output_dir: str | Path) -> RunManifest:
     return execute_suite(suite_config, output_dir)
+
+
+def load_benchmark_suite(path: str | Path) -> MatchedBenchmarkSuite:
+    return load_benchmark_suite_file(path)
+
+
+def generate_benchmark_suite(
+    spec: MatchedBenchmarkSuite,
+    backend: Backend = "fraction",
+) -> GeneratedBenchmarkSet:
+    return _generate_benchmark_suite(spec, backend)
+
+
+def compute_population_metrics(
+    population: GeneratedPopulation,
+    backend: Backend = "fraction",
+) -> PopulationMetrics:
+    return _compute_population_metrics(population, backend)
+
+
+def audit_population_pair(
+    left: GeneratedPopulation,
+    right: GeneratedPopulation,
+    contract: MatchingContractSpec,
+    backend: Backend = "fraction",
+) -> MatchingAudit:
+    return _audit_population_pair(left, right, contract, backend)
+
+
+def audit_shortcuts(
+    population: GeneratedPopulation,
+    backend: Backend = "fraction",
+) -> ShortcutAudit:
+    return _audit_shortcuts(population, backend)
+
+
+def run_benchmark_suite(
+    suite_config: str | Path,
+    output_dir: str | Path,
+) -> BenchmarkRunManifest:
+    return execute_benchmark_suite(suite_config, output_dir)

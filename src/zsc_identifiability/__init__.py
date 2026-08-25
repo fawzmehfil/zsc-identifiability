@@ -1,13 +1,28 @@
 """Exact finite convention games for zero-shot coordination research."""
 
 from zsc_identifiability.api import (
+    audit_population_pair,
+    audit_shortcuts,
     compute_frontier,
     compute_history_distributions,
+    compute_population_metrics,
     evaluate_policy,
+    generate_benchmark_suite,
+    load_benchmark_suite,
     load_game,
+    run_benchmark_suite,
     run_suite,
     solve_bayes,
     validate_game,
+)
+from zsc_identifiability.benchmark_models import (
+    BenchmarkRunManifest,
+    GeneratedBenchmarkSet,
+    GeneratedPopulation,
+    MatchedBenchmarkSuite,
+    MatchingAudit,
+    PopulationMetrics,
+    ShortcutAudit,
 )
 from zsc_identifiability.models import FiniteConventionGame
 from zsc_identifiability.results import (
@@ -20,17 +35,30 @@ from zsc_identifiability.results import (
 )
 
 __all__ = [
+    "BenchmarkRunManifest",
     "FiniteConventionGame",
     "FrontierResult",
+    "GeneratedBenchmarkSet",
+    "GeneratedPopulation",
     "HistoryDistributions",
+    "MatchedBenchmarkSuite",
+    "MatchingAudit",
     "PolicyEvaluation",
     "PolicySolution",
+    "PopulationMetrics",
     "RunManifest",
+    "ShortcutAudit",
     "ValidationReport",
+    "audit_population_pair",
+    "audit_shortcuts",
     "compute_frontier",
     "compute_history_distributions",
+    "compute_population_metrics",
     "evaluate_policy",
+    "generate_benchmark_suite",
+    "load_benchmark_suite",
     "load_game",
+    "run_benchmark_suite",
     "run_suite",
     "solve_bayes",
     "validate_game",

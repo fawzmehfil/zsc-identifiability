@@ -123,6 +123,7 @@ def compute(
     action_class: str,
     backend: Backend,
     policy_node_cap: int = 200_000,
+    commitment_states: frozenset[str] | None = None,
 ) -> FrontierResult:
     memo: dict[tuple[int, str, tuple[Number, ...]], tuple[_Candidate, ...]] = {}
     generated = 0
@@ -135,17 +136,18 @@ def compute(
         if key in memo:
             return memo[key]
         candidates: list[_Candidate] = []
-        for decision in sorted(game.decisions):
-            candidates.append(
-                _Candidate(
-                    cost=zero(backend),
-                    risk=decision_risk(game, belief, decision, backend),
-                    commitment_time=number(str(time), backend),
-                    policy=PolicyNode(
-                        kind="commit", time=time, state=state, belief=belief, decision=decision
-                    ),
+        if commitment_states is None or state in commitment_states:
+            for decision in sorted(game.decisions):
+                candidates.append(
+                    _Candidate(
+                        cost=zero(backend),
+                        risk=decision_risk(game, belief, decision, backend),
+                        commitment_time=number(str(time), backend),
+                        policy=PolicyNode(
+                            kind="commit", time=time, state=state, belief=belief, decision=decision
+                        ),
+                    )
                 )
-            )
         if time < game.horizon:
             passive_only = action_class == "passive"
             for action in game.available_actions(state, time, passive_only=passive_only):
@@ -192,6 +194,11 @@ def compute(
                             ),
                         )
                     )
+        if not candidates:
+            raise ValueError(
+                f"no feasible action or commitment at time={time}, state={state}; "
+                "check benchmark commitment states"
+            )
         pruned, removed = _prune(candidates)
         if time == 0 and state == game.initial_state and belief == root_belief:
             removed_root.extend(removed)
