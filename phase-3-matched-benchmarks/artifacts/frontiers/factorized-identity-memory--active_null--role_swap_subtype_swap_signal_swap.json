@@ -1,0 +1,209 @@
+{
+  "action_class": "task",
+  "backend": "fraction",
+  "convexified_envelope": [
+    {
+      "dri": "0",
+      "expected_commitment_time": "2",
+      "expected_cost": "0",
+      "policy": {
+        "action": "advance_shared_task",
+        "belief": [
+          "1/4",
+          "1/4",
+          "1/4",
+          "1/4"
+        ],
+        "branches": [
+          {
+            "child": {
+              "action": "complete_preparation",
+              "belief": [
+                "1/10",
+                "2/5",
+                "1/10",
+                "2/5"
+              ],
+              "branches": [
+                {
+                  "child": {
+                    "belief": [
+                      "1/10",
+                      "2/5",
+                      "1/10",
+                      "2/5"
+                    ],
+                    "decision": "take_role_a",
+                    "kind": "commit",
+                    "state": "commit_ready",
+                    "time": 2
+                  },
+                  "expected_immediate_cost": "0",
+                  "next_state": "commit_ready",
+                  "observation": "neutral",
+                  "probability": "1"
+                }
+              ],
+              "kind": "act",
+              "state": "preparing_1",
+              "time": 1
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "preparing_1",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "action": "complete_preparation",
+              "belief": [
+                "2/5",
+                "1/10",
+                "2/5",
+                "1/10"
+              ],
+              "branches": [
+                {
+                  "child": {
+                    "belief": [
+                      "2/5",
+                      "1/10",
+                      "2/5",
+                      "1/10"
+                    ],
+                    "decision": "take_role_a",
+                    "kind": "commit",
+                    "state": "commit_ready",
+                    "time": 2
+                  },
+                  "expected_immediate_cost": "0",
+                  "next_state": "commit_ready",
+                  "observation": "neutral",
+                  "probability": "1"
+                }
+              ],
+              "kind": "act",
+              "state": "preparing_1",
+              "time": 1
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "preparing_1",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "20"
+    }
+  ],
+  "deterministic_points": [
+    {
+      "dri": "0",
+      "expected_commitment_time": "2",
+      "expected_cost": "0",
+      "policy": {
+        "action": "advance_shared_task",
+        "belief": [
+          "1/4",
+          "1/4",
+          "1/4",
+          "1/4"
+        ],
+        "branches": [
+          {
+            "child": {
+              "action": "complete_preparation",
+              "belief": [
+                "1/10",
+                "2/5",
+                "1/10",
+                "2/5"
+              ],
+              "branches": [
+                {
+                  "child": {
+                    "belief": [
+                      "1/10",
+                      "2/5",
+                      "1/10",
+                      "2/5"
+                    ],
+                    "decision": "take_role_a",
+                    "kind": "commit",
+                    "state": "commit_ready",
+                    "time": 2
+                  },
+                  "expected_immediate_cost": "0",
+                  "next_state": "commit_ready",
+                  "observation": "neutral",
+                  "probability": "1"
+                }
+              ],
+              "kind": "act",
+              "state": "preparing_1",
+              "time": 1
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "preparing_1",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "action": "complete_preparation",
+              "belief": [
+                "2/5",
+                "1/10",
+                "2/5",
+                "1/10"
+              ],
+              "branches": [
+                {
+                  "child": {
+                    "belief": [
+                      "2/5",
+                      "1/10",
+                      "2/5",
+                      "1/10"
+                    ],
+                    "decision": "take_role_a",
+                    "kind": "commit",
+                    "state": "commit_ready",
+                    "time": 2
+                  },
+                  "expected_immediate_cost": "0",
+                  "next_state": "commit_ready",
+                  "observation": "neutral",
+                  "probability": "1"
+                }
+              ],
+              "kind": "act",
+              "state": "preparing_1",
+              "time": 1
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "preparing_1",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "20"
+    }
+  ],
+  "game_id": "factorized-identity-memory--active_null--role_swap_subtype_swap_signal_swap",
+  "removed_points": [
+    {
+      "expected_cost": "5",
+      "policy_signature": "act:stage_shared_item[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+      "reason": "dominated by act:advance_shared_task[preparing_1/signal_one:act:complete_preparation[commit_ready/neutral:commit:take_role_a],preparing_1/signal_zero:act:complete_preparation[commit_ready/neutral:commit:take_role_a]]",
+      "residual_risk": "20"
+    }
+  ]
+}

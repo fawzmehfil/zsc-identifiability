@@ -1,0 +1,155 @@
+{
+  "action_class": "task",
+  "backend": "fraction",
+  "convexified_envelope": [
+    {
+      "dri": "0",
+      "expected_commitment_time": "0",
+      "expected_cost": "0",
+      "policy": {
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "decision": "take_role_a",
+        "kind": "commit",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "20"
+    },
+    {
+      "dri": "1",
+      "expected_commitment_time": "1",
+      "expected_cost": "5",
+      "policy": {
+        "action": "stage_shared_item",
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "branches": [
+          {
+            "child": {
+              "belief": [
+                "0",
+                "1"
+              ],
+              "decision": "take_role_b",
+              "kind": "commit",
+              "state": "preparing",
+              "time": 1
+            },
+            "expected_immediate_cost": "5",
+            "next_state": "preparing",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "belief": [
+                "1",
+                "0"
+              ],
+              "decision": "take_role_a",
+              "kind": "commit",
+              "state": "preparing",
+              "time": 1
+            },
+            "expected_immediate_cost": "5",
+            "next_state": "preparing",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "0"
+    }
+  ],
+  "deterministic_points": [
+    {
+      "dri": "0",
+      "expected_commitment_time": "0",
+      "expected_cost": "0",
+      "policy": {
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "decision": "take_role_a",
+        "kind": "commit",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "20"
+    },
+    {
+      "dri": "1",
+      "expected_commitment_time": "1",
+      "expected_cost": "5",
+      "policy": {
+        "action": "stage_shared_item",
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "branches": [
+          {
+            "child": {
+              "belief": [
+                "0",
+                "1"
+              ],
+              "decision": "take_role_b",
+              "kind": "commit",
+              "state": "preparing",
+              "time": 1
+            },
+            "expected_immediate_cost": "5",
+            "next_state": "preparing",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "belief": [
+                "1",
+                "0"
+              ],
+              "decision": "take_role_a",
+              "kind": "commit",
+              "state": "preparing",
+              "time": 1
+            },
+            "expected_immediate_cost": "5",
+            "next_state": "preparing",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "start",
+        "time": 0
+      },
+      "residual_risk": "0"
+    }
+  ],
+  "game_id": "binary-role-allocation--active_only--sweep_reliability_1",
+  "removed_points": [
+    {
+      "expected_cost": "0",
+      "policy_signature": "commit:take_role_b",
+      "reason": "duplicate coordinates; deterministic tie-break lost",
+      "residual_risk": "20"
+    },
+    {
+      "expected_cost": "0",
+      "policy_signature": "act:advance_shared_task[preparing/signal_one:commit:take_role_a,preparing/signal_zero:commit:take_role_a]",
+      "reason": "duplicate coordinates; deterministic tie-break lost",
+      "residual_risk": "20"
+    }
+  ]
+}

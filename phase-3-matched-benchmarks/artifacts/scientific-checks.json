@@ -1,0 +1,16 @@
+{
+  "active_separability_gap": true,
+  "all_matching_contracts_pass": true,
+  "all_sample_calibrations_pass": true,
+  "all_shortcut_audits_pass": true,
+  "binary_brdiv_nonzero_and_matched": true,
+  "boundary_intervention_tie_commits": true,
+  "broad_predictability_matched_with_dri_gap": true,
+  "expensive_intervention_rejected": true,
+  "fraction_float_agreement": true,
+  "identity_information_matched_with_decision_gap": true,
+  "late_evidence_excluded": true,
+  "no_identification_needed_is_null": true,
+  "suite_has_two_families": true,
+  "symmetry_invariance": true
+}

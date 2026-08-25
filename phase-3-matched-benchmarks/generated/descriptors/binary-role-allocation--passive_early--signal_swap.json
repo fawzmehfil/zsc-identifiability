@@ -1,0 +1,55 @@
+{
+  "analytical_expectations": {
+    "prior_risk": "20",
+    "response_signal_dri": "3/5"
+  },
+  "base_team_return": "100",
+  "best_response_event_features": {
+    "partner_alpha": [
+      "1",
+      "0"
+    ],
+    "partner_beta": [
+      "0",
+      "1"
+    ]
+  },
+  "cell_id": "passive_early",
+  "commitment_states": [
+    "start",
+    "preparing",
+    "commit_ready"
+  ],
+  "family_id": "binary-role-allocation",
+  "family_kind": "binary_role_allocation",
+  "game_hash": "7f48bf0bb18de733382d0b9f2ff78fa32736c95c28b8056d6b608921ee648280",
+  "intended_treatments": {
+    "active_signal_target": "response",
+    "passive_evidence_slot": "0",
+    "reliability": "4/5"
+  },
+  "matched_nuisances": {
+    "horizon": "2",
+    "intervention_cost": "5",
+    "mismatch_loss": "40"
+  },
+  "matching_group": "binary-timing",
+  "passive_reference_actions": [
+    "advance_shared_task",
+    "complete_preparation"
+  ],
+  "population_id": "binary-role-allocation--passive_early--signal_swap",
+  "response_signature_by_mode": {
+    "partner_alpha": "take_role_a",
+    "partner_beta": "take_role_b"
+  },
+  "runtime_visible_fields": [
+    "time",
+    "public_state",
+    "ego_action",
+    "partner_response"
+  ],
+  "schema_version": 1,
+  "suite_hash": "d165393f7dc86536d5a1be968f5f4048d8577136eba5c250f020d0d6b942804a",
+  "symmetry_id": "signal_swap"
+}

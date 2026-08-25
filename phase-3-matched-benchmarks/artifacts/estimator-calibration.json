@@ -1,0 +1,173 @@
+[
+  {
+    "bootstrap_resamples": 2000,
+    "checks": {
+      "known_mode_return_equivalent": true,
+      "lobp_equivalent": true,
+      "normalized_determinant_equivalent": true,
+      "normalized_divergence_time_equivalent": true,
+      "passive_dri_estimator_agrees": true
+    },
+    "confidence_level": 0.95,
+    "contract_id": "timely-evidence-under-matched-broad-metrics",
+    "episodes": 20000,
+    "episodes_per_mode": 10000,
+    "known_mode_return_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 1.0,
+      "sample_mean": 0.0
+    },
+    "lobp_action_score_difference_nats": {
+      "confidence_interval": [
+        -0.0,
+        -0.0
+      ],
+      "equivalence_margin": 0.01,
+      "exact_difference": 0.0,
+      "sample_mean": 0.0
+    },
+    "normalized_determinant_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 0.01,
+      "value": 0.0
+    },
+    "normalized_divergence_time_difference": {
+      "applicable": false,
+      "confidence_interval": [
+        NaN,
+        NaN
+      ],
+      "equivalence_margin": 0.02,
+      "value": NaN
+    },
+    "passed": true,
+    "passive_dri_calibration": {
+      "absolute_margin": 0.02,
+      "left_exact": 0.6,
+      "left_sampled": 0.6016,
+      "right_exact": 0.0,
+      "right_sampled": 0.008399999999999963
+    },
+    "seed": 95248
+  },
+  {
+    "bootstrap_resamples": 2000,
+    "checks": {
+      "known_mode_return_equivalent": true,
+      "lobp_equivalent": true,
+      "normalized_determinant_equivalent": true,
+      "normalized_divergence_time_equivalent": true,
+      "passive_dri_estimator_agrees": true
+    },
+    "confidence_level": 0.95,
+    "contract_id": "active-separability-with-identical-passive-histories",
+    "episodes": 20000,
+    "episodes_per_mode": 10000,
+    "known_mode_return_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 1.0,
+      "sample_mean": 0.0
+    },
+    "lobp_action_score_difference_nats": {
+      "confidence_interval": [
+        -0.0,
+        -0.0
+      ],
+      "equivalence_margin": 0.01,
+      "exact_difference": 0.0,
+      "sample_mean": 0.0
+    },
+    "normalized_determinant_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 0.01,
+      "value": 0.0
+    },
+    "normalized_divergence_time_difference": {
+      "applicable": false,
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 0.02,
+      "value": 0.0
+    },
+    "passed": true,
+    "passive_dri_calibration": {
+      "absolute_margin": 0.02,
+      "left_exact": 0.0,
+      "left_sampled": 0.00830000000000002,
+      "right_exact": 0.0,
+      "right_sampled": 0.00830000000000002
+    },
+    "seed": 42621
+  },
+  {
+    "bootstrap_resamples": 2000,
+    "checks": {
+      "known_mode_return_equivalent": true,
+      "lobp_equivalent": true,
+      "normalized_determinant_equivalent": true,
+      "normalized_divergence_time_equivalent": true,
+      "passive_dri_estimator_agrees": true
+    },
+    "confidence_level": 0.95,
+    "contract_id": "decision-relevance-with-matched-identity-information",
+    "episodes": 40000,
+    "episodes_per_mode": 10000,
+    "known_mode_return_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 1.0,
+      "sample_mean": 0.0
+    },
+    "lobp_action_score_difference_nats": {
+      "confidence_interval": [
+        -0.0,
+        -0.0
+      ],
+      "equivalence_margin": 0.01,
+      "exact_difference": 0.0,
+      "sample_mean": 0.0
+    },
+    "normalized_determinant_difference": {
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 0.01,
+      "value": 0.0
+    },
+    "normalized_divergence_time_difference": {
+      "applicable": true,
+      "confidence_interval": [
+        0.0,
+        0.0
+      ],
+      "equivalence_margin": 0.02,
+      "value": 0.0
+    },
+    "passed": true,
+    "passive_dri_calibration": {
+      "absolute_margin": 0.02,
+      "left_exact": 0.6,
+      "left_sampled": 0.60045,
+      "right_exact": 0.0,
+      "right_sampled": 0.0006999999999999674
+    },
+    "seed": 42256
+  }
+]

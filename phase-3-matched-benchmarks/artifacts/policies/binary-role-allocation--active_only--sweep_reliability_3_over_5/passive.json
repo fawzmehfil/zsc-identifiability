@@ -1,0 +1,10 @@
+{
+  "belief": [
+    "1/2",
+    "1/2"
+  ],
+  "decision": "take_role_a",
+  "kind": "commit",
+  "state": "start",
+  "time": 0
+}

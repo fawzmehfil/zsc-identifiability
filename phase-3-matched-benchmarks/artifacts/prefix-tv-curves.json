@@ -1,0 +1,3763 @@
+{
+  "binary-role-allocation--active_boundary--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_boundary--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_boundary--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_boundary--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_cost_0": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_cost_12": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_cost_15": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_cost_5": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_reliability_1": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_reliability_1_over_2": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_reliability_3_over_5": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_only--sweep_reliability_4_over_5": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_too_expensive--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_too_expensive--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_too_expensive--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--active_too_expensive--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--fundamentally_inseparable--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--fundamentally_inseparable--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--fundamentally_inseparable--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--fundamentally_inseparable--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--no_identification_needed--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--no_identification_needed--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--no_identification_needed--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--no_identification_needed--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--sweep_timing_0": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--sweep_timing_1": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 1,
+        "positive": 1
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--sweep_timing_never": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--passive_early--sweep_timing_post_commitment": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--passive_late--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 1,
+        "positive": 1
+      }
+    }
+  },
+  "binary-role-allocation--passive_late--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 1,
+        "positive": 1
+      }
+    }
+  },
+  "binary-role-allocation--passive_late--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 1,
+        "positive": 1
+      }
+    }
+  },
+  "binary-role-allocation--passive_late--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": 1,
+        "positive": 1
+      }
+    }
+  },
+  "binary-role-allocation--precommit_inseparable--identity": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--precommit_inseparable--role_signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--precommit_inseparable--role_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "binary-role-allocation--precommit_inseparable--signal_swap": {
+    "curves": {
+      "partner_alpha|partner_beta": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_alpha|partner_beta": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--identity": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--role_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_identity_only--subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--identity": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--role_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--role_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--role_swap_subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--role_swap_subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_null--subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--identity": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--role_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--role_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--role_swap_subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--role_swap_subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_null": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_response": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_subtype": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--identity": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--role_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--role_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--role_swap_subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--role_swap_subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_0": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_1": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_2": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_1": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "1",
+        "1"
+      ],
+      "partner_a0|partner_b1": [
+        "1",
+        "1"
+      ],
+      "partner_a1|partner_b0": [
+        "1",
+        "1"
+      ],
+      "partner_a1|partner_b1": [
+        "1",
+        "1"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": {
+      "partner_a0|partner_a1": null,
+      "partner_a0|partner_b0": 0,
+      "partner_a0|partner_b1": 0,
+      "partner_a1|partner_b0": 0,
+      "partner_a1|partner_b1": 0,
+      "partner_b0|partner_b1": null
+    },
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": 0,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": 0,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": 0,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": 0,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_1_over_2": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_a1|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_3_over_5": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "1/5",
+        "1/5"
+      ],
+      "partner_a0|partner_b1": [
+        "1/5",
+        "1/5"
+      ],
+      "partner_a1|partner_b0": [
+        "1/5",
+        "1/5"
+      ],
+      "partner_a1|partner_b1": [
+        "1/5",
+        "1/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_4_over_5": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_b0|partner_b1": [
+        "0",
+        "0"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--identity": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--role_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--subtype_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  },
+  "factorized-identity-memory--remember_subtype--subtype_swap_signal_swap": {
+    "curves": {
+      "partner_a0|partner_a1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a0|partner_b0": [
+        "0",
+        "0"
+      ],
+      "partner_a0|partner_b1": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b0": [
+        "3/5",
+        "3/5"
+      ],
+      "partner_a1|partner_b1": [
+        "0",
+        "0"
+      ],
+      "partner_b0|partner_b1": [
+        "3/5",
+        "3/5"
+      ]
+    },
+    "deterministic_edp": null,
+    "threshold_steps": {
+      "partner_a0|partner_a1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a0|partner_b0": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_a0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b0": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      },
+      "partner_a1|partner_b1": {
+        "nine_tenths": null,
+        "one_half": null,
+        "positive": null
+      },
+      "partner_b0|partner_b1": {
+        "nine_tenths": null,
+        "one_half": 0,
+        "positive": 0
+      }
+    }
+  }
+}

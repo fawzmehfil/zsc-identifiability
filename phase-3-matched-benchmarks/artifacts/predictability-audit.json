@@ -1,0 +1,754 @@
+{
+  "binary-role-allocation--active_boundary--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_boundary--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_boundary--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_boundary--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_cost_0": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_cost_12": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_cost_15": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_cost_5": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_reliability_1": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_reliability_1_over_2": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_reliability_3_over_5": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_only--sweep_reliability_4_over_5": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_too_expensive--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_too_expensive--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_too_expensive--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--active_too_expensive--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--fundamentally_inseparable--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--fundamentally_inseparable--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--fundamentally_inseparable--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--fundamentally_inseparable--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--no_identification_needed--identity": {
+    "full_entropy_nats": 1.8866967846580787,
+    "full_score": -0.6288989282193596,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.1935496040981333,
+    "precommit_score": -0.5967748020490666,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--no_identification_needed--role_signal_swap": {
+    "full_entropy_nats": 1.8866967846580787,
+    "full_score": -0.6288989282193596,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.1935496040981333,
+    "precommit_score": -0.5967748020490666,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--no_identification_needed--role_swap": {
+    "full_entropy_nats": 1.8866967846580787,
+    "full_score": -0.6288989282193596,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.1935496040981333,
+    "precommit_score": -0.5967748020490666,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--no_identification_needed--signal_swap": {
+    "full_entropy_nats": 1.8866967846580787,
+    "full_score": -0.6288989282193596,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.1935496040981333,
+    "precommit_score": -0.5967748020490666,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--sweep_timing_0": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--sweep_timing_1": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--sweep_timing_never": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_early--sweep_timing_post_commitment": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_late--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_late--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_late--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--passive_late--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--precommit_inseparable--identity": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--precommit_inseparable--role_signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--precommit_inseparable--role_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "binary-role-allocation--precommit_inseparable--signal_swap": {
+    "full_entropy_nats": 2.0794415416798357,
+    "full_score": -0.6931471805599453,
+    "full_targets": 3,
+    "precommit_entropy_nats": 1.3862943611198906,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--identity": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--role_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--role_swap_subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_identity_only--subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--identity": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--role_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--role_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--role_swap_subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--role_swap_subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_null--subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--identity": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--role_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--role_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--role_swap_subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--role_swap_subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_null": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_response": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--active_response--sweep_active_target_subtype": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--identity": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--role_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--role_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--role_swap_subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--role_swap_subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_0": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.6931471805599453,
+    "full_targets": 1,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.6931471805599453,
+    "precommit_targets": 1
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_1": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--sweep_memory_gap_2": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.23104906018664842,
+    "full_targets": 3,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.23104906018664842,
+    "precommit_targets": 3
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_1": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_1_over_2": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_3_over_5": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_response--sweep_reliability_4_over_5": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--identity": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--role_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--role_swap_subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--subtype_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  },
+  "factorized-identity-memory--remember_subtype--subtype_swap_signal_swap": {
+    "full_entropy_nats": 0.6931471805599453,
+    "full_score": -0.34657359027997264,
+    "full_targets": 2,
+    "precommit_entropy_nats": 0.6931471805599453,
+    "precommit_score": -0.34657359027997264,
+    "precommit_targets": 2
+  }
+}

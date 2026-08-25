@@ -1,0 +1,64 @@
+{
+  "analytical_expectations": {
+    "prior_risk": "20",
+    "response_signal_dri": "3/5",
+    "subtype_signal_dri": "0"
+  },
+  "base_team_return": "100",
+  "best_response_event_features": {
+    "partner_a0": [
+      "1",
+      "0"
+    ],
+    "partner_a1": [
+      "1",
+      "0"
+    ],
+    "partner_b0": [
+      "0",
+      "1"
+    ],
+    "partner_b1": [
+      "0",
+      "1"
+    ]
+  },
+  "cell_id": "active_null",
+  "commitment_states": [
+    "commit_ready"
+  ],
+  "family_id": "factorized-identity-memory",
+  "family_kind": "factorized_identity_memory",
+  "game_hash": "54aae5c2029d24205bb0eac435c21c00a19fa9df6e22360af2cd28ca95bf7068",
+  "intended_treatments": {
+    "active_signal_target": "null",
+    "passive_signal_target": "subtype",
+    "reliability": "4/5"
+  },
+  "matched_nuisances": {
+    "distractor_steps": "1",
+    "intervention_cost": "5",
+    "mismatch_loss": "40"
+  },
+  "matching_group": null,
+  "passive_reference_actions": [
+    "advance_shared_task",
+    "complete_preparation"
+  ],
+  "population_id": "factorized-identity-memory--active_null--signal_swap",
+  "response_signature_by_mode": {
+    "partner_a0": "take_role_a",
+    "partner_a1": "take_role_a",
+    "partner_b0": "take_role_b",
+    "partner_b1": "take_role_b"
+  },
+  "runtime_visible_fields": [
+    "time",
+    "public_state",
+    "ego_action",
+    "partner_response"
+  ],
+  "schema_version": 1,
+  "suite_hash": "d165393f7dc86536d5a1be968f5f4048d8577136eba5c250f020d0d6b942804a",
+  "symmetry_id": "signal_swap"
+}

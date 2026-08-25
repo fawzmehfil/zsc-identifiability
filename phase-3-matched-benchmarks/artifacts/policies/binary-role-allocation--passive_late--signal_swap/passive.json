@@ -1,0 +1,112 @@
+{
+  "action": "advance_shared_task",
+  "belief": [
+    "1/2",
+    "1/2"
+  ],
+  "branches": [
+    {
+      "child": {
+        "action": "complete_preparation",
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "branches": [
+          {
+            "child": {
+              "belief": [
+                "4/5",
+                "1/5"
+              ],
+              "decision": "take_role_a",
+              "kind": "commit",
+              "state": "commit_ready",
+              "time": 2
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "commit_ready",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "belief": [
+                "1/5",
+                "4/5"
+              ],
+              "decision": "take_role_b",
+              "kind": "commit",
+              "state": "commit_ready",
+              "time": 2
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "commit_ready",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "preparing",
+        "time": 1
+      },
+      "expected_immediate_cost": "0",
+      "next_state": "preparing",
+      "observation": "signal_one",
+      "probability": "1/2"
+    },
+    {
+      "child": {
+        "action": "complete_preparation",
+        "belief": [
+          "1/2",
+          "1/2"
+        ],
+        "branches": [
+          {
+            "child": {
+              "belief": [
+                "4/5",
+                "1/5"
+              ],
+              "decision": "take_role_a",
+              "kind": "commit",
+              "state": "commit_ready",
+              "time": 2
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "commit_ready",
+            "observation": "signal_one",
+            "probability": "1/2"
+          },
+          {
+            "child": {
+              "belief": [
+                "1/5",
+                "4/5"
+              ],
+              "decision": "take_role_b",
+              "kind": "commit",
+              "state": "commit_ready",
+              "time": 2
+            },
+            "expected_immediate_cost": "0",
+            "next_state": "commit_ready",
+            "observation": "signal_zero",
+            "probability": "1/2"
+          }
+        ],
+        "kind": "act",
+        "state": "preparing",
+        "time": 1
+      },
+      "expected_immediate_cost": "0",
+      "next_state": "preparing",
+      "observation": "signal_zero",
+      "probability": "1/2"
+    }
+  ],
+  "kind": "act",
+  "state": "start",
+  "time": 0
+}

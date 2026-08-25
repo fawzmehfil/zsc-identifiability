@@ -1,0 +1,312 @@
+[
+  {
+    "contract_id": "timely-evidence-under-matched-broad-metrics",
+    "divergence_profile_match": null,
+    "items": [
+      {
+        "difference": "0",
+        "left": "100",
+        "metric": "known_mode_return_mean",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "100",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "100",
+        "metric": "population_competence",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "100",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "40",
+        "metric": "rahman_brdiv_return",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "40",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "1",
+        "metric": "zsceval_br_div_raw",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "1",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "1000000000000/1004006004001",
+        "metric": "zsceval_br_div_code",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "1000000000000/1004006004001",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": 0.0,
+        "left": -0.6931471805599453,
+        "metric": "lobp_action_oracle_score_nats",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": -0.6931471805599453,
+        "role": "control",
+        "status": "pass",
+        "tolerance": "1/1000000000000"
+      },
+      {
+        "difference": "3/5",
+        "left": "3/5",
+        "metric": "passive_dri",
+        "reason": "difference matches the declared treatment effect",
+        "right": "0",
+        "role": "treatment",
+        "status": "pass",
+        "tolerance": "0"
+      }
+    ],
+    "left_population_id": "binary-role-allocation--passive_early--identity",
+    "passed": true,
+    "passive_history_match": null,
+    "right_population_id": "binary-role-allocation--active_only--identity",
+    "structural_checks": {
+      "actions_and_availability": true,
+      "base_team_return": true,
+      "best_response_event_features": true,
+      "commitment_states": true,
+      "decision_losses": true,
+      "horizon": true,
+      "intervention_costs": true,
+      "mode_priors": true,
+      "observation_budget": true,
+      "observations": true,
+      "passive_reference_policy": true,
+      "response_signatures": true,
+      "states": true
+    }
+  },
+  {
+    "contract_id": "active-separability-with-identical-passive-histories",
+    "divergence_profile_match": null,
+    "items": [
+      {
+        "difference": "0",
+        "left": "40",
+        "metric": "rahman_brdiv_return",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "40",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "1",
+        "metric": "zsceval_br_div_raw",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "1",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": 0.0,
+        "left": -0.6931471805599453,
+        "metric": "lobp_action_oracle_score_nats",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": -0.6931471805599453,
+        "role": "control",
+        "status": "pass",
+        "tolerance": "1/1000000000000"
+      },
+      {
+        "difference": "0",
+        "left": "0",
+        "metric": "passive_dri",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "0",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "3/5",
+        "left": "3/5",
+        "metric": "active_dri",
+        "reason": "difference matches the declared treatment effect",
+        "right": "0",
+        "role": "treatment",
+        "status": "pass",
+        "tolerance": "0"
+      }
+    ],
+    "left_population_id": "binary-role-allocation--active_only--identity",
+    "passed": true,
+    "passive_history_match": true,
+    "right_population_id": "binary-role-allocation--precommit_inseparable--identity",
+    "structural_checks": {
+      "actions_and_availability": true,
+      "base_team_return": true,
+      "best_response_event_features": true,
+      "commitment_states": true,
+      "decision_losses": true,
+      "horizon": true,
+      "intervention_costs": true,
+      "mode_priors": true,
+      "observation_budget": true,
+      "observations": true,
+      "passive_reference_policy": true,
+      "response_signatures": true,
+      "states": true
+    }
+  },
+  {
+    "contract_id": "decision-relevance-with-matched-identity-information",
+    "divergence_profile_match": true,
+    "items": [
+      {
+        "difference": "0",
+        "left": "100",
+        "metric": "known_mode_return_mean",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "100",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "80/3",
+        "metric": "rahman_brdiv_return",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "80/3",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "0",
+        "left": "0",
+        "metric": "zsceval_br_div_raw",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "0",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": 0.0,
+        "left": -0.34657359027997264,
+        "metric": "lobp_action_oracle_score_nats",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": -0.34657359027997264,
+        "role": "control",
+        "status": "pass",
+        "tolerance": "1/1000000000000"
+      },
+      {
+        "difference": 0.0,
+        "left": 0.2780719051126377,
+        "metric": "identity_mutual_information_bits",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": 0.2780719051126377,
+        "role": "control",
+        "status": "pass",
+        "tolerance": "1/1000000000000"
+      },
+      {
+        "difference": "3/5",
+        "left": "3/5",
+        "metric": "passive_dri",
+        "reason": "difference matches the declared treatment effect",
+        "right": "0",
+        "role": "treatment",
+        "status": "pass",
+        "tolerance": "0"
+      }
+    ],
+    "left_population_id": "factorized-identity-memory--remember_response--identity",
+    "passed": true,
+    "passive_history_match": null,
+    "right_population_id": "factorized-identity-memory--remember_subtype--identity",
+    "structural_checks": {
+      "actions_and_availability": true,
+      "base_team_return": true,
+      "best_response_event_features": true,
+      "commitment_states": true,
+      "decision_losses": true,
+      "horizon": true,
+      "intervention_costs": true,
+      "mode_priors": true,
+      "observation_budget": true,
+      "observations": true,
+      "passive_reference_policy": true,
+      "response_signatures": true,
+      "states": true
+    }
+  },
+  {
+    "contract_id": "active-decision-information-versus-active-identity-information",
+    "divergence_profile_match": null,
+    "items": [
+      {
+        "difference": 0.0,
+        "left": 0.2780719051126377,
+        "metric": "identity_mutual_information_bits",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": 0.2780719051126377,
+        "role": "control",
+        "status": "pass",
+        "tolerance": "1/1000000000000"
+      },
+      {
+        "difference": "0",
+        "left": "0",
+        "metric": "passive_dri",
+        "reason": "difference lies within the declared equality tolerance",
+        "right": "0",
+        "role": "control",
+        "status": "pass",
+        "tolerance": "0"
+      },
+      {
+        "difference": "3/5",
+        "left": "3/5",
+        "metric": "active_dri",
+        "reason": "difference matches the declared treatment effect",
+        "right": "0",
+        "role": "treatment",
+        "status": "pass",
+        "tolerance": "0"
+      }
+    ],
+    "left_population_id": "factorized-identity-memory--active_response--identity",
+    "passed": true,
+    "passive_history_match": true,
+    "right_population_id": "factorized-identity-memory--active_identity_only--identity",
+    "structural_checks": {
+      "actions_and_availability": true,
+      "base_team_return": true,
+      "best_response_event_features": true,
+      "commitment_states": true,
+      "decision_losses": true,
+      "horizon": true,
+      "intervention_costs": true,
+      "mode_priors": true,
+      "observation_budget": true,
+      "observations": true,
+      "passive_reference_policy": true,
+      "response_signatures": true,
+      "states": true
+    }
+  }
+]
