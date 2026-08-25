@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "suite_id": "phase-3-matched-identifiability-v1",
+  "base_team_return": "100",
+  "families": [
+    {
+      "kind": "binary_role_allocation",
+      "family_id": "binary-role-allocation",
+      "reliability": "4/5",
+      "intervention_cost": "5",
+      "mismatch_loss": "40",
+      "generate_symmetries": true,
+      "cells": [
+        {
+          "cell_id": "no_identification_needed",
+          "passive_evidence_slot": "0",
+          "active_signal_target": "response",
+          "shared_response": true
+        },
+        {
+          "cell_id": "passive_early",
+          "passive_evidence_slot": "0",
+          "active_signal_target": "response",
+          "matching_group": "binary-timing"
+        },
+        {
+          "cell_id": "passive_late",
+          "passive_evidence_slot": "1",
+          "active_signal_target": "response",
+          "matching_group": "binary-timing"
+        },
+        {
+          "cell_id": "active_only",
+          "passive_evidence_slot": "post_commitment",
+          "active_signal_target": "response",
+          "matching_group": "binary-active"
+        },
+        {
+          "cell_id": "active_too_expensive",
+          "passive_evidence_slot": "post_commitment",
+          "active_signal_target": "response",
+          "matching_group": "binary-cost",
+          "intervention_cost": "15"
+        },
+        {
+          "cell_id": "active_boundary",
+          "passive_evidence_slot": "post_commitment",
+          "active_signal_target": "response",
+          "matching_group": "binary-cost",
+          "intervention_cost": "12"
+        },
+        {
+          "cell_id": "precommit_inseparable",
+          "passive_evidence_slot": "post_commitment",
+          "active_signal_target": "null",
+          "matching_group": "binary-active"
+        },
+        {
+          "cell_id": "fundamentally_inseparable",
+          "passive_evidence_slot": "never",
+          "active_signal_target": "null"
+        }
+      ],
+      "sweeps": [
+        {
+          "sweep_id": "reliability",
+          "cell_id": "active_only",
+          "parameter": "reliability",
+          "values": ["1/2", "3/5", "4/5", "1"]
+        },
+        {
+          "sweep_id": "cost",
+          "cell_id": "active_only",
+          "parameter": "intervention_cost",
+          "values": ["0", "5", "12", "15"]
+        },
+        {
+          "sweep_id": "timing",
+          "cell_id": "passive_early",
+          "parameter": "evidence_slot",
+          "values": ["0", "1", "post_commitment", "never"]
+        }
+      ]
+    },
+    {
+      "kind": "factorized_identity_memory",
+      "family_id": "factorized-identity-memory",
+      "reliability": "4/5",
+      "intervention_cost": "5",
+      "mismatch_loss": "40",
+      "distractor_steps": 1,
+      "generate_symmetries": true,
+      "cells": [
+        {
+          "cell_id": "remember_response",
+          "passive_signal_target": "response",
+          "active_signal_target": "response",
+          "matching_group": "factorized-relevance"
+        },
+        {
+          "cell_id": "remember_subtype",
+          "passive_signal_target": "subtype",
+          "active_signal_target": "subtype",
+          "matching_group": "factorized-relevance"
+        },
+        {
+          "cell_id": "active_response",
+          "passive_signal_target": "subtype",
+          "active_signal_target": "response",
+          "matching_group": "factorized-active"
+        },
+        {
+          "cell_id": "active_identity_only",
+          "passive_signal_target": "subtype",
+          "active_signal_target": "subtype",
+          "matching_group": "factorized-active"
+        },
+        {
+          "cell_id": "active_null",
+          "passive_signal_target": "subtype",
+          "active_signal_target": "null"
+        }
+      ],
+      "sweeps": [
+        {
+          "sweep_id": "reliability",
+          "cell_id": "remember_response",
+          "parameter": "reliability",
+          "values": ["1/2", "3/5", "4/5", "1"]
+        },
+        {
+          "sweep_id": "memory_gap",
+          "cell_id": "remember_response",
+          "parameter": "distractor_steps",
+          "values": ["0", "1", "2"]
+        },
+        {
+          "sweep_id": "active_target",
+          "cell_id": "active_response",
+          "parameter": "active_signal_target",
+          "values": ["response", "subtype", "null"]
+        }
+      ]
+    }
+  ],
+  "matching_contracts": [
+    {
+      "contract_id": "timely-evidence-under-matched-broad-metrics",
+      "left_population_id": "binary-role-allocation--passive_early--identity",
+      "right_population_id": "binary-role-allocation--active_only--identity",
+      "metric_rules": [
+        {"metric": "known_mode_return_mean", "relation": "equal", "role": "control"},
+        {"metric": "population_competence", "relation": "equal", "role": "control"},
+        {"metric": "rahman_brdiv_return", "relation": "equal", "role": "control"},
+        {"metric": "zsceval_br_div_raw", "relation": "equal", "role": "control"},
+        {"metric": "zsceval_br_div_code", "relation": "equal", "role": "control"},
+        {"metric": "lobp_action_oracle_score_nats", "relation": "equal", "tolerance": "1/1000000000000", "role": "control"},
+        {"metric": "passive_dri", "relation": "difference", "expected_difference": "3/5", "role": "treatment"}
+      ],
+      "sampled": true
+    },
+    {
+      "contract_id": "active-separability-with-identical-passive-histories",
+      "left_population_id": "binary-role-allocation--active_only--identity",
+      "right_population_id": "binary-role-allocation--precommit_inseparable--identity",
+      "require_passive_history_match": true,
+      "metric_rules": [
+        {"metric": "rahman_brdiv_return", "relation": "equal", "role": "control"},
+        {"metric": "zsceval_br_div_raw", "relation": "equal", "role": "control"},
+        {"metric": "lobp_action_oracle_score_nats", "relation": "equal", "tolerance": "1/1000000000000", "role": "control"},
+        {"metric": "passive_dri", "relation": "equal", "role": "control"},
+        {"metric": "active_dri", "relation": "difference", "expected_difference": "3/5", "role": "treatment"}
+      ],
+      "sampled": true
+    },
+    {
+      "contract_id": "decision-relevance-with-matched-identity-information",
+      "left_population_id": "factorized-identity-memory--remember_response--identity",
+      "right_population_id": "factorized-identity-memory--remember_subtype--identity",
+      "require_divergence_profile_match": true,
+      "metric_rules": [
+        {"metric": "known_mode_return_mean", "relation": "equal", "role": "control"},
+        {"metric": "rahman_brdiv_return", "relation": "equal", "role": "control"},
+        {"metric": "zsceval_br_div_raw", "relation": "equal", "role": "control"},
+        {"metric": "lobp_action_oracle_score_nats", "relation": "equal", "tolerance": "1/1000000000000", "role": "control"},
+        {"metric": "identity_mutual_information_bits", "relation": "equal", "tolerance": "1/1000000000000", "role": "control"},
+        {"metric": "passive_dri", "relation": "difference", "expected_difference": "3/5", "role": "treatment"}
+      ],
+      "sampled": true
+    },
+    {
+      "contract_id": "active-decision-information-versus-active-identity-information",
+      "left_population_id": "factorized-identity-memory--active_response--identity",
+      "right_population_id": "factorized-identity-memory--active_identity_only--identity",
+      "require_passive_history_match": true,
+      "metric_rules": [
+        {"metric": "identity_mutual_information_bits", "relation": "equal", "tolerance": "1/1000000000000", "role": "control"},
+        {"metric": "passive_dri", "relation": "equal", "role": "control"},
+        {"metric": "active_dri", "relation": "difference", "expected_difference": "3/5", "role": "treatment"}
+      ]
+    }
+  ],
+  "sample_audit": {
+    "episodes_per_mode": 10000,
+    "bootstrap_resamples": 2000,
+    "confidence_level": 0.95,
+    "seed": 1729,
+    "return_margin": "1",
+    "lobp_margin_nats": 0.01,
+    "determinant_margin": 0.01,
+    "divergence_time_margin": 0.02,
+    "dri_margin": 0.02
+  }
+}
