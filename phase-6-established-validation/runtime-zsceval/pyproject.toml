@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stage6-zsceval-runtime"
+version = "0.1.0"
+requires-python = ">=3.9,<3.10"
+dependencies = ["stage6-legacy-runtime"]
+
+[tool.uv.sources]
+stage6-legacy-runtime = { path = "../runtime-legacy", editable = true }
+
+[tool.uv]
+package = false

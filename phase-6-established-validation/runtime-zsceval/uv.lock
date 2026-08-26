@@ -1,0 +1,19 @@
+version = 1
+revision = 3
+requires-python = "==3.9.*"
+
+[[package]]
+name = "stage6-legacy-runtime"
+version = "0.1.0"
+source = { editable = "../runtime-legacy" }
+
+[[package]]
+name = "stage6-zsceval-runtime"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "stage6-legacy-runtime" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "stage6-legacy-runtime", editable = "../runtime-legacy" }]

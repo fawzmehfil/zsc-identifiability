@@ -1,0 +1,37 @@
+{
+  "commitment_detection": {
+    "new_pot_ingredient_count": 1,
+    "old_pot_ingredient_count": 0,
+    "passed": true
+  },
+  "environment": {
+    "behavior_preference_wrapper_passed": true,
+    "layout_id": "demo_cook_simple",
+    "observation_shape": [
+      5,
+      5,
+      38
+    ],
+    "settings_match": true,
+    "sparse_task_reward_preserved": true
+  },
+  "overall_passed": true,
+  "runtime": {
+    "jax": "0.4.38",
+    "jaxlib": "0.4.38",
+    "python": "3.10.12",
+    "upstream_commit": "5ce1707cf31c1c115e6f6ba96db7bc9cc80a850e"
+  },
+  "schema_version": 1,
+  "trace_collection": {
+    "ego_visible_steps": 400,
+    "post_commitment_excluded": true,
+    "restore_passed": true
+  },
+  "training": {
+    "checkpoint_count": 2,
+    "completed_transitions": 100000,
+    "method_id": "rnn_ippo",
+    "passed": true
+  }
+}

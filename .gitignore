@@ -3,6 +3,7 @@
 .pytest_cache/
 .ruff_cache/
 .venv/
+.external/
 __pycache__/
 *.pyc
 .DS_Store
@@ -31,3 +32,16 @@ phase-4-learned-audit/development/
 phase-4-learned-audit/logs/
 phase-4-learned-audit/artifacts/checkpoints/
 phase-4-learned-audit/artifacts/raw-rollouts/
+
+# Stage 6 uses isolated upstream runtimes and file-based interchange.  Compact
+# manifests and final figures are tracked; policies, traces, logs, and runtime
+# environments are not.
+phase-6-established-validation/runtime-overcookedv2/.venv/
+phase-6-established-validation/runtime-legacy/.venv/
+phase-6-established-validation/runtime-zsceval/.venv/
+phase-6-established-validation/runtime-tomzsc/.venv/
+phase-6-established-validation/runs/
+phase-6-established-validation/checkpoints/
+phase-6-established-validation/raw-traces/
+phase-6-established-validation/policy-pools/
+phase-6-established-validation/logs/

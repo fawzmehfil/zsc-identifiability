@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stage6-tomzsc-runtime"
+version = "0.1.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "chex>=0.1.88,<0.2",
+  "flax>=0.10,<0.11",
+  "hydra-core>=1.3.2,<2",
+  "jax==0.4.38",
+  "jax-tqdm>=0.3,<0.4",
+  "omegaconf>=2.3,<3",
+  "optax>=0.2.4,<0.3",
+  "safetensors>=0.5,<0.6",
+  "scikit-learn>=1.6,<2",
+  "stage6-legacy-runtime",
+  "wandb>=0.19,<0.20",
+]
+
+[tool.uv.sources]
+stage6-legacy-runtime = { path = "../runtime-legacy", editable = true }
+
+[tool.uv]
+package = false

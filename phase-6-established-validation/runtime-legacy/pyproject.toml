@@ -1,0 +1,13 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stage6-legacy-runtime"
+version = "0.1.0"
+description = "File-protocol bridge shared by isolated ZSC-Eval and ToMZSC runtimes"
+requires-python = ">=3.9,<3.11"
+dependencies = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stage6_legacy_runtime"]
