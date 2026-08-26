@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fawzmehfil/zsc-identifiability/schemas/runtime-request-v1.json",
+  "title": "Stage 6 Isolated Runtime Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "suite_id",
+    "runtime",
+    "operation",
+    "upstreams",
+    "payload",
+    "request_hash"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "suite_id": {"type": "string", "minLength": 1},
+    "runtime": {
+      "enum": ["overcookedv2_py310", "zsceval_py39", "tomzsc_py310"]
+    },
+    "operation": {"type": "string", "minLength": 1},
+    "upstreams": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "commit", "path"],
+        "properties": {
+          "url": {"type": "string"},
+          "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "path": {"type": "string"}
+        }
+      }
+    },
+    "payload": {"type": "object"},
+    "request_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

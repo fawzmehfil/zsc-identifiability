@@ -25,6 +25,36 @@ from zsc_identifiability.benchmark_models import (
     load_benchmark_suite_file,
 )
 from zsc_identifiability.benchmark_runner import execute_benchmark_suite
+from zsc_identifiability.established_divergence import estimate_prefix_tv_curves
+from zsc_identifiability.established_dri import estimate_event_dri
+from zsc_identifiability.established_matching import select_matched_population_pair
+from zsc_identifiability.established_models import (
+    CandidatePartnerMetrics,
+    DRIEstimate,
+    EstablishedAuditManifest,
+    EstablishedPolicyEvaluation,
+    EstablishedTrainingManifest,
+    EstablishedValidationSuite,
+    MatchedPopulationAudit,
+    MatchingSpec,
+    PartnerPoolManifest,
+    ResponseLibrary,
+    UpstreamAudit,
+    load_established_suite_file,
+)
+from zsc_identifiability.established_partners import (
+    generate_partner_pool_manifest,
+    load_partner_checkpoints,
+)
+from zsc_identifiability.established_predictability import (
+    estimate_lobp_action_oracle_from_trace_files,
+)
+from zsc_identifiability.established_response import build_response_library_from_values
+from zsc_identifiability.established_runner import execute_established_audit
+from zsc_identifiability.established_runtime import validate_upstreams
+from zsc_identifiability.established_trace_estimation import (
+    estimate_dri_curve_from_trace_files,
+)
 from zsc_identifiability.frontier import compute as _compute_frontier
 from zsc_identifiability.learning_env import VectorConventionEnvironment
 from zsc_identifiability.learning_models import (
@@ -237,6 +267,153 @@ def run_learning_audit(
         runs_dir=runs_dir,
         rescue_runs_dir=rescue_runs_dir,
     )
+
+
+def load_established_suite(path: str | Path) -> EstablishedValidationSuite:
+    return load_established_suite_file(path)
+
+
+def validate_upstream_runtime(
+    spec: EstablishedValidationSuite,
+    project_root: str | Path,
+) -> UpstreamAudit:
+    return validate_upstreams(spec, project_root)
+
+
+def generate_partner_population(
+    spec: EstablishedValidationSuite,
+    split: str,
+    *,
+    checkpoint_index: str | Path | None = None,
+) -> PartnerPoolManifest:
+    if split not in {"train", "validation", "evaluation"}:
+        raise ValueError(f"invalid established partner split: {split!r}")
+    checkpoints = () if checkpoint_index is None else load_partner_checkpoints(checkpoint_index)
+    return generate_partner_pool_manifest(
+        spec,
+        split,  # type: ignore[arg-type]
+        checkpoints,
+    )
+
+
+def build_response_library(
+    values: dict[str, dict[str, float]],
+    *,
+    adequacy_margin: float = 0.02,
+    response_clusters: dict[str, int] | None = None,
+) -> ResponseLibrary:
+    return build_response_library_from_values(
+        values,
+        adequacy_margin=adequacy_margin,
+        response_clusters=response_clusters,
+    )
+
+
+def estimate_precommitment_dri(
+    calibration_histories: tuple[tuple[str, ...], ...],
+    calibration_labels: tuple[int, ...],
+    confirmatory_histories: tuple[tuple[str, ...], ...],
+    prior: tuple[float, ...],
+    loss_matrix: tuple[tuple[float, ...], ...],
+    *,
+    response_signatures: tuple[str, ...] | None = None,
+    confirmatory_labels: tuple[int, ...] | None = None,
+) -> DRIEstimate:
+    return estimate_event_dri(
+        calibration_histories,
+        calibration_labels,
+        confirmatory_histories,
+        prior,
+        loss_matrix,
+        response_signatures=response_signatures,
+        confirmatory_labels=confirmatory_labels,
+    )
+
+
+def collect_commitment_traces(
+    calibration_trace: str | Path,
+    validation_trace: str | Path,
+    confirmatory_trace: str | Path,
+    response_library: ResponseLibrary,
+    suite: EstablishedValidationSuite,
+    *,
+    estimator: str = "event",
+) -> DRIEstimate:
+    """Analyze collected trace files without importing the JAX runtime."""
+
+    return estimate_dri_curve_from_trace_files(
+        calibration_trace,
+        validation_trace,
+        confirmatory_trace,
+        response_library,
+        suite.dri_estimator,
+        estimator=estimator,
+    )
+
+
+def select_matched_populations(
+    metrics: tuple[CandidatePartnerMetrics, ...],
+    contract: MatchingSpec,
+    *,
+    contrast: str = "passive_dri",
+) -> MatchedPopulationAudit:
+    return select_matched_population_pair(metrics, contract, contrast)
+
+
+def estimate_established_predictability(
+    calibration_trace: str | Path,
+    confirmatory_trace: str | Path,
+) -> dict[str, float | int | str]:
+    return estimate_lobp_action_oracle_from_trace_files(
+        calibration_trace,
+        confirmatory_trace,
+    )
+
+
+def estimate_established_divergence(
+    trace_path: str | Path,
+    *,
+    response_signatures: dict[str, str | int] | None = None,
+) -> dict[str, object]:
+    return estimate_prefix_tv_curves(
+        trace_path,
+        response_signatures=response_signatures,
+    )
+
+
+def train_established_method(
+    manifest_path: str | Path,
+) -> EstablishedTrainingManifest:
+    """Load a completed isolated-runtime training manifest.
+
+    Training itself is dispatched through the `established train-method` CLI so
+    the main Python 3.12 process never imports JAX or upstream packages.
+    """
+
+    import json
+
+    return EstablishedTrainingManifest.model_validate(
+        json.loads(Path(manifest_path).read_text(encoding="utf-8"))
+    )
+
+
+def evaluate_established_policy(
+    evaluation_path: str | Path,
+) -> EstablishedPolicyEvaluation:
+    import json
+
+    return EstablishedPolicyEvaluation.model_validate(
+        json.loads(Path(evaluation_path).read_text(encoding="utf-8"))
+    )
+
+
+def run_established_audit(
+    suite_config: str | Path,
+    output_dir: str | Path,
+    *,
+    state_dir: str | Path | None = None,
+) -> EstablishedAuditManifest:
+    return execute_established_audit(suite_config, output_dir, state_dir=state_dir)
 
 
 def audit_learning_smoke_matrix(

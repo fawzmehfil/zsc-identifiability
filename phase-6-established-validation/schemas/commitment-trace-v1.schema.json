@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fawzmehfil/zsc-identifiability/schemas/commitment-trace-v1.json",
+  "title": "Stage 6 Commitment Trace Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "episode_id",
+    "partner_id",
+    "reward_vector_id",
+    "layout_id",
+    "environment_key",
+    "work_unit",
+    "step",
+    "ego_action"
+  ],
+  "properties": {
+    "episode_id": {"type": "string", "minLength": 1},
+    "partner_id": {"type": "string", "minLength": 1},
+    "reward_vector_id": {"type": "string", "minLength": 1},
+    "layout_id": {"type": "string", "minLength": 1},
+    "environment_key": {"type": "string", "minLength": 1},
+    "work_unit": {"type": "integer", "minimum": 0},
+    "step": {"type": "integer", "minimum": 0},
+    "ego_observation": {
+      "type": "array",
+      "items": {"type": "number"},
+      "default": []
+    },
+    "ego_action": {"type": ["integer", "string"]},
+    "visible_partner_action": {"type": ["integer", "string", "null"]},
+    "reward": {"type": "number", "default": 0},
+    "events": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "actor"],
+        "properties": {
+          "name": {"type": "string"},
+          "actor": {"enum": ["ego", "partner", "environment"]},
+          "success": {"type": "boolean", "default": true},
+          "metadata": {"type": "object", "default": {}}
+        }
+      }
+    },
+    "high_level_events": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    }
+  }
+}

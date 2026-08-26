@@ -23,6 +23,7 @@ from zsc_identifiability.benchmark_runner import (
     execute_benchmark_suite,
     materialize_benchmark_set,
 )
+from zsc_identifiability.established_cli import add_established_parser, dispatch_established
 from zsc_identifiability.runner import _theory_checks
 
 
@@ -156,6 +157,7 @@ def _parser() -> argparse.ArgumentParser:
         item.add_argument("--output", required=True)
         item.add_argument("--runs-dir")
         item.add_argument("--rescue-runs-dir")
+    add_established_parser(commands)
     return parser
 
 
@@ -403,6 +405,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                     return 4
                 if learning_manifest.scientific_verdict in {"redesign", "stop"}:
                     return 3
+        elif args.command == "established":
+            return dispatch_established(args)
     except (ValidationError, ValueError, RuntimeError, AssertionError) as exc:
         print(json.dumps({"error": str(exc)}, indent=2))
         return 2

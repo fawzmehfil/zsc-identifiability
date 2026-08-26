@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fawzmehfil/zsc-identifiability/schemas/established-suite-v1.json",
+  "title": "Stage 6 Established Validation Suite",
+  "description": "Top-level interchange schema. The immutable Pydantic model enforces all nested scientific constraints.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "suite_id",
+    "upstreams",
+    "runtimes",
+    "layouts",
+    "commitment",
+    "dri_estimator",
+    "diagnostics",
+    "partner_generation",
+    "response_library",
+    "matching",
+    "training",
+    "statistics",
+    "secondary_zsceval"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "suite_id": {"type": "string", "minLength": 1},
+    "state_directory": {"type": "string"},
+    "upstreams": {"type": "array", "minItems": 3, "maxItems": 3},
+    "runtimes": {"type": "array", "minItems": 3},
+    "layouts": {"type": "array", "minItems": 4, "maxItems": 4},
+    "commitment": {"type": "object"},
+    "dri_estimator": {"type": "object"},
+    "diagnostics": {"type": "array", "minItems": 5, "maxItems": 5},
+    "partner_generation": {"type": "object"},
+    "response_library": {"type": "object"},
+    "matching": {"type": "object"},
+    "training": {"type": "object"},
+    "statistics": {"type": "object"},
+    "secondary_zsceval": {"type": "object"}
+  }
+}

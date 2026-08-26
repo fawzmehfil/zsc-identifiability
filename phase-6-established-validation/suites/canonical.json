@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "suite_id": "stage6-overcookedv2-established-v1",
+  "state_directory": "phase-6-established-validation/runs",
+  "upstreams": [
+    {
+      "repository_id": "overcookedv2",
+      "url": "https://github.com/overcookedv2/experiments.git",
+      "commit": "5ce1707cf31c1c115e6f6ba96db7bc9cc80a850e",
+      "runtime": "overcookedv2_py310",
+      "local_directory": ".external/overcookedv2-experiments"
+    },
+    {
+      "repository_id": "zsceval",
+      "url": "https://github.com/SJTU-MARL/ZSC-Eval.git",
+      "commit": "f940869afc42b688332a385892d8dbb57a190f95",
+      "runtime": "zsceval_py39",
+      "local_directory": ".external/zsc-eval"
+    },
+    {
+      "repository_id": "tomzsc",
+      "url": "https://github.com/andrewni2002/ToMZSC.git",
+      "commit": "a4b41d53fc77e452cdfca8edc95fd153d51d13cd",
+      "runtime": "tomzsc_py310",
+      "local_directory": ".external/tomzsc"
+    }
+  ],
+  "runtimes": [
+    {
+      "runtime_id": "overcookedv2_py310",
+      "python_version": "3.10",
+      "project_directory": "phase-6-established-validation/runtime-overcookedv2"
+    },
+    {
+      "runtime_id": "zsceval_py39",
+      "python_version": "3.9",
+      "project_directory": "phase-6-established-validation/runtime-zsceval"
+    },
+    {
+      "runtime_id": "tomzsc_py310",
+      "python_version": "3.10",
+      "project_directory": "phase-6-established-validation/runtime-tomzsc"
+    }
+  ],
+  "layouts": [
+    {
+      "layout_id": "demo_cook_simple",
+      "role": "primary"
+    },
+    {
+      "layout_id": "test_time_simple",
+      "role": "timing"
+    },
+    {
+      "layout_id": "grounded_coord_simple",
+      "role": "environment_information_control"
+    },
+    {
+      "layout_id": "demo_cook_wide",
+      "role": "geometry_replication",
+      "launch_condition": "after_primary_feasibility"
+    }
+  ],
+  "commitment": {
+    "event_name": "successful_pot_ingredient_placement",
+    "work_unit_reset_events": [
+      "episode_reset",
+      "successful_delivery"
+    ],
+    "no_commitment_treatment": "censored_prior_risk",
+    "primary_work_unit": 0
+  },
+  "dri_estimator": {
+    "prefix_steps": [0, 8, 16, 32],
+    "estimators": ["gru", "event"],
+    "temperature_calibration": true,
+    "folds": 5,
+    "random_seed": 6173,
+    "synthetic_absolute_tolerance": 0.03,
+    "treatment_agreement_tolerance": 0.05,
+    "label_shuffle_repeats": 100,
+    "gru_hidden_size": 64,
+    "gru_learning_rate": 0.001,
+    "gru_max_epochs": 100,
+    "gru_patience": 12
+  },
+  "diagnostics": [
+    {
+      "option_id": "ordinary_progress",
+      "partner_diagnostic_candidate": false
+    },
+    {
+      "option_id": "stage_candidate_ingredient"
+    },
+    {
+      "option_id": "temporary_role_takeover"
+    },
+    {
+      "option_id": "corridor_yield"
+    },
+    {
+      "option_id": "recipe_button_control",
+      "partner_diagnostic_candidate": false,
+      "environment_information_control": true
+    }
+  ],
+  "partner_generation": {
+    "behavior_events": [
+      "ingredient_pickup_0",
+      "ingredient_pickup_1",
+      "ingredient_pot_placement_0",
+      "ingredient_pot_placement_1",
+      "counter_stage",
+      "counter_retrieval",
+      "pot_fill",
+      "cook_start",
+      "plate_pickup",
+      "delivery",
+      "recipe_button",
+      "task_region_time",
+      "corridor_entry",
+      "yield",
+      "idle",
+      "movement",
+      "successful_task_reward"
+    ],
+    "preference_values": [-1.0, 1.0],
+    "maximum_nonzero_behavior_preferences": 3,
+    "screen_transitions": 5000000,
+    "finalist_transitions": 30000000,
+    "seeds_per_reward_vector": 2,
+    "validation_rollouts": 100,
+    "minimum_correct_delivery_rate": 0.8,
+    "training_partner_quota": 24,
+    "validation_partner_quota": 8,
+    "evaluation_candidate_quota": 32,
+    "evaluation_candidate_cap": 64,
+    "expansion_block_size": 8,
+    "split_hash_salt": "zsc-identifiability-stage6-v1",
+    "split_proportions": [3, 1, 4]
+  },
+  "response_library": {
+    "adequacy_margin": 0.02,
+    "maximum_response_clusters": 6,
+    "include_cotrained_counterparts": true,
+    "include_cluster_best_responses": true,
+    "include_fcp": true,
+    "include_other_play": true
+  },
+  "matching": {
+    "subset_size": 8,
+    "competence_margin": 0.02,
+    "fixed_response_margin": 0.02,
+    "br_prox_margin": 0.02,
+    "br_div_logdet_margin": 0.05,
+    "predictability_margin_nats": 0.02,
+    "trajectory_divergence_margin": 0.05,
+    "discovery_commitment_rate_margin": 0.05,
+    "active_contrast_passive_dri_margin": 0.02,
+    "minimum_dri_separation": 0.15,
+    "require_equal_cluster_counts": true,
+    "require_commitment_rate_nonsignificant": true,
+    "contrasts": ["passive_dri", "active_dri"]
+  },
+  "training": {
+    "smoke_transitions": 100000,
+    "development_seeds": [5101, 5102, 5103],
+    "confirmatory_seeds": [6001, 6002, 6003, 6004, 6005, 6006, 6007, 6008, 6009, 6010],
+    "learning_rates": [0.000125, 0.00025, 0.0005],
+    "entropy_coefficients": [0.01, 0.02],
+    "methods": [
+      {
+        "method_id": "rnn_ippo",
+        "confirmatory_transitions": 30000000
+      },
+      {
+        "method_id": "fcp",
+        "confirmatory_transitions": 30000000
+      },
+      {
+        "method_id": "other_play",
+        "confirmatory_transitions": 50000000
+      },
+      {
+        "method_id": "tbs_style",
+        "confirmatory_transitions": 40000000
+      },
+      {
+        "method_id": "pace_aux",
+        "confirmatory_transitions": 30000000
+      },
+      {
+        "method_id": "pace_style",
+        "confirmatory_transitions": 30000000
+      },
+      {
+        "method_id": "csp_style_reconnaissance",
+        "confirmatory_transitions": 30000000,
+        "reconnaissance_episodes": 1,
+        "included_in_central_ranking": false
+      }
+    ]
+  },
+  "statistics": {
+    "episodes_per_method_partner_seed_layout": 500,
+    "bootstrap_resamples": 10000,
+    "confidence_level": 0.95,
+    "correction": "holm",
+    "held_out_unit": "reward_vector"
+  },
+  "secondary_zsceval": {
+    "enabled": true,
+    "minimum_partners": 8,
+    "minimum_algorithms": 4,
+    "unavailable_is_blocking": false
+  }
+}
