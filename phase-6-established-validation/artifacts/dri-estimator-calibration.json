@@ -1,0 +1,13 @@
+{
+  "event_estimator_identity_only_dri": 0.0,
+  "event_estimator_informative_dri": 0.6,
+  "event_estimator_label_shuffle_dri": 0.0,
+  "identity_only_dri": 0.0,
+  "identity_only_identity_mi_nats": 0.6931471805599453,
+  "identity_only_response_mi_nats": 0.0,
+  "informative_dri": 0.6,
+  "informative_residual_risk": 8.0,
+  "late_eventual_dri": 1.0,
+  "late_precommitment_dri": 0.0,
+  "passed": true
+}
