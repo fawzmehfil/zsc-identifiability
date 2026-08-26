@@ -4,8 +4,9 @@ Stage 4 asks whether compact learned agents acquire and use timely partner
 evidence in the exact matched populations produced by Phase 3. It is the first
 training stage. The benchmark, policy interface, recurrent PPO trainer, exact
 neural-policy evaluator, leakage checks, statistical analysis, and reporting
-pipeline are implemented. The confirmatory training matrix has not been run, so
-no scientific verdict is claimed yet.
+pipeline are implemented. The confirmatory matrix is complete. Existing methods
+reach the active oracle in the canonical games, so the scientific verdict is
+`continue_without_repair`.
 
 The central comparison holds task structure, partner competence, best-response
 diversity, and broad predictability fixed while moving decision-useful evidence
@@ -79,5 +80,7 @@ same step separately.
 
 ## Status
 
-Implementation verdict: **pass**. Scientific verdict: **pending confirmatory
-training**. See `stage-4-exit-memo.md` for the exact boundary.
+Implementation verdict: **pass**. Scientific verdict:
+**`continue_without_repair`**. The preregistered analysis finds zero strict ranking
+reversals, and 14 of 16 symmetry-equivalence comparisons pass. See
+`stage-4-exit-memo.md` for the findings, qualification, and Phase 6 handoff.

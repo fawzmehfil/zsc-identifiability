@@ -7,6 +7,12 @@ metrics. Phase 3 supplies matched populations that vary timely identifiability
 while holding standard controls fixed. Stage 4 adds a controlled learned-agent
 audit over those exact populations.
 
+Stage 4's confirmatory audit is complete. Existing methods reach the exact active
+oracle in the canonical games, the preregistered strict ranking-reversal count is
+zero, and the current scientific verdict is `continue_without_repair`. The next
+research step is established-environment validation rather than a new repair
+algorithm.
+
 The exact package uses finite, static hidden partner modes and belief-state dynamic
 programming. Neural baselines are isolated behind the optional `learning` extra;
 the exact Phase 2/3 package remains usable without PyTorch.

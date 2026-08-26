@@ -27,6 +27,7 @@ phase-2-exact-model/artifacts/*
 phase-4-learned-audit/runs/
 phase-4-learned-audit/smoke-runs/
 phase-4-learned-audit/rescue-runs/
-phase-4-learned-audit/development/runs/
+phase-4-learned-audit/development/
+phase-4-learned-audit/logs/
 phase-4-learned-audit/artifacts/checkpoints/
 phase-4-learned-audit/artifacts/raw-rollouts/
