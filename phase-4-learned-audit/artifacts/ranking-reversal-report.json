@@ -1,0 +1,2300 @@
+{
+  "kendall_rank_correlations": {
+    "active_only__vs__precommit_inseparable": 0.0,
+    "active_response__vs__active_identity_only": 0.0,
+    "passive_early__vs__active_only": 0.0,
+    "remember_response__vs__remember_subtype": 0.0
+  },
+  "mean_return_by_cell_and_method": {
+    "active_boundary": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0
+    },
+    "active_identity_only": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0,
+      "talents_style": 80.0,
+      "tom_selector_style": 80.0
+    },
+    "active_null": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0
+    },
+    "active_only": {
+      "gru_ppo_active": 82.1,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 81.4,
+      "odits_style": 87.0,
+      "pace_aux": 87.0,
+      "pace_style": 80.0,
+      "talents_style": 87.0,
+      "tom_selector_style": 80.0
+    },
+    "active_response": {
+      "gru_ppo_active": 84.9,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 87.0,
+      "pace_aux": 87.0,
+      "pace_style": 87.0,
+      "talents_style": 87.0,
+      "tom_selector_style": 80.0
+    },
+    "active_too_expensive": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0
+    },
+    "fundamentally_inseparable": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0
+    },
+    "no_identification_needed": {
+      "gru_ppo_active": 100.0,
+      "gru_ppo_passive": 100.0,
+      "mlp_ppo": 100.0,
+      "odits_style": 100.0,
+      "pace_aux": 100.0,
+      "pace_style": 100.0
+    },
+    "passive_early": {
+      "gru_ppo_active": 92.0,
+      "gru_ppo_passive": 92.0,
+      "mlp_ppo": 92.0,
+      "odits_style": 92.0,
+      "pace_aux": 92.0,
+      "pace_style": 92.0,
+      "talents_style": 92.0,
+      "tom_selector_style": 92.0
+    },
+    "passive_late": {
+      "gru_ppo_active": 92.0,
+      "gru_ppo_passive": 92.0,
+      "mlp_ppo": 92.0,
+      "odits_style": 92.0,
+      "pace_aux": 92.0,
+      "pace_style": 92.0
+    },
+    "precommit_inseparable": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0,
+      "talents_style": 80.0,
+      "tom_selector_style": 80.0
+    },
+    "remember_response": {
+      "gru_ppo_active": 92.0,
+      "gru_ppo_passive": 92.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 92.0,
+      "pace_aux": 92.0,
+      "pace_style": 92.0,
+      "talents_style": 92.0,
+      "tom_selector_style": 92.0
+    },
+    "remember_subtype": {
+      "gru_ppo_active": 80.0,
+      "gru_ppo_passive": 80.0,
+      "mlp_ppo": 80.0,
+      "odits_style": 80.0,
+      "pace_aux": 80.0,
+      "pace_style": 80.0,
+      "talents_style": 80.0,
+      "tom_selector_style": 80.0
+    }
+  },
+  "rank_matrix": {
+    "active_boundary": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "active_identity_only": {
+      "gru_ppo_active": 4.5,
+      "gru_ppo_passive": 4.5,
+      "mlp_ppo": 4.5,
+      "odits_style": 4.5,
+      "pace_aux": 4.5,
+      "pace_style": 4.5,
+      "talents_style": 4.5,
+      "tom_selector_style": 4.5
+    },
+    "active_null": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "active_only": {
+      "gru_ppo_active": 4.0,
+      "gru_ppo_passive": 7.0,
+      "mlp_ppo": 5.0,
+      "odits_style": 2.0,
+      "pace_aux": 2.0,
+      "pace_style": 7.0,
+      "talents_style": 2.0,
+      "tom_selector_style": 7.0
+    },
+    "active_response": {
+      "gru_ppo_active": 5.0,
+      "gru_ppo_passive": 7.0,
+      "mlp_ppo": 7.0,
+      "odits_style": 2.5,
+      "pace_aux": 2.5,
+      "pace_style": 2.5,
+      "talents_style": 2.5,
+      "tom_selector_style": 7.0
+    },
+    "active_too_expensive": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "fundamentally_inseparable": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "no_identification_needed": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "passive_early": {
+      "gru_ppo_active": 4.5,
+      "gru_ppo_passive": 4.5,
+      "mlp_ppo": 4.5,
+      "odits_style": 4.5,
+      "pace_aux": 4.5,
+      "pace_style": 4.5,
+      "talents_style": 4.5,
+      "tom_selector_style": 4.5
+    },
+    "passive_late": {
+      "gru_ppo_active": 3.5,
+      "gru_ppo_passive": 3.5,
+      "mlp_ppo": 3.5,
+      "odits_style": 3.5,
+      "pace_aux": 3.5,
+      "pace_style": 3.5
+    },
+    "precommit_inseparable": {
+      "gru_ppo_active": 4.5,
+      "gru_ppo_passive": 4.5,
+      "mlp_ppo": 4.5,
+      "odits_style": 4.5,
+      "pace_aux": 4.5,
+      "pace_style": 4.5,
+      "talents_style": 4.5,
+      "tom_selector_style": 4.5
+    },
+    "remember_response": {
+      "gru_ppo_active": 4.0,
+      "gru_ppo_passive": 4.0,
+      "mlp_ppo": 8.0,
+      "odits_style": 4.0,
+      "pace_aux": 4.0,
+      "pace_style": 4.0,
+      "talents_style": 4.0,
+      "tom_selector_style": 4.0
+    },
+    "remember_subtype": {
+      "gru_ppo_active": 4.5,
+      "gru_ppo_passive": 4.5,
+      "mlp_ppo": 4.5,
+      "odits_style": 4.5,
+      "pace_aux": 4.5,
+      "pace_style": 4.5,
+      "talents_style": 4.5,
+      "tom_selector_style": 4.5
+    }
+  },
+  "rank_tie_policy": "average rank for exactly equal mean returns",
+  "ranking_reversals": {
+    "active_only__vs__precommit_inseparable": {
+      "comparisons": [
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "pair": "gru_ppo_active__vs__gru_ppo_passive",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.7,
+            "lower": -1.4,
+            "upper": 2.8
+          },
+          "pair": "gru_ppo_active__vs__mlp_ppo",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.6555344465553445,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "pair": "gru_ppo_active__vs__odits_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.6555344465553445,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "pair": "gru_ppo_active__vs__pace_aux",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "pair": "gru_ppo_active__vs__pace_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.6555344465553445,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "pair": "gru_ppo_active__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "pair": "gru_ppo_active__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -1.4,
+            "lower": -3.5,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__mlp_ppo",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__odits_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_aux",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.3524647535246475,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "pair": "mlp_ppo__vs__odits_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.3524647535246475,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "pair": "mlp_ppo__vs__pace_aux",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 1.4,
+            "lower": 0.0,
+            "upper": 3.5
+          },
+          "pair": "mlp_ppo__vs__pace_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.3524647535246475,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "pair": "mlp_ppo__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 1.4,
+            "lower": 0.0,
+            "upper": 3.5
+          },
+          "pair": "mlp_ppo__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_aux",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "odits_style__vs__pace_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "odits_style__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "pace_aux__vs__pace_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "pace_aux__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "pace_style__vs__talents_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_only",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "talents_style__vs__tom_selector_style",
+          "right_cell": "precommit_inseparable",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        }
+      ],
+      "left_cell": "active_only",
+      "metric": "team_return",
+      "right_cell": "precommit_inseparable",
+      "strict_reversal_count": 0
+    },
+    "active_response__vs__active_identity_only": {
+      "comparisons": [
+        {
+          "holm_p_left": 0.6995300469953005,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 4.9,
+            "lower": 2.8,
+            "upper": 7.0
+          },
+          "pair": "gru_ppo_active__vs__gru_ppo_passive",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.6995300469953005,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 4.9,
+            "lower": 2.8,
+            "upper": 7.0
+          },
+          "pair": "gru_ppo_active__vs__mlp_ppo",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -2.1,
+            "lower": -4.2,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__odits_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -2.1,
+            "lower": -4.2,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_aux",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -2.1,
+            "lower": -4.2,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -2.1,
+            "lower": -4.2,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.6995300469953005,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 4.9,
+            "lower": 2.8,
+            "upper": 7.0
+          },
+          "pair": "gru_ppo_active__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__mlp_ppo",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__odits_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_aux",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "gru_ppo_passive__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "mlp_ppo__vs__odits_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "mlp_ppo__vs__pace_aux",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "mlp_ppo__vs__pace_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "pair": "mlp_ppo__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_aux",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "odits_style__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__pace_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "pace_aux__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__talents_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "pace_style__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "active_response",
+          "left_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "pair": "talents_style__vs__tom_selector_style",
+          "right_cell": "active_identity_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        }
+      ],
+      "left_cell": "active_response",
+      "metric": "team_return",
+      "right_cell": "active_identity_only",
+      "strict_reversal_count": 0
+    },
+    "passive_early__vs__active_only": {
+      "comparisons": [
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__gru_ppo_passive",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__mlp_ppo",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.7,
+            "lower": -1.4,
+            "upper": 2.8
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.7083291670832916,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__odits_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.7083291670832916,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_aux",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.7083291670832916,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -4.9,
+            "lower": -7.0,
+            "upper": -2.8
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 2.1,
+            "lower": 0.0,
+            "upper": 4.2
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__mlp_ppo",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -1.4,
+            "lower": -3.5,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__odits_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_aux",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.3994600539946005,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__odits_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.3994600539946005,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__pace_aux",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__pace_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 1.4,
+            "lower": 0.0,
+            "upper": 3.5
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.3994600539946005,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -5.6,
+            "lower": -7.0,
+            "upper": -3.5
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "mlp_ppo__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 1.4,
+            "lower": 0.0,
+            "upper": 3.5
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_aux",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__pace_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__talents_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": -7.0,
+            "lower": -7.0,
+            "upper": -7.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 0.08959104089591041,
+          "left_cell": "passive_early",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "talents_style__vs__tom_selector_style",
+          "right_cell": "active_only",
+          "right_difference": {
+            "estimate": 7.0,
+            "lower": 7.0,
+            "upper": 7.0
+          },
+          "strict_reversal": false
+        }
+      ],
+      "left_cell": "passive_early",
+      "metric": "team_return",
+      "right_cell": "active_only",
+      "strict_reversal_count": 0
+    },
+    "remember_response__vs__remember_subtype": {
+      "comparisons": [
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__gru_ppo_passive",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 12.0,
+            "lower": 12.0,
+            "upper": 12.0
+          },
+          "pair": "gru_ppo_active__vs__mlp_ppo",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__odits_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_aux",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__pace_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_active__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 12.0,
+            "lower": 12.0,
+            "upper": 12.0
+          },
+          "pair": "gru_ppo_passive__vs__mlp_ppo",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__odits_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_aux",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__pace_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "gru_ppo_passive__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": -12.0,
+            "lower": -12.0,
+            "upper": -12.0
+          },
+          "pair": "mlp_ppo__vs__odits_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": -12.0,
+            "lower": -12.0,
+            "upper": -12.0
+          },
+          "pair": "mlp_ppo__vs__pace_aux",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": -12.0,
+            "lower": -12.0,
+            "upper": -12.0
+          },
+          "pair": "mlp_ppo__vs__pace_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": -12.0,
+            "lower": -12.0,
+            "upper": -12.0
+          },
+          "pair": "mlp_ppo__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 0.1287871212878712,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": -12.0,
+            "lower": -12.0,
+            "upper": -12.0
+          },
+          "pair": "mlp_ppo__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_aux",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__pace_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "odits_style__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__pace_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_aux__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__talents_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "pace_style__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        },
+        {
+          "holm_p_left": 1.0,
+          "holm_p_right": 1.0,
+          "left_cell": "remember_response",
+          "left_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "pair": "talents_style__vs__tom_selector_style",
+          "right_cell": "remember_subtype",
+          "right_difference": {
+            "estimate": 0.0,
+            "lower": 0.0,
+            "upper": 0.0
+          },
+          "strict_reversal": false
+        }
+      ],
+      "left_cell": "remember_response",
+      "metric": "team_return",
+      "right_cell": "remember_subtype",
+      "strict_reversal_count": 0
+    }
+  },
+  "strict_ranking_reversal_count": 0
+}

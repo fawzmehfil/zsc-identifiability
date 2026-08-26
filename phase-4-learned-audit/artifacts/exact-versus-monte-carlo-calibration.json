@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "absolute_error": 0.04252550389284693,
+    "cell_id": "passive_early",
+    "episodes": 100000,
+    "exact_team_return": 88.80812550389285,
+    "interval": "two-sided Hoeffding 95% interval",
+    "lower": 88.59381223666131,
+    "method_id": "gru_ppo_active",
+    "passed": true,
+    "sampled_team_return": 88.7656,
+    "seed": 2001,
+    "upper": 88.9373877633387
+  },
+  {
+    "absolute_error": 0.003834066469806885,
+    "cell_id": "active_only",
+    "episodes": 100000,
+    "exact_team_return": 79.9244659335302,
+    "interval": "two-sided Hoeffding 95% interval",
+    "lower": 79.75651223666131,
+    "method_id": "gru_ppo_active",
+    "passed": true,
+    "sampled_team_return": 79.92830000000001,
+    "seed": 2001,
+    "upper": 80.1000877633387
+  }
+]

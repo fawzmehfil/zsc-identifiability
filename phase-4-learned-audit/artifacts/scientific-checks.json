@@ -1,0 +1,9 @@
+{
+  "active_gap_exceeds_one_point": false,
+  "fundamentally_inseparable_has_no_leakage": true,
+  "identity_only_evidence_receives_zero_dri": true,
+  "memory_capability": true,
+  "no_identification_sanity": true,
+  "passive_sanity": true,
+  "precommit_inseparable_has_no_leakage": true
+}
