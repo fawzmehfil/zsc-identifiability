@@ -923,10 +923,10 @@ def _statistical_reports(rows: list[dict[str, Any]], suite: LearningAuditSuite) 
     }
     rank_matrix = {
         cell: {
-            method: rank
-            for rank, (method, _) in enumerate(
-                sorted(methods.items(), key=lambda item: (-item[1], item[0])), start=1
-            )
+            str(method): float(rank)
+            for method, rank in pd.Series(methods, dtype="float64")
+            .rank(method="average", ascending=False)
+            .items()
         }
         for cell, methods in means.items()
     }
@@ -937,8 +937,12 @@ def _statistical_reports(rows: list[dict[str, Any]], suite: LearningAuditSuite) 
     }
     return {
         "ranking_reversals": reversals,
+        "strict_ranking_reversal_count": sum(
+            int(report["strict_reversal_count"]) for report in reversals.values()
+        ),
         "mean_return_by_cell_and_method": means,
         "rank_matrix": rank_matrix,
+        "rank_tie_policy": "average rank for exactly equal mean returns",
         "kendall_rank_correlations": kendall,
     }
 

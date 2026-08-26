@@ -13,7 +13,11 @@ from zsc_identifiability.learning_evaluation import (
 from zsc_identifiability.learning_methods import LearnedPolicy, NetworkOutput
 from zsc_identifiability.learning_models import load_learning_suite_file
 from zsc_identifiability.learning_pools import generate_learning_pools
-from zsc_identifiability.learning_runner import _oracle_controls, _plot_results
+from zsc_identifiability.learning_runner import (
+    _oracle_controls,
+    _plot_results,
+    _statistical_reports,
+)
 from zsc_identifiability.learning_statistics import (
     kendall_rank_correlation,
     paired_bootstrap_interval,
@@ -116,6 +120,34 @@ def test_paired_statistics_detect_a_strict_reversal() -> None:
     interval = paired_bootstrap_interval(np.ones(10), np.zeros(10), resamples=1000)
     assert interval.lower > 0
     assert kendall_rank_correlation({"a": 1, "b": 0}, {"a": 0, "b": 1}) == -1
+
+
+def test_statistical_report_uses_average_ranks_for_exact_ties() -> None:
+    suite = load_learning_suite_file(SUITE_PATH)
+    cells = (
+        "passive_early",
+        "active_only",
+        "precommit_inseparable",
+        "remember_response",
+        "remember_subtype",
+        "active_response",
+        "active_identity_only",
+    )
+    rows = [
+        {
+            "cell_id": cell,
+            "method_id": method,
+            "seed": seed,
+            "team_return": 80.0,
+        }
+        for cell in cells
+        for method in ("a", "b")
+        for seed in range(10)
+    ]
+    report = _statistical_reports(rows, suite)
+    assert report["strict_ranking_reversal_count"] == 0
+    assert report["rank_matrix"]["active_only"] == {"a": 1.5, "b": 1.5}
+    assert report["rank_tie_policy"] == "average rank for exactly equal mean returns"
 
 
 def test_frontier_distance_includes_randomized_mixture_segments() -> None:
