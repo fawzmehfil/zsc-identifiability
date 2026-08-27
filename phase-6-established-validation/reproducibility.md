@@ -43,6 +43,41 @@ Every runtime request and result carries a schema version and content hash. Trac
 manifests record checkpoint hashes, partner identifiers, evaluation keys, and
 whether post-commitment evidence was excluded.
 
+## Frozen partner-pool queue
+
+Create the deterministic plan first. This command performs validation and file
+generation only:
+
+```bash
+uv run zsc-identifiability established partner-pools prepare \
+  --suite phase-6-established-validation/suites/canonical.json \
+  --layout demo_cook_simple \
+  --workspace phase-6-established-validation/runs/partner-pools/demo-cook-simple
+```
+
+The queue is safe to detach and invoke again after interruption. The transition
+targets are totals, and completed hash-valid work is skipped:
+
+```bash
+nohup caffeinate -is uv run zsc-identifiability established partner-pools run \
+  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json \
+  --workers 1 \
+  --freeze-on-success \
+  > phase-6-established-validation/runs/partner-pools/demo-cook-simple/queue.log 2>&1 &
+```
+
+Read-only status inspection:
+
+```bash
+uv run zsc-identifiability established partner-pools status \
+  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
+```
+
+Exit code `2` identifies unresolved job failures, `3` means a split exhausted
+its cap without meeting quota, and `4` means the requested subset is valid but
+the complete three-split pool is not ready. A successful immutable freeze
+returns `0`.
+
 ## Resumable training
 
 `established train-method` accepts `--resume` with either a full update-boundary
@@ -62,7 +97,8 @@ best fixed-key validation snapshot. `latest.json` and `best.json` are published
 only after the new state has been restored and hash-verified. Compact deployment
 artifacts contain frozen inference components only.
 
-Qualifying partner finalists continue the full screening state:
+The low-level compatibility command can still continue qualifying partner
+screens manually:
 
 ```bash
 uv run zsc-identifiability established train-partners \

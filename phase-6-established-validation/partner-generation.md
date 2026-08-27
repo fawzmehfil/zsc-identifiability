@@ -11,15 +11,56 @@ A salted SHA-256 assignment fixes train, validation, and evaluation splits befor
 training. Reward vectors, seeds, or normalized checkpoint hashes may not cross
 splits.
 
-Each reward vector has two independent partner seeds. Candidate screening and
-finalist budgets, competence thresholds, quotas, expansion blocks, and the
-64-candidate cap are fixed in `suites/canonical.json`. A failed quota is reported;
-competence or matching thresholds cannot be relaxed.
+Each reward vector has two independent partner seeds. The split-specific seed
+bands are disjoint: training begins at `41001`, validation at `141001`, and
+evaluation at `241001`; vector index and replicate determine the exact seed.
+The candidate quotas/caps are `24/48`, `8/16`, and `32/64`. Expansion always
+activates eight complete candidates, preserving the two-seed reward-vector
+grouping. A failed quota is reported; competence or matching thresholds cannot
+be relaxed.
 
-Every executed partner job is followed by the registered 100-rollout greedy
-checkpoint-pair evaluation on common environment keys. The runner emits a
-checkpoint index with correct-delivery episode rate, competence status, source
-reward-vector hash, seed, transition budget, and normalized checkpoint hash.
+`partner-pools prepare` validates the suite, pinned upstream commits, isolated
+runtime, layout, and source trees. It enumerates every possible candidate
+through each cap in SHA-256 reward-vector order, followed by replicate `0` and
+`1`. It writes an immutable build plan and an initially inactive/pending ledger;
+it never invokes the training runtime.
+
+`partner-pools run` processes training, validation, then evaluation by default.
+Every active candidate is trained to the screening target and receives the
+registered greedy 100-rollout self-play evaluation on fixed environment keys.
+Competent screens continue from their full optimizer/environment/RNG state to
+the finalist total target; they do not restart. Finalists are evaluated again.
+When eligible finalists remain below quota, the next eight candidates activate
+until quota or cap is reached.
+
+The ledger is atomically published after every screening and finalist boundary.
+Each job has dedicated streamed runtime and competence logs. Requests, results,
+compact policies, and full states are content-hashed. Interrupted work resumes
+from `latest.json`; a completed full state whose compact export is missing uses
+a recovery-only export operation that performs no optimizer update. A workspace
+lock prevents duplicate queue runners, and termination signals are forwarded to
+active isolated-runtime processes.
+
+`partner-pools freeze` re-verifies every finalist, competence key, threshold,
+attainable transition target, plan/source/upstream hash, request/result hash,
+and compact/full checkpoint hash. It also rejects partner-ID, reward-vector,
+seed, normalized-parameter, or checkpoint-content leakage across splits.
+Training and validation retain the first 24 and 8 competent finalists in
+candidate order. Evaluation retains every competent finalist from all processed
+batches after at least 32 qualify.
+
+Operational manifests are immutable and remain under the ignored workspace:
+
+```text
+frozen/train-pool.json
+frozen/validation-pool.json
+frozen/evaluation-candidates.json
+frozen/frozen-pool-bundle.json
+frozen/leakage-audit.json
+```
+
+The same directory contains `publication-summary.json`, which omits local
+machine paths and can be promoted into the presentation package after execution.
 
 Response clustering and stopping decisions use validation partners. Evaluation
 partners are selected in two disjoint groups of eight through a mixed-integer

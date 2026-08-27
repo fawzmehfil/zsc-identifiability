@@ -6,10 +6,10 @@ behavioral predictability, and trajectory divergence in OvercookedV2. It skips a
 standalone repair-method phase because Stage 4 found that existing mechanisms
 already reach the active oracle in the exact games.
 
-The environment, measurement platform, method-specific TBS/PACE/CSP ports, and
-exact checkpoint-resumption layer are implemented. Partner generation and the
-development and confirmatory matrices have not been executed, so the current
-scientific verdict remains `pending`.
+The environment, measurement platform, method-specific TBS/PACE/CSP ports,
+exact checkpoint-resumption layer, and frozen partner-pool orchestrator are
+implemented. Partner generation and the development and confirmatory matrices
+have not been executed, so the current scientific verdict remains `pending`.
 
 ## Fixed protocol
 
@@ -65,18 +65,44 @@ uv run zsc-identifiability established bootstrap \
   --suite phase-6-established-validation/suites/canonical.json
 ```
 
-Prepare hash-split partner jobs without launching them:
+Prepare the complete deterministic partner-pool plan without launching training:
 
 ```bash
-uv run zsc-identifiability established train-partners \
+uv run zsc-identifiability established partner-pools prepare \
   --suite phase-6-established-validation/suites/canonical.json \
-  --split evaluation \
   --layout demo_cook_simple \
-  --output phase-6-established-validation/runs/partner-generation
+  --workspace phase-6-established-validation/runs/partner-pools/demo-cook-simple
 ```
 
-Adding `--execute` runs the prepared jobs in the isolated Python 3.10 runtime.
-The command preserves the registered reward-vector split and seed mapping.
+The plan materializes every candidate through the registered caps and activates
+only the first quota-sized batch. Run the resumable queue separately when
+compute is available:
+
+```bash
+nohup caffeinate -is uv run zsc-identifiability established partner-pools run \
+  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json \
+  --workers 1 \
+  --freeze-on-success \
+  > phase-6-established-validation/runs/partner-pools/demo-cook-simple/queue.log 2>&1 &
+```
+
+Inspect it without starting or modifying training:
+
+```bash
+uv run zsc-identifiability established partner-pools status \
+  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
+```
+
+If the queue was run without `--freeze-on-success`, freeze the verified pools:
+
+```bash
+uv run zsc-identifiability established partner-pools freeze \
+  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
+```
+
+`established train-partners` remains available as the low-level compatibility
+interface for manually prepared job slices. It is not the recommended complete
+pool workflow.
 
 Run the registered 100k-transition trainer/checkpoint smoke for one method:
 
@@ -152,6 +178,9 @@ converted into a successful result.
   and smoke-verified with reloadable deployment artifacts.
 - Exact update-boundary continuation, method-pipeline resumption, best-validation
   retention, and screening-to-finalist partner continuation: implemented.
+- Deterministic partner-pool planning, queue expansion, per-stage atomic ledger,
+  streamed logs, recovery-only compact export, leakage audit, and immutable
+  freezing: implemented and tested without training.
 - Established-environment partner pools, trained methods, matched contrasts, and
   scientific verdict: pending execution.
 

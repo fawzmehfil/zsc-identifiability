@@ -25,6 +25,9 @@ experiment platform, not yet an empirical OvercookedV2 finding.
   frozen-partner sampling and deployment-only policy factories.
 - Exact update-boundary continuation, multi-component pipeline resumption,
   compact exports, and best-validation checkpoint retention.
+- Deterministic frozen partner-pool planning, resumable screen-to-finalist queue,
+  adaptive eight-candidate expansion, stage-boundary ledger publication,
+  completed-state recovery export, and immutable leakage-audited freezing.
 
 ## Open scientific gates
 
@@ -34,10 +37,11 @@ confirmation, an ordinary task option changes DRI before commitment, estimator
 agreement passes, DRI adds held-out value, and the effect reproduces on the wide
 layout or official ZSC-Eval cross-check.
 
-The method-port engineering gate is complete. The next gate is generation of
-competent, response-conflicting frozen partner pools followed by the registered
-development and confirmatory experiments. No result from the smoke fixtures is
-treated as an empirical paper claim.
+The method-port and partner-pool orchestration engineering gates are complete.
+The next gate is execution of the registered queue to generate competent,
+response-conflicting frozen partner pools, followed by the response library and
+registered experiments. No result from the smoke fixtures or mocked queue tests
+is treated as an empirical paper claim.
 
 If those conditions pass and existing methods handle the diagnostic action, the
 verdict is `complete_evaluation_only`. Phase 5 reopens only if a robust active gap
