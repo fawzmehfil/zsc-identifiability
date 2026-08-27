@@ -116,10 +116,29 @@ def _validate_environment(payload):
     )
     behavior_shaping = wrapped_info["stage6_behavior_shaping"]
     idle_features = wrapped_info["stage6_behavior_features"]["idle"]
+    training_wrapped = BehaviorPreferenceWrapper(
+        environment, {"idle": 0.5}, record_diagnostics=False
+    )
+    _, training_state = training_wrapped.reset(reset_key)
+    _, _, _, _, training_info = training_wrapped.step(
+        step_key, training_state, stay_actions
+    )
+    training_info_compatible = (
+        "stage6_behavior_shaping" not in training_info
+        and "stage6_behavior_features" not in training_info
+        and all(
+            np.isclose(
+                float(training_info["shaped_reward"][agent]),
+                float(wrapped_info["shaped_reward"][agent]),
+            )
+            for agent in environment.agents
+        )
+    )
     wrapper_checks_passed = (
         sparse_reward_preserved
         and all(np.isclose(float(behavior_shaping[agent]), 0.5) for agent in environment.agents)
         and np.allclose(np.asarray(idle_features), np.ones(environment.num_agents))
+        and training_info_compatible
     )
     commitment_check = _validate_commitment_detection(
         environment,
@@ -142,6 +161,7 @@ def _validate_environment(payload):
         "terminated_after_one_step": bool(dones["__all__"]),
         "sparse_reward_preserved": bool(sparse_reward_preserved),
         "behavior_wrapper_checks_passed": bool(wrapper_checks_passed),
+        "training_wrapper_info_compatible": bool(training_info_compatible),
         "commitment_check": commitment_check,
         "method_port_checks": method_port_checks,
         "settings_match": bool(

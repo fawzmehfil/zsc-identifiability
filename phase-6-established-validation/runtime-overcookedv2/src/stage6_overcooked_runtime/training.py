@@ -79,7 +79,11 @@ def train_official_method(request, project_root):
 
     def wrapped_make(env_id, **kwargs):
         env = original_make(env_id, **kwargs)
-        return BehaviorPreferenceWrapper(env, preferences) if preferences else env
+        return (
+            BehaviorPreferenceWrapper(env, preferences, record_diagnostics=False)
+            if preferences
+            else env
+        )
 
     jaxmarl.make = wrapped_make
     wandb_mode = os.environ.get("WANDB_MODE", "disabled")
@@ -260,7 +264,11 @@ def recover_official_training(request, project_root):
 
     def wrapped_make(env_id, **kwargs):
         env = original_make(env_id, **kwargs)
-        return BehaviorPreferenceWrapper(env, preferences) if preferences else env
+        return (
+            BehaviorPreferenceWrapper(env, preferences, record_diagnostics=False)
+            if preferences
+            else env
+        )
 
     jaxmarl.make = wrapped_make
     try:

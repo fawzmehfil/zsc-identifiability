@@ -36,9 +36,13 @@ class BehaviorPreferenceWrapper(JaxMARLWrapper):
     """Adds at most three declared event preferences to official shaping.
 
     The sparse shared task reward returned by the environment is unchanged.
+    Diagnostic feature dictionaries are useful for direct environment audits,
+    but the pinned IPPO logger requires every ``info`` leaf to already have an
+    agent axis. Training therefore disables those optional diagnostics while
+    retaining the identical shaped reward.
     """
 
-    def __init__(self, env, preferences):
+    def __init__(self, env, preferences, *, record_diagnostics=True):
         super().__init__(env)
         unknown = set(preferences) - SUPPORTED_BEHAVIOR_EVENTS
         if unknown:
@@ -47,6 +51,7 @@ class BehaviorPreferenceWrapper(JaxMARLWrapper):
         if len(nonzero) > 3:
             raise ValueError("behavior preference vector may contain at most three non-zero terms")
         self.preferences = nonzero
+        self.record_diagnostics = bool(record_diagnostics)
 
     @partial(jax.jit, static_argnums=(0,))
     def reset(self, key):
@@ -68,8 +73,9 @@ class BehaviorPreferenceWrapper(JaxMARLWrapper):
         original_shaping = info.get(
             "shaped_reward", {agent: jnp.asarray(0.0) for agent in self._env.agents}
         )
-        info["stage6_behavior_features"] = features
-        info["stage6_behavior_shaping"] = additions
+        if self.record_diagnostics:
+            info["stage6_behavior_features"] = features
+            info["stage6_behavior_shaping"] = additions
         info["shaped_reward"] = {
             agent: original_shaping[agent] + additions[agent] for agent in self._env.agents
         }
