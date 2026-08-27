@@ -43,5 +43,37 @@ Every runtime request and result carries a schema version and content hash. Trac
 manifests record checkpoint hashes, partner identifiers, evaluation keys, and
 whether post-commitment evidence was excluded.
 
+## Resumable training
+
+`established train-method` accepts `--resume` with either a full update-boundary
+checkpoint or a multi-component `pipeline-state.json`. The target transition
+count is total, never additive. Resume validates the method, layout, seed,
+partner-pool hashes, architecture, hyperparameters, suite, upstream commit, and
+local runner source before restoring optimizer, environment, recurrent,
+partner-index, schedule, auxiliary-model, and PRNG state.
+
+TBS additionally requires `--cross-play-values`. TBS and CSP accept
+`--compute-allocation per-specialist|split-total`; reports retain both component
+and aggregate transition counts. A resumed multi-component pipeline verifies
+completed artifacts by content hash and skips them.
+
+Full checkpoints remain untracked. Ported methods retain the latest two and the
+best fixed-key validation snapshot. `latest.json` and `best.json` are published
+only after the new state has been restored and hash-verified. Compact deployment
+artifacts contain frozen inference components only.
+
+Qualifying partner finalists continue the full screening state:
+
+```bash
+uv run zsc-identifiability established train-partners \
+  --suite phase-6-established-validation/suites/canonical.json \
+  --split train \
+  --layout demo_cook_simple \
+  --gate finalist \
+  --resume-index SCREEN_CHECKPOINT_INDEX.json \
+  --output phase-6-established-validation/runs/partner-finalists \
+  --execute
+```
+
 Notebook output is not an accepted source for a reported number. Compact results
 must be reproduced by a registered CLI command.

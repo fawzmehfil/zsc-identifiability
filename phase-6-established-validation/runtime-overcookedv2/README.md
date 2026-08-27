@@ -8,8 +8,15 @@ The runtime provides:
 
 - environment-setting smoke validation;
 - official recurrent IPPO, Other-Play, and FCP training adapters;
+- PACE auxiliary, PACE-style, TBS-style, and CSP-style training pipelines;
+- typed deployment-policy loading for ordinary, contextual, selector, and
+  reconnaissance policies;
+- full update-boundary checkpoint continuation with source and pool guards;
 - sparse behavior-preference shaping that leaves shared task reward intact;
 - deterministic ordinary-task diagnostic controllers;
 - ego-visible commitment-trace collection from frozen checkpoints.
 
-It emits manifests and JSONL traces. It is not imported by the main package.
+It emits versioned manifests, compact deployment policies, and JSONL traces.
+Optimizer, environment, recurrent, partner-index, auxiliary-model, and PRNG
+state remain in ignored full checkpoints. The runtime is not imported by the
+main package.

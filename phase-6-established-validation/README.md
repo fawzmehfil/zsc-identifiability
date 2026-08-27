@@ -6,9 +6,10 @@ behavioral predictability, and trajectory divergence in OvercookedV2. It skips a
 standalone repair-method phase because Stage 4 found that existing mechanisms
 already reach the active oracle in the exact games.
 
-The core environment and measurement platform is implemented; method-specific
-TBS/PACE/CSP ports and the large partner and method matrices are not complete.
-The current scientific verdict is therefore `pending`.
+The environment, measurement platform, method-specific TBS/PACE/CSP ports, and
+exact checkpoint-resumption layer are implemented. Partner generation and the
+development and confirmatory matrices have not been executed, so the current
+scientific verdict remains `pending`.
 
 ## Fixed protocol
 
@@ -92,6 +93,25 @@ uv run zsc-identifiability established train-method \
   --execute
 ```
 
+Ported methods additionally receive frozen training and validation pools. TBS
+also receives a training-only cross-play matrix; CSP is always labelled as a
+two-episode reconnaissance protocol:
+
+```bash
+uv run zsc-identifiability established train-method \
+  --suite phase-6-established-validation/suites/canonical.json \
+  --method pace_style \
+  --layout demo_cook_simple \
+  --seed 5101 \
+  --gate smoke \
+  --learning-rate 0.00025 \
+  --entropy-coefficient 0.01 \
+  --train-pool TRAIN_POOL.json \
+  --validation-pool VALIDATION_POOL.json \
+  --output phase-6-established-validation/runs/smoke/pace-style \
+  --execute
+```
+
 Build the frozen response-loss matrix from cross-play values:
 
 ```bash
@@ -128,6 +148,10 @@ converted into a successful result.
 - Pinned upstream bootstrap and file-based runtime boundary: implemented.
 - Official environment, commitment, 100k-transition training/checkpoint, and
   checkpoint-to-trace integration smokes: passed.
+- PACE auxiliary, PACE-style, TBS-style, and CSP-style method ports: implemented
+  and smoke-verified with reloadable deployment artifacts.
+- Exact update-boundary continuation, method-pipeline resumption, best-validation
+  retention, and screening-to-finalist partner continuation: implemented.
 - Established-environment partner pools, trained methods, matched contrasts, and
   scientific verdict: pending execution.
 
