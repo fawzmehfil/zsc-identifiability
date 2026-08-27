@@ -31,9 +31,20 @@ def main():
     if operation == "validate":
         payload = _validate_environment(request["payload"])
     elif operation in {"train_partner", "train_method"}:
-        from stage6_overcooked_runtime.training import train_official_method
+        method = request["payload"]["method_id"]
+        if method in {
+            "tbs_style",
+            "pace_aux",
+            "pace_style",
+            "csp_style_reconnaissance",
+        }:
+            from stage6_overcooked_runtime.method_pipeline import train_ported_method
 
-        payload = train_official_method(request, project_root)
+            payload = train_ported_method(request, project_root)
+        else:
+            from stage6_overcooked_runtime.training import train_official_method
+
+            payload = train_official_method(request, project_root)
     elif operation == "collect":
         from stage6_overcooked_runtime.collect import collect_traces
 
@@ -89,15 +100,11 @@ def _validate_environment(payload):
     stay_actions = {
         agent: jnp.asarray(Actions.stay, dtype=jnp.int32) for agent in environment.agents
     }
-    _, next_state, base_rewards, dones, _ = environment.step(
-        step_key, state, stay_actions
-    )
+    _, next_state, base_rewards, dones, _ = environment.step(step_key, state, stay_actions)
 
     wrapped = BehaviorPreferenceWrapper(environment, {"idle": 0.5})
     _, wrapped_state = wrapped.reset(reset_key)
-    _, _, wrapped_rewards, _, wrapped_info = wrapped.step(
-        step_key, wrapped_state, stay_actions
-    )
+    _, _, wrapped_rewards, _, wrapped_info = wrapped.step(step_key, wrapped_state, stay_actions)
     sparse_reward_preserved = all(
         np.isclose(float(base_rewards[agent]), float(wrapped_rewards[agent]))
         for agent in environment.agents
@@ -120,6 +127,7 @@ def _validate_environment(payload):
         jnp,
         np,
     )
+    method_port_checks = _validate_method_ports()
     return {
         "layout_id": payload.get("layout_id", "demo_cook_simple"),
         "agents": list(environment.agents),
@@ -130,14 +138,42 @@ def _validate_environment(payload):
         "sparse_reward_preserved": bool(sparse_reward_preserved),
         "behavior_wrapper_checks_passed": bool(wrapper_checks_passed),
         "commitment_check": commitment_check,
+        "method_port_checks": method_port_checks,
         "settings_match": bool(
             int(state.time) == 0
             and int(next_state.time) == 1
             and not bool(dones["__all__"])
             and wrapper_checks_passed
             and commitment_check["passed"]
+            and method_port_checks["passed"]
         ),
     }
+
+
+def _validate_method_ports():
+    import numpy as np
+
+    from stage6_overcooked_runtime.ported_methods import (
+        csp_probe_reward,
+        pace_bonus_weight,
+        select_csp_cluster,
+        select_tbs_cluster,
+        tbs_similarity_matrix,
+    )
+    from stage6_overcooked_runtime.resumable_upstream import load_resumable_make_train
+
+    similarity = tbs_similarity_matrix(np.asarray([[1.0, 0.2], [0.2, 1.0]]))
+    checks = {
+        "pace_schedule": np.isclose(pace_bonus_weight(0, 300), 0.2)
+        and np.isclose(pace_bonus_weight(250, 300), 0.0),
+        "tbs_similarity": np.allclose(similarity, [[1.0, 0.2], [0.2, 1.0]]),
+        "tbs_selector": select_tbs_cluster([[0.8, 0.2]], [[[0.8, 0.2]], [[0.2, 0.8]]]) == 0,
+        "csp_reward": np.isclose(float(csp_probe_reward(1.0, 2.0)), 1.2),
+        "csp_selector": select_csp_cluster([0, 0], [[0, 0], [2, 2]]) == 0,
+        "resumable_source_adapter": callable(load_resumable_make_train()),
+    }
+    checks = {key: bool(value) for key, value in checks.items()}
+    return {"passed": all(checks.values()), **checks}
 
 
 def _validate_commitment_detection(
@@ -195,10 +231,7 @@ def _pot_ingredient_count(state, static_object, dynamic_object, np):
     pot_mask = state.grid[:, :, 0] == static_object.POT
     pot_contents = np.asarray(state.grid[:, :, 1])[np.asarray(pot_mask)].ravel()
     return int(
-        sum(
-            int(np.asarray(dynamic_object.ingredient_count(value)))
-            for value in pot_contents
-        )
+        sum(int(np.asarray(dynamic_object.ingredient_count(value))) for value in pot_contents)
     )
 
 

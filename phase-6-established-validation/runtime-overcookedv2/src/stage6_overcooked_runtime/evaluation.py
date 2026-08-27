@@ -5,7 +5,7 @@ from __future__ import annotations
 import jax
 import numpy as np
 
-from stage6_overcooked_runtime.collect import _load_policy
+from stage6_overcooked_runtime.collect import _load_policy, _reconnaissance_episode
 from stage6_overcooked_runtime.events import transition_event_features
 
 
@@ -45,6 +45,16 @@ def evaluate_checkpoint_pair(request):
 def _episode(ego_policy, partner_policy, layout, environment_key):
     import jaxmarl
 
+    ego_initial_state = None
+    reconnaissance_return = None
+    if "reconnaissance" in getattr(ego_policy, "protocol_phases", ()):
+        reconnaissance_return, reconnaissance_state = _reconnaissance_episode(
+            ego_policy,
+            partner_policy,
+            layout,
+            environment_key ^ 0x5C5C5C5C,
+        )
+        ego_initial_state = ego_policy.scored_state(reconnaissance_state)
     environment = jaxmarl.make(
         "overcooked_v2",
         layout=layout,
@@ -57,26 +67,27 @@ def _episode(ego_policy, partner_policy, layout, environment_key):
     key = jax.random.PRNGKey(environment_key)
     key, reset_key = jax.random.split(key)
     observations, state = environment.reset(reset_key)
-    hidden = [ego_policy.init_hstate(1), partner_policy.init_hstate(1)]
+    hidden = [
+        ego_policy.init_hstate(1) if ego_initial_state is None else ego_initial_state,
+        partner_policy.init_hstate(1),
+    ]
     done = [False, False]
     total_return = 0.0
     correct_deliveries = 0
     commitment_reached = False
     for _ in range(400):
         key, ego_key, partner_key, step_key = jax.random.split(key, 4)
-        ego_action, hidden[0] = ego_policy.compute_action(
+        ego_action, hidden[0], _ = ego_policy.compute_action(
             observations["agent_0"], done[0], hidden[0], ego_key
         )
-        partner_action, hidden[1] = partner_policy.compute_action(
+        partner_action, hidden[1], _ = partner_policy.compute_action(
             observations["agent_1"], done[1], hidden[1], partner_key
         )
         actions = {"agent_0": ego_action, "agent_1": partner_action}
         next_observations, next_state, rewards, dones, _ = environment.step(
             step_key, state, actions
         )
-        features = transition_event_features(
-            environment, state, next_state, actions, rewards
-        )
+        features = transition_event_features(environment, state, next_state, actions, rewards)
         commitment_reached |= float(np.asarray(features["pot_fill"]).sum()) > 0
         correct_deliveries += int(bool(next_state.new_correct_delivery))
         total_return += float(rewards["agent_0"])
@@ -86,6 +97,7 @@ def _episode(ego_policy, partner_policy, layout, environment_key):
             break
     return {
         "return": total_return,
+        "reconnaissance_return": reconnaissance_return,
         "correct_deliveries": correct_deliveries,
         "commitment_reached": commitment_reached,
     }

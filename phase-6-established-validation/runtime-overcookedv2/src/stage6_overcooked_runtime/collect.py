@@ -8,11 +8,10 @@ from pathlib import Path
 
 import jax
 import numpy as np
-import orbax.checkpoint as ocp
-from overcooked_v2_experiments.ppo.policy import PPOPolicy
 
 from stage6_overcooked_runtime.controller import DiagnosticGoalController
 from stage6_overcooked_runtime.events import transition_event_features
+from stage6_overcooked_runtime.policies import load_established_policy
 
 
 def collect_traces(request):
@@ -25,6 +24,7 @@ def collect_traces(request):
     records = []
     commitment_episodes = 0
     first_units = 0
+    policy_diagnostic_records = []
     source_hashes = [_file_tree_hash(Path(payload["ego_checkpoint"]))]
     for partner_spec in partner_specs:
         partner_policy = _load_policy(
@@ -33,13 +33,33 @@ def collect_traces(request):
         )
         source_hashes.append(_file_tree_hash(Path(partner_spec["checkpoint_path"])))
         for environment_key in payload["environment_keys"]:
-            episode_records, reached = _episode(
+            ego_state = None
+            reconnaissance_return = None
+            if "reconnaissance" in getattr(ego_policy, "protocol_phases", ()):
+                reconnaissance_return, reconnaissance_state = _reconnaissance_episode(
+                    ego_policy,
+                    partner_policy,
+                    layout,
+                    int(environment_key) ^ 0x5C5C5C5C,
+                )
+                ego_state = ego_policy.scored_state(reconnaissance_state)
+            episode_records, reached, episode_diagnostics = _episode(
                 ego_policy,
                 partner_policy,
                 layout,
                 int(environment_key),
                 partner_spec,
                 payload,
+                ego_state=ego_state,
+            )
+            policy_diagnostic_records.append(
+                {
+                    "partner_id": partner_spec["partner_id"],
+                    "environment_key": str(environment_key),
+                    "reconnaissance_return": reconnaissance_return,
+                    "extra_partner_interactions": (400 if reconnaissance_return is not None else 0),
+                    "steps": episode_diagnostics,
+                }
             )
             records.extend(episode_records)
             first_units += 1
@@ -61,10 +81,20 @@ def collect_traces(request):
         "commitment_reached_rate": commitment_episodes / max(first_units, 1),
         "post_commitment_excluded": True,
         "source_checkpoint_hashes": sorted(source_hashes),
+        "policy_diagnostics": policy_diagnostic_records,
     }
 
 
-def _episode(ego_policy, partner_policy, layout, environment_key, partner_spec, payload):
+def _episode(
+    ego_policy,
+    partner_policy,
+    layout,
+    environment_key,
+    partner_spec,
+    payload,
+    *,
+    ego_state=None,
+):
     import jaxmarl
 
     env = jaxmarl.make(
@@ -79,11 +109,15 @@ def _episode(ego_policy, partner_policy, layout, environment_key, partner_spec, 
     root_key = jax.random.PRNGKey(environment_key)
     root_key, reset_key = jax.random.split(root_key)
     observations, state = env.reset(reset_key)
-    hidden = [ego_policy.init_hstate(1), partner_policy.init_hstate(1)]
+    hidden = [
+        ego_policy.init_hstate(1) if ego_state is None else ego_state,
+        partner_policy.init_hstate(1),
+    ]
     done = [False, False]
     work_unit = 0
     committed_in_first = False
     records = []
+    diagnostic_records = []
     episode_id = f"{partner_spec['partner_id']}:{environment_key}"
     controller = DiagnosticGoalController(
         payload["evidence_policy"], payload.get("candidate_ingredient", 0)
@@ -91,19 +125,20 @@ def _episode(ego_policy, partner_policy, layout, environment_key, partner_spec, 
     option_steps = min(int(payload.get("option_steps", 16)), 16)
     for step in range(400):
         root_key, ego_key, partner_key, transition_key = jax.random.split(root_key, 4)
-        ego_action, hidden[0] = ego_policy.compute_action(
+        ego_action, hidden[0], policy_diagnostics = ego_policy.compute_action(
             observations["agent_0"], done[0], hidden[0], ego_key
         )
         controller_action = controller.action(state) if step < option_steps else None
         if controller_action is not None:
             ego_action = controller_action
-        partner_action, hidden[1] = partner_policy.compute_action(
+            hidden[0] = ego_policy.record_action(hidden[0], ego_action)
+        if policy_diagnostics:
+            diagnostic_records.append({"step": step, **policy_diagnostics})
+        partner_action, hidden[1], _ = partner_policy.compute_action(
             observations["agent_1"], done[1], hidden[1], partner_key
         )
         actions = {"agent_0": ego_action, "agent_1": partner_action}
-        next_observations, next_state, rewards, dones, _ = env.step(
-            transition_key, state, actions
-        )
+        next_observations, next_state, rewards, dones, _ = env.step(transition_key, state, actions)
         features = transition_event_features(env, state, next_state, actions, rewards)
         visible = _partner_visible(state, view_size=2)
         task_events = []
@@ -140,7 +175,9 @@ def _episode(ego_policy, partner_policy, layout, environment_key, partner_spec, 
             {
                 "episode_id": episode_id,
                 "partner_id": partner_spec["partner_id"],
-                "reward_vector_id": partner_spec["reward_vector_id"],
+                "reward_vector_id": partner_spec.get(
+                    "reward_vector_id", partner_spec["partner_id"]
+                ),
                 "layout_id": layout,
                 "environment_key": str(environment_key),
                 "work_unit": work_unit,
@@ -159,26 +196,55 @@ def _episode(ego_policy, partner_policy, layout, environment_key, partner_spec, 
         done = [bool(dones["agent_0"]), bool(dones["agent_1"])]
         if bool(dones["__all__"]):
             break
-    return records, committed_in_first
+    return records, committed_in_first, diagnostic_records
 
 
 def _load_policy(path, stochastic):
-    checkpoint = ocp.PyTreeCheckpointer().restore(Path(path).resolve(), item=None)
-    return _JittedPolicy(
-        PPOPolicy(checkpoint["params"], checkpoint["config"], stochastic=stochastic)
+    return load_established_policy(path, stochastic=stochastic)
+
+
+def _reconnaissance_episode(ego_policy, partner_policy, layout, environment_key):
+    import jaxmarl
+
+    env = jaxmarl.make(
+        "overcooked_v2",
+        layout=layout,
+        max_steps=400,
+        agent_view_size=2,
+        random_agent_positions=True,
+        negative_rewards=True,
+        sample_recipe_on_delivery=True,
     )
-
-
-class _JittedPolicy:
-    def __init__(self, policy):
-        self.policy = policy
-        self._compute = jax.jit(policy.compute_action)
-
-    def init_hstate(self, batch_size):
-        return self.policy.init_hstate(batch_size)
-
-    def compute_action(self, observation, done, hidden, key):
-        return self._compute(observation, done, hidden, key)
+    key = jax.random.PRNGKey(environment_key)
+    key, reset_key = jax.random.split(key)
+    observations, state = env.reset(reset_key)
+    ego_state = ego_policy.init_hstate(1, protocol_phase="reconnaissance")
+    partner_state = partner_policy.init_hstate(1)
+    done = [False, False]
+    total_return = 0.0
+    for _ in range(400):
+        key, ego_key, partner_key, step_key = jax.random.split(key, 4)
+        ego_action, ego_state, _ = ego_policy.compute_action(
+            observations["agent_0"],
+            done[0],
+            ego_state,
+            ego_key,
+            protocol_phase="reconnaissance",
+        )
+        partner_action, partner_state, _ = partner_policy.compute_action(
+            observations["agent_1"], done[1], partner_state, partner_key
+        )
+        observations, state, rewards, dones, _ = env.step(
+            step_key,
+            state,
+            {"agent_0": ego_action, "agent_1": partner_action},
+        )
+        total_return += float(rewards["agent_0"])
+        ego_state = ego_policy.record_reward(ego_state, float(rewards["agent_0"]))
+        done = [bool(dones["agent_0"]), bool(dones["agent_1"])]
+        if bool(dones["__all__"]):
+            break
+    return total_return, ego_state
 
 
 def _partner_visible(state, view_size):
