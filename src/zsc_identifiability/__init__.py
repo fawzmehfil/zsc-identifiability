@@ -46,12 +46,15 @@ from zsc_identifiability.benchmark_models import (
 from zsc_identifiability.established_models import (
     DRIEstimate,
     EstablishedAuditManifest,
+    EstablishedMethodAssetsManifest,
+    EstablishedPolicyArtifact,
     EstablishedPolicyEvaluation,
     EstablishedTrainingManifest,
     EstablishedValidationSuite,
     MatchedPopulationAudit,
     PartnerPoolManifest,
     ResponseLibrary,
+    TrainingCheckpointMetadata,
     UpstreamAudit,
 )
 from zsc_identifiability.learning_models import (
@@ -84,6 +87,8 @@ __all__ = [
     "EstablishedAuditManifest",
     "EstablishedPolicyEvaluation",
     "EstablishedTrainingManifest",
+    "EstablishedMethodAssetsManifest",
+    "EstablishedPolicyArtifact",
     "EstablishedValidationSuite",
     "HistoryDistributions",
     "LearnedPolicyEvaluation",
@@ -102,6 +107,7 @@ __all__ = [
     "RunManifest",
     "ShortcutAudit",
     "TrainingRunManifest",
+    "TrainingCheckpointMetadata",
     "UpstreamAudit",
     "ValidationReport",
     "audit_population_pair",

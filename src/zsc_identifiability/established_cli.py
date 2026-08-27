@@ -6,7 +6,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from zsc_identifiability.established_diagnostics import audit_diagnostic_options
 from zsc_identifiability.established_divergence import estimate_prefix_tv_curves
@@ -16,7 +16,10 @@ from zsc_identifiability.established_matching import (
 )
 from zsc_identifiability.established_models import (
     CandidatePartnerMetrics,
+    EstablishedMethodAssetsManifest,
+    EstablishedPolicyArtifact,
     EstablishedPolicyEvaluation,
+    EstablishedPolicyKind,
     EstablishedTrainingManifest,
     MatchedPopulationAudit,
     PartnerCheckpoint,
@@ -77,6 +80,10 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
     partners.add_argument("--vector-count", type=int)
     partners.add_argument("--execute", action="store_true")
     partners.add_argument("--checkpoint-index")
+    partners.add_argument(
+        "--resume-index",
+        help="screen checkpoint index used to continue finalist jobs to their total budget",
+    )
 
     responses = subcommands.add_parser(
         "build-responses", help="freeze the empirical response-loss matrix"
@@ -133,12 +140,19 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
     method.add_argument("--method", required=True)
     method.add_argument("--layout", required=True)
     method.add_argument("--seed", type=int, required=True)
-    method.add_argument(
-        "--gate", choices=("smoke", "development", "confirmatory"), required=True
-    )
+    method.add_argument("--gate", choices=("smoke", "development", "confirmatory"), required=True)
     method.add_argument("--learning-rate", type=float, required=True)
     method.add_argument("--entropy-coefficient", type=float, required=True)
     method.add_argument("--population-path")
+    method.add_argument("--train-pool")
+    method.add_argument("--validation-pool")
+    method.add_argument("--cross-play-values")
+    method.add_argument("--resume")
+    method.add_argument(
+        "--compute-allocation",
+        choices=("per-specialist", "split-total"),
+        default="per-specialist",
+    )
     method.add_argument("--output", required=True)
     method.add_argument("--execute", action="store_true")
 
@@ -266,9 +280,7 @@ def dispatch_established(args: argparse.Namespace) -> int:
         return 0
     if command == "estimate-divergence":
         signatures = (
-            None
-            if args.response_signatures is None
-            else _read_object(args.response_signatures)
+            None if args.response_signatures is None else _read_object(args.response_signatures)
         )
         payload = estimate_prefix_tv_curves(
             args.traces,
@@ -294,12 +306,8 @@ def dispatch_established(args: argparse.Namespace) -> int:
     if command == "regress":
         rows = _read_list(args.rows)
         report = leave_one_reward_vector_out_regression(rows)
-        if all(
-            {"training_seed", "partner_id", "episode_id"}.issubset(row) for row in rows
-        ):
-            report["dri_coefficient_interval"] = hierarchical_dri_coefficient_interval(
-                rows
-            )
+        if all({"training_seed", "partner_id", "episode_id"}.issubset(row) for row in rows):
+            report["dri_coefficient_interval"] = hierarchical_dri_coefficient_interval(rows)
         _write_json(Path(args.output), report)
         print(json.dumps(report, indent=2, sort_keys=True))
         return 0 if report["incremental_value"] else 3
@@ -329,6 +337,12 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
         _write_json(output / f"{args.split}-pool-manifest.json", manifest.to_dict())
         print(json.dumps(manifest.to_dict(), indent=2, sort_keys=True))
         return 0 if manifest.quota_met else 3
+    resume_by_key: dict[tuple[str, int], PartnerCheckpoint] = {}
+    if args.resume_index:
+        if args.gate != "finalist":
+            raise ValueError("--resume-index is only valid for finalist continuation")
+        resume_checkpoints = load_partner_checkpoints(args.resume_index)
+        resume_by_key = {(item.reward_vector_hash, item.seed): item for item in resume_checkpoints}
     vectors = vectors_for_split(suite, args.split)
     default_vectors = {
         "train": (suite.partner_generation.training_partner_quota + 1) // 2,
@@ -357,6 +371,7 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
                 "layout_id": args.layout,
                 "seed": seed,
                 "transitions": transition_budget,
+                "schedule_target_transitions": suite.partner_generation.finalist_transitions,
                 "learning_rate": 0.00025,
                 "entropy_coefficient": 0.01,
                 "behavior_preferences": vector,
@@ -364,6 +379,23 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
                 "split": args.split,
                 "output_dir": str(job_dir / "checkpoints"),
             }
+            resume = resume_by_key.get((vector_hash, seed))
+            if args.gate == "finalist":
+                if resume is None:
+                    raise ValueError(
+                        "every finalist job requires its matching competent screen checkpoint"
+                    )
+                if not resume.competent:
+                    raise ValueError("cannot continue an incompetent screen checkpoint")
+                if resume.training_state_checkpoint_path is None:
+                    raise ValueError("finalist continuation requires a full screen training state")
+                resume_path = Path(resume.training_state_checkpoint_path).resolve()
+                resume_hash = _path_hash(resume_path)
+                if resume_hash != resume.training_state_checkpoint_hash:
+                    raise ValueError("screen training-state checkpoint hash mismatch")
+                payload["resume_checkpoint"] = str(resume_path)
+                payload["resume_checkpoint_hash"] = resume_hash
+                payload["resume_completed_transitions"] = resume.transitions
             request = write_runtime_request(
                 suite,
                 "overcookedv2_py310",
@@ -403,9 +435,7 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
                     job_dir / "competence-result.json",
                     root,
                 )
-                delivery_rate = float(
-                    competence_result["payload"]["correct_delivery_episode_rate"]
-                )
+                delivery_rate = float(competence_result["payload"]["correct_delivery_episode_rate"])
                 checkpoint = PartnerCheckpoint(
                     partner_id=f"{args.split}-{vector_hash[:12]}-seed{seed}",
                     reward_vector_id=vector_hash,
@@ -415,15 +445,24 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
                     layout_id=args.layout,
                     checkpoint_path=str(checkpoint_path),
                     normalized_checkpoint_hash=str(
-                        training_result["payload"]["checkpoint_parameter_hashes"][
-                            checkpoint_path
+                        training_result["payload"]["checkpoint_parameter_hashes"][checkpoint_path]
+                    ),
+                    training_state_checkpoint_path=(
+                        None
+                        if not training_result["payload"].get("training_state_paths")
+                        else training_result["payload"]["training_state_paths"][-1]
+                    ),
+                    training_state_checkpoint_hash=(
+                        None
+                        if not training_result["payload"].get("training_state_paths")
+                        else training_result["payload"]["training_state_hashes"][
+                            training_result["payload"]["training_state_paths"][-1]
                         ]
                     ),
-                    transitions=transition_budget,
+                    transitions=int(training_result["payload"]["completed_transitions"]),
                     validation_correct_delivery_rate=delivery_rate,
                     competent=(
-                        delivery_rate
-                        >= suite.partner_generation.minimum_correct_delivery_rate
+                        delivery_rate >= suite.partner_generation.minimum_correct_delivery_rate
                     ),
                 )
                 completed_checkpoints.append(checkpoint)
@@ -508,16 +547,66 @@ def _method_job(args: argparse.Namespace, root: Path) -> int:
         else method.confirmatory_transitions
     )
     output = Path(args.output).resolve()
+    ported = {
+        "tbs_style",
+        "pace_aux",
+        "pace_style",
+        "csp_style_reconnaissance",
+    }
+    train_pool_hash: str | None = None
+    validation_pool_hash: str | None = None
+    cross_play_hash: str | None = None
+    if args.method in ported:
+        if not args.train_pool or not args.validation_pool:
+            raise ValueError(f"{args.method} requires --train-pool and --validation-pool")
+        train_pool_hash = _path_hash(Path(args.train_pool).resolve())
+        validation_pool_hash = _path_hash(Path(args.validation_pool).resolve())
+        if args.method == "tbs_style" and not args.cross_play_values:
+            raise ValueError("tbs_style requires --cross-play-values")
+        if args.cross_play_values:
+            cross_play_hash = _path_hash(Path(args.cross_play_values).resolve())
+        assets = EstablishedMethodAssetsManifest(
+            method_id=args.method,
+            train_pool_path=str(Path(args.train_pool).resolve()),
+            train_pool_hash=train_pool_hash,
+            validation_pool_path=str(Path(args.validation_pool).resolve()),
+            validation_pool_hash=validation_pool_hash,
+            cross_play_values_path=(
+                None
+                if args.cross_play_values is None
+                else str(Path(args.cross_play_values).resolve())
+            ),
+            cross_play_values_hash=cross_play_hash,
+            compute_allocation=args.compute_allocation,
+        )
+        _write_json(output / "method-assets.json", assets.to_dict())
     payload = {
         "method_id": args.method,
         "layout_id": args.layout,
         "seed": args.seed,
         "split": args.gate,
         "transitions": transitions,
+        "schedule_target_transitions": transitions,
         "learning_rate": args.learning_rate,
         "entropy_coefficient": args.entropy_coefficient,
         "smoke": args.gate == "smoke",
         "population_path": args.population_path,
+        "train_pool_path": args.train_pool,
+        "validation_pool_path": args.validation_pool,
+        "cross_play_values_path": args.cross_play_values,
+        "compute_allocation": args.compute_allocation,
+        "resume_checkpoint": args.resume,
+        "dataset_hashes": [
+            item
+            for item in (train_pool_hash, validation_pool_hash, cross_play_hash)
+            if item is not None
+        ],
+        "tomzsc_path": next(
+            item.local_directory for item in suite.upstreams if item.repository_id == "tomzsc"
+        ),
+        "tomzsc_commit": next(
+            item.commit for item in suite.upstreams if item.repository_id == "tomzsc"
+        ),
         "output_dir": str(output / "checkpoints"),
     }
     request = write_runtime_request(
@@ -539,7 +628,60 @@ def _method_job(args: argparse.Namespace, root: Path) -> int:
     )
     runtime_payload = result["payload"]
     checkpoint_path = runtime_payload["checkpoint_paths"][-1]
+    deployment_artifact_path = runtime_payload.get("deployment_artifact_path")
+    deployment_artifact_hash = runtime_payload.get("deployment_artifact_hash")
+    artifact: EstablishedPolicyArtifact | None = None
+    if deployment_artifact_path is not None:
+        artifact_path = Path(str(deployment_artifact_path)).resolve()
+        observed_artifact_hash = _path_hash(artifact_path)
+        if observed_artifact_hash != deployment_artifact_hash:
+            raise ValueError("runtime deployment artifact hash does not match its contents")
+        artifact = EstablishedPolicyArtifact.model_validate(_read_object(artifact_path))
+        if (
+            artifact.method_id != args.method
+            or artifact.layout_id != args.layout
+            or artifact.seed != args.seed
+        ):
+            raise ValueError("runtime deployment artifact does not match the training request")
+    if args.method in ported:
+        if artifact is None or train_pool_hash is None or validation_pool_hash is None:
+            raise ValueError("ported methods must emit a validated deployment artifact")
+        assets = EstablishedMethodAssetsManifest(
+            method_id=args.method,
+            train_pool_path=str(Path(args.train_pool).resolve()),
+            train_pool_hash=train_pool_hash,
+            validation_pool_path=str(Path(args.validation_pool).resolve()),
+            validation_pool_hash=validation_pool_hash,
+            cross_play_values_path=(
+                None
+                if args.cross_play_values is None
+                else str(Path(args.cross_play_values).resolve())
+            ),
+            cross_play_values_hash=cross_play_hash,
+            cluster_assignments=artifact.cluster_assignments,
+            concept_schema=artifact.concept_schema,
+            component_paths={item.component_id: item.path for item in artifact.components},
+            component_hashes={
+                item.component_id: item.content_hash for item in artifact.components
+            },
+            compute_allocation=args.compute_allocation,
+        )
+        _write_json(output / "method-assets.json", assets.to_dict())
+    parent_checkpoint_hash = runtime_payload.get("parent_checkpoint_hash")
+    dataset_hashes = tuple(
+        item
+        for item in (
+            None
+            if args.population_path is None
+            else _path_hash(Path(args.population_path).resolve()),
+            train_pool_hash,
+            validation_pool_hash,
+            cross_play_hash,
+        )
+        if item is not None
+    )
     manifest = EstablishedTrainingManifest(
+        schema_version=2,
         suite_id=suite.suite_id,
         method_id=args.method,
         layout_id=args.layout,
@@ -553,16 +695,27 @@ def _method_job(args: argparse.Namespace, root: Path) -> int:
             item.commit for item in suite.upstreams if item.repository_id == "overcookedv2"
         ),
         configuration_hash=str(runtime_payload["configuration_hash"]),
-        dataset_hashes=(
-            ()
-            if args.population_path is None
-            else (_path_hash(Path(args.population_path).resolve()),)
-        ),
+        dataset_hashes=dataset_hashes,
         python_version=str(result["python_version"]),
         jax_version=str(result["dependency_versions"]["jax"]),
         xla_version=str(result["dependency_versions"]["jaxlib"]),
         device=str(runtime_payload["device"]),
-        resumed=False,
+        resumed=bool(runtime_payload.get("resumed", False)),
+        policy_kind=cast(EstablishedPolicyKind, str(runtime_payload.get("policy_kind", "ppo"))),
+        deployment_artifact_path=deployment_artifact_path,
+        deployment_artifact_hash=deployment_artifact_hash,
+        resume_checkpoint_path=runtime_payload.get("resume_checkpoint_path"),
+        parent_checkpoint_hash=parent_checkpoint_hash,
+        component_transitions={
+            str(key): int(value)
+            for key, value in runtime_payload.get("component_transitions", {}).items()
+        },
+        aggregate_training_transitions=int(
+            runtime_payload.get("aggregate_training_transitions", transitions)
+        ),
+        best_validation_checkpoint_path=runtime_payload.get("best_validation_checkpoint_path"),
+        best_validation_checkpoint_hash=runtime_payload.get("best_validation_checkpoint_hash"),
+        best_validation_metric=runtime_payload.get("best_validation_metric"),
     )
     _write_json(output / "manifest.json", manifest.to_dict())
     print(json.dumps(manifest.to_dict(), indent=2, sort_keys=True))
@@ -587,9 +740,7 @@ def _secondary(args: argparse.Namespace, root: Path) -> int:
     if not args.execute:
         print(json.dumps({"status": "prepared", "request": str(request)}, indent=2))
         return 0
-    result = dispatch_runtime_request(
-        suite, "zsceval_py39", request, output / "result.json", root
-    )
+    result = dispatch_runtime_request(suite, "zsceval_py39", request, output / "result.json", root)
     _write_json(output / "secondary-zsceval-audit.json", result["payload"])
     print(json.dumps(result["payload"], indent=2, sort_keys=True))
     return 0 if result["payload"]["status"] == "complete" else 4

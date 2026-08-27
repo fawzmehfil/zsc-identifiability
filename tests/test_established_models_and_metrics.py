@@ -23,7 +23,12 @@ from zsc_identifiability.established_matching import (
 from zsc_identifiability.established_models import (
     CandidatePartnerMetrics,
     CommitmentTraceStep,
+    EstablishedMethodAssetsManifest,
+    EstablishedPolicyArtifact,
+    EstablishedPolicyComponent,
+    EstablishedTrainingManifest,
     EstablishedValidationSuite,
+    PartnerCheckpoint,
     TaskEvent,
     load_established_suite_file,
 )
@@ -61,6 +66,139 @@ def test_canonical_stage6_suite_locks_protocol() -> None:
     assert suite.commitment.event_name == "successful_pot_ingredient_placement"
     assert suite.matching.minimum_dri_separation == 0.15
     assert len(suite.training.confirmatory_seeds) == 10
+
+
+def test_method_assets_require_tbs_cross_play_and_content_hashes() -> None:
+    common = {
+        "method_id": "tbs_style",
+        "train_pool_path": "train.json",
+        "train_pool_hash": "a" * 64,
+        "validation_pool_path": "validation.json",
+        "validation_pool_hash": "b" * 64,
+    }
+    with pytest.raises(ValidationError, match="cross-play"):
+        EstablishedMethodAssetsManifest.model_validate(common)
+    manifest = EstablishedMethodAssetsManifest.model_validate(
+        {
+            **common,
+            "cross_play_values_path": "cross-play.json",
+            "cross_play_values_hash": "c" * 64,
+        }
+    )
+    assert manifest.compute_allocation == "per-specialist"
+
+
+def test_composite_policy_artifact_locks_csp_reconnaissance_protocol() -> None:
+    component = EstablishedPolicyComponent(
+        component_id="probe", role="probe_policy", path="probe-checkpoint", content_hash="d" * 64
+    )
+    with pytest.raises(ValidationError, match="reconnaissance"):
+        EstablishedPolicyArtifact(
+            policy_kind="csp_reconnaissance",
+            method_id="csp_style_reconnaissance",
+            layout_id="demo_cook_simple",
+            seed=1,
+            backbone_config={},
+            components=(component,),
+            partner_ids=("partner",),
+            source_configuration_hash="e" * 64,
+            aggregate_training_transitions=1,
+        )
+    components = (
+        component,
+        EstablishedPolicyComponent(
+            component_id="encoder",
+            role="trajectory_encoder",
+            path="encoder",
+            content_hash="d" * 64,
+        ),
+        EstablishedPolicyComponent(
+            component_id="decoder",
+            role="response_decoder",
+            path="decoder",
+            content_hash="d" * 64,
+        ),
+        EstablishedPolicyComponent(
+            component_id="specialist",
+            role="specialist",
+            path="specialist",
+            content_hash="d" * 64,
+            cluster_id=0,
+        ),
+    )
+    artifact = EstablishedPolicyArtifact(
+        policy_kind="csp_reconnaissance",
+        method_id="csp_style_reconnaissance",
+        layout_id="demo_cook_simple",
+        seed=1,
+        backbone_config={},
+        components=components,
+        partner_ids=("partner",),
+        centroids=((0.0,) * 32,),
+        reconnaissance_episodes=1,
+        source_configuration_hash="e" * 64,
+        aggregate_training_transitions=1,
+    )
+    assert artifact.reconnaissance_episodes == 1
+    with pytest.raises(ValidationError, match="one specialist per centroid"):
+        EstablishedPolicyArtifact.model_validate(
+            {
+                **artifact.to_dict(),
+                "centroids": ((0.0,) * 32, (1.0,) * 32),
+            }
+        )
+
+
+def test_training_manifest_v2_requires_resume_lineage() -> None:
+    base = {
+        "suite_id": "suite",
+        "method_id": "pace_aux",
+        "layout_id": "demo_cook_simple",
+        "split": "smoke",
+        "seed": 1,
+        "requested_transitions": 10,
+        "completed_transitions": 10,
+        "checkpoint_path": "checkpoint",
+        "checkpoint_hash": "f" * 64,
+        "upstream_commit": "0" * 40,
+        "configuration_hash": "1" * 64,
+        "dataset_hashes": (),
+        "python_version": "3.10",
+        "jax_version": "0.4",
+        "xla_version": "0.4",
+        "device": "cpu",
+        "resumed": True,
+        "policy_kind": "pace",
+    }
+    with pytest.raises(ValidationError, match="lineage"):
+        EstablishedTrainingManifest.model_validate(base)
+    manifest = EstablishedTrainingManifest.model_validate(
+        {**base, "parent_checkpoint_hash": "2" * 64}
+    )
+    assert manifest.schema_version == 2 and manifest.resumed
+
+
+def test_partner_checkpoint_requires_paired_full_training_state() -> None:
+    payload = {
+        "partner_id": "partner",
+        "reward_vector_id": "reward",
+        "reward_vector_hash": "a" * 64,
+        "split": "train",
+        "seed": 1,
+        "layout_id": "demo_cook_simple",
+        "checkpoint_path": "compact-policy",
+        "normalized_checkpoint_hash": "b" * 64,
+        "transitions": 5,
+        "validation_correct_delivery_rate": 1.0,
+        "competent": True,
+        "training_state_checkpoint_path": "full-state",
+    }
+    with pytest.raises(ValidationError, match="training-state checkpoint"):
+        PartnerCheckpoint.model_validate(payload)
+    checkpoint = PartnerCheckpoint.model_validate(
+        {**payload, "training_state_checkpoint_hash": "c" * 64}
+    )
+    assert checkpoint.training_state_checkpoint_path == "full-state"
 
 
 def test_suite_rejects_short_upstream_pin() -> None:
@@ -179,9 +317,7 @@ def test_reward_vectors_are_sparse_hash_ordered_and_split_deterministically() ->
     assert [reward_vector_hash(vector) for vector in vectors] == sorted(
         reward_vector_hash(vector) for vector in vectors
     )
-    assert split_for_reward_vector(vectors[0], suite) == split_for_reward_vector(
-        vectors[0], suite
-    )
+    assert split_for_reward_vector(vectors[0], suite) == split_for_reward_vector(vectors[0], suite)
 
 
 def test_upstream_audit_reports_missing_assets_without_installing(tmp_path: Path) -> None:
@@ -222,9 +358,7 @@ def test_runtime_request_is_content_hashed_and_runtime_scoped(tmp_path: Path) ->
 
 def test_milp_matching_freezes_disjoint_high_low_dri_pair() -> None:
     suite = load_established_suite_file(SUITE_PATH)
-    candidates = tuple(
-        _candidate(index, high=index < 8) for index in range(16)
-    )
+    candidates = tuple(_candidate(index, high=index < 8) for index in range(16))
     audit = select_matched_population_pair(candidates, suite.matching, "passive_dri")
     assert audit.discovery_passed
     assert audit.frozen
@@ -332,8 +466,7 @@ def test_predictability_control_uses_disjoint_visible_action_targets(tmp_path: P
         for index in range(16)
     )
     confirmatory_steps = tuple(
-        item.model_copy(update={"episode_id": "confirmatory"})
-        for item in calibration_steps
+        item.model_copy(update={"episode_id": "confirmatory"}) for item in calibration_steps
     )
     write_trace_jsonl(calibration, calibration_steps)
     write_trace_jsonl(confirmatory, confirmatory_steps)

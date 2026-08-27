@@ -25,6 +25,13 @@ EstablishedMethod = Literal[
     "pace_style",
     "csp_style_reconnaissance",
 ]
+EstablishedPolicyKind = Literal[
+    "ppo",
+    "pace",
+    "tbs_selector",
+    "csp_reconnaissance",
+]
+ComputeAllocation = Literal["per-specialist", "split-total"]
 EvidencePolicy = Literal[
     "ordinary_progress",
     "stage_candidate_ingredient",
@@ -32,9 +39,7 @@ EvidencePolicy = Literal[
     "corridor_yield",
     "recipe_button_control",
 ]
-Stage6Verdict = Literal[
-    "complete_evaluation_only", "reopen_phase5", "redesign", "stop", "pending"
-]
+Stage6Verdict = Literal["complete_evaluation_only", "reopen_phase5", "redesign", "stop", "pending"]
 
 
 class FrozenEstablishedModel(BaseModel):
@@ -218,6 +223,131 @@ class EstablishedMethodSpec(FrozenEstablishedModel):
         return self
 
 
+class EstablishedMethodAssetsManifest(FrozenEstablishedModel):
+    """Content-addressed inputs and intermediate products for a method port."""
+
+    schema_version: Literal[1] = 1
+    method_id: EstablishedMethod
+    train_pool_path: str
+    train_pool_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    validation_pool_path: str
+    validation_pool_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    cross_play_values_path: str | None = None
+    cross_play_values_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    cluster_assignments: dict[str, int] = Field(default_factory=dict)
+    concept_schema: tuple[str, ...] = ()
+    component_paths: dict[str, str] = Field(default_factory=dict)
+    component_hashes: dict[str, str] = Field(default_factory=dict)
+    compute_allocation: ComputeAllocation = "per-specialist"
+
+    @model_validator(mode="after")
+    def validate_method_assets(self) -> EstablishedMethodAssetsManifest:
+        has_values = self.cross_play_values_path is not None
+        if has_values != (self.cross_play_values_hash is not None):
+            raise ValueError("cross-play values path and hash must be supplied together")
+        if self.method_id == "tbs_style" and not has_values:
+            raise ValueError("TBS-style assets require training cross-play values")
+        if any(value < 0 or value >= 6 for value in self.cluster_assignments.values()):
+            raise ValueError("method cluster identifiers must be between zero and five")
+        if set(self.component_paths) != set(self.component_hashes):
+            raise ValueError("method component paths and hashes must use identical identifiers")
+        for key, value in self.component_hashes.items():
+            if re.fullmatch(r"[0-9a-f]{64}", value) is None:
+                raise ValueError(f"component {key!r} has an invalid content hash")
+        return self
+
+
+class EstablishedPolicyComponent(FrozenEstablishedModel):
+    component_id: str
+    role: Literal[
+        "task_policy",
+        "specialist",
+        "probe_policy",
+        "trajectory_encoder",
+        "response_decoder",
+        "global_tom",
+        "cluster_tom",
+        "centroids",
+    ]
+    path: str
+    content_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    cluster_id: int | None = Field(default=None, ge=0, le=5)
+
+
+class EstablishedPolicyArtifact(FrozenEstablishedModel):
+    """Compact deployment artifact; full optimizer state is stored separately."""
+
+    schema_version: Literal[1] = 1
+    policy_kind: EstablishedPolicyKind
+    method_id: EstablishedMethod
+    layout_id: str
+    seed: int
+    backbone_config: dict[str, Any]
+    components: tuple[EstablishedPolicyComponent, ...]
+    partner_ids: tuple[str, ...]
+    cluster_assignments: dict[str, int] = Field(default_factory=dict)
+    concept_schema: tuple[str, ...] = ()
+    centroids: tuple[tuple[float, ...], ...] = ()
+    reconnaissance_episodes: int = Field(default=0, ge=0, le=1)
+    source_configuration_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    aggregate_training_transitions: int = Field(ge=0)
+
+    @model_validator(mode="after")
+    def validate_policy_protocol(self) -> EstablishedPolicyArtifact:
+        if not self.components:
+            raise ValueError("policy artifacts require at least one component")
+        if len(self.partner_ids) != len(set(self.partner_ids)):
+            raise ValueError("policy artifact partner identifiers must be unique")
+        is_csp = self.policy_kind == "csp_reconnaissance"
+        if is_csp != (self.reconnaissance_episodes == 1):
+            raise ValueError("only CSP artifacts use one reconnaissance episode")
+        roles = [component.role for component in self.components]
+        if self.policy_kind == "pace" and roles.count("task_policy") != 1:
+            raise ValueError("PACE artifacts require exactly one task policy")
+        if self.policy_kind == "tbs_selector":
+            specialists = roles.count("specialist")
+            if specialists < 1 or roles.count("global_tom") != 1:
+                raise ValueError("TBS artifacts require specialists and one global ToM")
+            if roles.count("cluster_tom") != specialists:
+                raise ValueError("TBS artifacts require one cluster ToM per specialist")
+            if not self.concept_schema:
+                raise ValueError("TBS artifacts require a visible concept schema")
+        if is_csp:
+            if (
+                roles.count("probe_policy") != 1
+                or roles.count("trajectory_encoder") != 1
+                or roles.count("response_decoder") != 1
+            ):
+                raise ValueError("CSP artifacts require probe, encoder, and decoder components")
+            specialist_count = roles.count("specialist")
+            if not self.centroids or specialist_count != len(self.centroids):
+                raise ValueError("CSP artifacts require one specialist per centroid")
+        return self
+
+
+class TrainingCheckpointMetadata(FrozenEstablishedModel):
+    """Metadata next to an ignored Orbax training-state checkpoint."""
+
+    schema_version: Literal[2] = 2
+    suite_id: str
+    method_id: EstablishedMethod | Literal["partner_ippo"]
+    layout_id: str
+    seed: int
+    component_id: str
+    completed_transitions: int = Field(ge=0)
+    target_transitions: int = Field(ge=1)
+    configuration_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    dataset_hashes: tuple[str, ...]
+    upstream_commit: str = Field(pattern=r"^[0-9a-f]{40}$")
+    upstream_source_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    device: str
+    state_tree_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    parent_checkpoint_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    exact_continuation: bool
+    validation_metric: float | None = None
+    best_validation_metric: float | None = None
+
+
 class EstablishedTrainingSpec(FrozenEstablishedModel):
     smoke_transitions: int = Field(default=100_000, ge=1)
     development_seeds: tuple[int, ...] = (5101, 5102, 5103)
@@ -351,9 +481,7 @@ class EstablishedValidationSuite(FrozenEstablishedModel):
                 or not layout.sample_recipe_on_delivery
             ):
                 raise ValueError("layouts must preserve the fixed official Stage 6 settings")
-            if (layout.role, layout.launch_condition) != expected_layout_roles[
-                layout.layout_id
-            ]:
+            if (layout.role, layout.launch_condition) != expected_layout_roles[layout.layout_id]:
                 raise ValueError(f"canonical layout role changed: {layout.layout_id}")
         option_ids = tuple(item.option_id for item in self.diagnostics)
         if len(option_ids) != len(set(option_ids)) or set(option_ids) != {
@@ -461,9 +589,18 @@ class PartnerCheckpoint(FrozenEstablishedModel):
     layout_id: str
     checkpoint_path: str
     normalized_checkpoint_hash: str
+    training_state_checkpoint_path: str | None = None
+    training_state_checkpoint_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     transitions: int = Field(ge=0)
     validation_correct_delivery_rate: float = Field(ge=0, le=1)
     competent: bool
+
+    @model_validator(mode="after")
+    def validate_training_state_pair(self) -> PartnerCheckpoint:
+        has_path = self.training_state_checkpoint_path is not None
+        if has_path != (self.training_state_checkpoint_hash is not None):
+            raise ValueError("partner training-state checkpoint path and hash must be paired")
+        return self
 
 
 class PartnerPoolManifest(FrozenEstablishedModel):
@@ -578,7 +715,7 @@ class MatchedPopulationAudit(FrozenEstablishedModel):
 
 
 class EstablishedTrainingManifest(FrozenEstablishedModel):
-    schema_version: Literal[1] = 1
+    schema_version: Literal[1, 2] = 2
     suite_id: str
     method_id: EstablishedMethod
     layout_id: str
@@ -596,6 +733,36 @@ class EstablishedTrainingManifest(FrozenEstablishedModel):
     xla_version: str
     device: str
     resumed: bool
+    policy_kind: EstablishedPolicyKind = "ppo"
+    deployment_artifact_path: str | None = None
+    deployment_artifact_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    resume_checkpoint_path: str | None = None
+    parent_checkpoint_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    component_transitions: dict[str, int] = Field(default_factory=dict)
+    aggregate_training_transitions: int | None = Field(default=None, ge=0)
+    best_validation_checkpoint_path: str | None = None
+    best_validation_checkpoint_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    best_validation_metric: float | None = None
+
+    @model_validator(mode="after")
+    def validate_training_manifest_version(self) -> EstablishedTrainingManifest:
+        if self.schema_version == 1:
+            return self
+        has_artifact = self.deployment_artifact_path is not None
+        if has_artifact != (self.deployment_artifact_hash is not None):
+            raise ValueError("deployment artifact path and hash must be supplied together")
+        if self.resumed != (self.parent_checkpoint_hash is not None):
+            raise ValueError("resumed manifests require checkpoint lineage")
+        best_fields = (
+            self.best_validation_checkpoint_path,
+            self.best_validation_checkpoint_hash,
+            self.best_validation_metric,
+        )
+        if any(value is not None for value in best_fields) and any(
+            value is None for value in best_fields
+        ):
+            raise ValueError("best validation checkpoint fields must be supplied together")
+        return self
 
 
 class EstablishedPolicyEvaluation(FrozenEstablishedModel):
