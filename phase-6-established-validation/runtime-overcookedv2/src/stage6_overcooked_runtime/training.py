@@ -7,6 +7,7 @@ import hashlib
 import importlib
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -18,6 +19,7 @@ from omegaconf import OmegaConf
 from stage6_overcooked_runtime.checkpointing import (
     restore_training_checkpoint,
     save_training_checkpoint,
+    validate_completed_target,
     validate_resume_target,
 )
 from stage6_overcooked_runtime.events import BehaviorPreferenceWrapper
@@ -97,7 +99,7 @@ def train_official_method(request, project_root):
     if resumed:
         template = _single_run(config, initialize_only=True)
         template = jax.block_until_ready(template)
-        initial_runner_state, resume_metadata, resolved_resume, parent_checkpoint_hash = (
+        initial_runner_state, resume_metadata, _resolved_resume, parent_checkpoint_hash = (
             restore_training_checkpoint(
                 resume_path,
                 expected={
@@ -177,8 +179,142 @@ def train_official_method(request, project_root):
         wandb_run.finish()
     if result is None:
         raise RuntimeError("training completed without producing a runner state")
-    train_states = result["runner_state"][0]
-    registered_checkpoints = result["runner_state"][1]
+    written, parameter_hashes = _export_policy_checkpoints(
+        output, config, result["runner_state"]
+    )
+    return {
+        "method_id": method,
+        "layout_id": payload["layout_id"],
+        "seed": int(payload["seed"]),
+        "requested_transitions": int(payload["transitions"]),
+        "completed_transitions": completed,
+        "checkpoint_paths": written,
+        "checkpoint_parameter_hashes": parameter_hashes,
+        "device": _device_description(),
+        "configuration_hash": configuration_hash,
+        "resumed": resumed,
+        "recovered": False,
+        "resume_checkpoint_path": None if resume_path is None else str(resume_path),
+        "parent_checkpoint_hash": resume_parent_hash,
+        "training_state_paths": checkpoint_paths,
+        "training_state_hashes": checkpoint_hashes,
+        "policy_kind": "ppo",
+        "component_transitions": {"task_policy": completed},
+        "aggregate_training_transitions": completed,
+    }
+
+
+def recover_official_training(request, project_root):
+    """Re-export a completed policy without executing an optimizer update."""
+
+    payload = request["payload"]
+    method = payload["method_id"]
+    experiment = {
+        "partner_ippo": "rnn-sp",
+        "rnn_ippo": "rnn-sp",
+        "other_play": "rnn-op",
+        "fcp": "rnn-fcp",
+    }.get(method)
+    if experiment is None:
+        raise ValueError(f"recovery-only export is unsupported for {method}")
+    resume_path = payload.get("resume_checkpoint")
+    if resume_path is None:
+        raise ValueError("recovery-only export requires resume_checkpoint")
+    upstream = Path(project_root) / request["upstreams"]["overcookedv2"]["path"]
+    config_dir = upstream / "experiments/overcooked_v2_experiments/ppo/config"
+    schedule_target = int(payload.get("schedule_target_transitions", payload["transitions"]))
+    overrides = [
+        f"+experiment={experiment}",
+        f"+env={payload['layout_id']}",
+        f"SEED={int(payload['seed'])}",
+        "NUM_SEEDS=1",
+        f"model.TOTAL_TIMESTEPS={schedule_target}",
+        f"model.REW_SHAPING_HORIZON={schedule_target // 2}",
+        f"model.LR={float(payload['learning_rate'])}",
+        f"model.ENT_COEF={float(payload['entropy_coefficient'])}",
+        "NUM_CHECKPOINTS=3",
+    ]
+    if bool(payload.get("smoke", False)):
+        overrides.extend(
+            (
+                "model.NUM_ENVS=32",
+                "model.NUM_STEPS=32",
+                "model.NUM_MINIBATCHES=8",
+                "model.UPDATE_EPOCHS=2",
+                "NUM_CHECKPOINTS=2",
+            )
+        )
+    if method == "fcp":
+        overrides.append(f"+FCP={payload['population_path']}")
+    with initialize_config_dir(version_base=None, config_dir=str(config_dir)):
+        config = OmegaConf.to_container(compose(config_name="base", overrides=overrides))
+    output = Path(payload["output_dir"]).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    config["RUN_BASE_DIR"] = output
+    configuration_hash = _configuration_hash(config)
+
+    import jaxmarl
+
+    original_make = jaxmarl.make
+    preferences = payload.get("behavior_preferences", {})
+
+    def wrapped_make(env_id, **kwargs):
+        env = original_make(env_id, **kwargs)
+        return BehaviorPreferenceWrapper(env, preferences) if preferences else env
+
+    jaxmarl.make = wrapped_make
+    try:
+        template = jax.block_until_ready(_single_run(config, initialize_only=True))
+        runner_state, metadata, resolved, checkpoint_hash = restore_training_checkpoint(
+            resume_path,
+            expected={
+                "suite_id": request["suite_id"],
+                "method_id": method,
+                "layout_id": payload["layout_id"],
+                "seed": int(payload["seed"]),
+                "configuration_hash": configuration_hash,
+                "upstream_commit": request["upstreams"]["overcookedv2"]["commit"],
+                "upstream_source_hash": pinned_ippo_source_hash(),
+            },
+            target_state=template["runner_state"],
+        )
+    finally:
+        jaxmarl.make = original_make
+    transitions_per_update = int(config["model"]["NUM_STEPS"]) * int(
+        config["model"]["NUM_ENVS"]
+    )
+    attainable_target = (
+        int(payload["transitions"]) // transitions_per_update
+    ) * transitions_per_update
+    validate_completed_target(metadata, attainable_target)
+    written, parameter_hashes = _export_policy_checkpoints(
+        output, config, runner_state, overwrite=True
+    )
+    return {
+        "method_id": method,
+        "layout_id": payload["layout_id"],
+        "seed": int(payload["seed"]),
+        "requested_transitions": int(payload["transitions"]),
+        "completed_transitions": attainable_target,
+        "checkpoint_paths": written,
+        "checkpoint_parameter_hashes": parameter_hashes,
+        "device": _device_description(),
+        "configuration_hash": configuration_hash,
+        "resumed": True,
+        "recovered": True,
+        "resume_checkpoint_path": str(resolved),
+        "parent_checkpoint_hash": checkpoint_hash,
+        "training_state_paths": [str(resolved)],
+        "training_state_hashes": {str(resolved): checkpoint_hash},
+        "policy_kind": "ppo",
+        "component_transitions": {"task_policy": attainable_target},
+        "aggregate_training_transitions": attainable_target,
+    }
+
+
+def _export_policy_checkpoints(output, config, runner_state, *, overwrite=False):
+    train_states = runner_state[0]
+    registered_checkpoints = runner_state[1]
     run_count = jax.tree_util.tree_flatten(train_states.params)[0][0].shape[0]
     written = []
     parameter_hashes = {}
@@ -196,6 +332,7 @@ def train_official_method(request, project_root):
                 run_number=run_number,
                 checkpoint=checkpoint_number,
                 final=False,
+                overwrite=overwrite,
             )
             checkpoint_path = output / f"run_{run_number}" / f"ckpt_{checkpoint_number}"
             written.append(str(checkpoint_path))
@@ -211,28 +348,11 @@ def train_official_method(request, project_root):
             run_number=run_number,
             checkpoint=0,
             final=True,
+            overwrite=overwrite,
         )
         written.append(str(output / f"run_{run_number}" / "ckpt_final"))
         parameter_hashes[written[-1]] = _parameter_tree_hash(params)
-    return {
-        "method_id": method,
-        "layout_id": payload["layout_id"],
-        "seed": int(payload["seed"]),
-        "requested_transitions": int(payload["transitions"]),
-        "completed_transitions": completed,
-        "checkpoint_paths": written,
-        "checkpoint_parameter_hashes": parameter_hashes,
-        "device": _device_description(),
-        "configuration_hash": configuration_hash,
-        "resumed": resumed,
-        "resume_checkpoint_path": None if resume_path is None else str(resume_path),
-        "parent_checkpoint_hash": resume_parent_hash,
-        "training_state_paths": checkpoint_paths,
-        "training_state_hashes": checkpoint_hashes,
-        "policy_kind": "ppo",
-        "component_transitions": {"task_policy": completed},
-        "aggregate_training_transitions": completed,
-    }
+    return written, parameter_hashes
 
 
 def _device_description():
@@ -276,7 +396,9 @@ def _parameter_tree_hash(params):
     return digest.hexdigest()
 
 
-def _store_checkpoint(output, config, params, *, run_number, checkpoint, final):
+def _store_checkpoint(
+    output, config, params, *, run_number, checkpoint, final, overwrite=False
+):
     """Store an official PPO policy tree with a JSON-safe runtime config."""
 
     import orbax.checkpoint as ocp
@@ -284,6 +406,8 @@ def _store_checkpoint(output, config, params, *, run_number, checkpoint, final):
 
     name = "ckpt_final" if final else f"ckpt_{checkpoint}"
     checkpoint_dir = output / f"run_{run_number}" / name
+    if overwrite and checkpoint_dir.exists():
+        shutil.rmtree(checkpoint_dir)
     payload = {"config": _json_safe(config), "params": params}
     checkpointer = ocp.PyTreeCheckpointer()
     save_args = orbax_utils.save_args_from_target(payload)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import platform
 import re
 import subprocess
@@ -179,6 +180,14 @@ def _verify_upstreams(request, root):
 
 
 def _project_root(request_path):
+    configured = os.environ.get("ZSC_IDENTIFIABILITY_PROJECT_ROOT")
+    if configured:
+        root = Path(configured).resolve()
+        if (root / "pyproject.toml").is_file() and (
+            root / "src/zsc_identifiability"
+        ).is_dir():
+            return root
+        raise ValueError("configured zsc-identifiability project root is invalid")
     for parent in request_path.parents:
         if (parent / "pyproject.toml").is_file() and (parent / "src/zsc_identifiability").is_dir():
             return parent

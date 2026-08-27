@@ -5,9 +5,13 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import signal
 import subprocess
-from collections.abc import Mapping, Sequence
+import threading
+from collections.abc import Iterator, Mapping, Sequence
+from contextlib import contextmanager, suppress
 from pathlib import Path
+from types import FrameType
 from typing import Any
 
 from zsc_identifiability.established_models import (
@@ -16,6 +20,38 @@ from zsc_identifiability.established_models import (
     UpstreamAudit,
     UpstreamRepositoryAudit,
 )
+
+_ACTIVE_PROCESS_LOCK = threading.Lock()
+_ACTIVE_RUNTIME_PROCESSES: set[subprocess.Popen[str]] = set()
+
+
+@contextmanager
+def forward_runtime_process_signals() -> Iterator[None]:
+    """Forward runner termination signals to every isolated runtime process."""
+
+    if threading.current_thread() is not threading.main_thread():
+        yield
+        return
+    previous = {kind: signal.getsignal(kind) for kind in (signal.SIGINT, signal.SIGTERM)}
+
+    def forward(signum: int, _frame: FrameType | None) -> None:
+        with _ACTIVE_PROCESS_LOCK:
+            processes = tuple(_ACTIVE_RUNTIME_PROCESSES)
+        for process in processes:
+            if process.poll() is None:
+                with suppress(ProcessLookupError):
+                    os.killpg(process.pid, signum)
+        if signum == signal.SIGINT:
+            raise KeyboardInterrupt
+        raise SystemExit(128 + signum)
+
+    for kind in previous:
+        signal.signal(kind, forward)
+    try:
+        yield
+    finally:
+        for kind, handler in previous.items():
+            signal.signal(kind, handler)
 
 
 def validate_upstreams(
@@ -170,6 +206,7 @@ def dispatch_runtime_request(
     project_root: str | Path,
     *,
     extra_environment: Mapping[str, str] | None = None,
+    log_path: str | Path | None = None,
 ) -> dict[str, Any]:
     """Execute an isolated request without importing upstream packages here."""
 
@@ -206,19 +243,43 @@ def dispatch_runtime_request(
         str(result),
     )
     environment = dict(os.environ)
+    environment["ZSC_IDENTIFIABILITY_PROJECT_ROOT"] = str(root)
     environment.update(extra_environment or {})
-    completed = subprocess.run(
-        command,
-        cwd=root,
-        env=environment,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if completed.returncode != 0:
+    if log_path is None:
+        completed = subprocess.run(
+            command,
+            cwd=root,
+            env=environment,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        return_code = completed.returncode
+        failure_output = completed.stderr.strip() or completed.stdout.strip()
+    else:
+        log = Path(log_path).resolve()
+        log.parent.mkdir(parents=True, exist_ok=True)
+        with log.open("a", encoding="utf-8") as handle:
+            process = subprocess.Popen(
+                command,
+                cwd=root,
+                env=environment,
+                text=True,
+                stdout=handle,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
+            with _ACTIVE_PROCESS_LOCK:
+                _ACTIVE_RUNTIME_PROCESSES.add(process)
+            try:
+                return_code = process.wait()
+            finally:
+                with _ACTIVE_PROCESS_LOCK:
+                    _ACTIVE_RUNTIME_PROCESSES.discard(process)
+        failure_output = _tail(log, 60)
+    if return_code != 0:
         raise RuntimeError(
-            f"isolated runtime failed ({completed.returncode}): "
-            f"{completed.stderr.strip() or completed.stdout.strip()}"
+            f"isolated runtime failed ({return_code}): {failure_output}"
         )
     if not result.is_file():
         raise RuntimeError("isolated runtime completed without a result manifest")
@@ -234,6 +295,11 @@ def dispatch_runtime_request(
     if payload.get("status") not in {"complete", "secondary_unavailable"}:
         raise RuntimeError("isolated runtime returned an invalid completion status")
     return payload
+
+
+def _tail(path: Path, line_count: int) -> str:
+    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    return "\n".join(lines[-line_count:]).strip()
 
 
 def _safe_project_path(root: Path, relative: str) -> Path:

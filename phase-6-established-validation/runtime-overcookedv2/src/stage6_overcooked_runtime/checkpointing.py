@@ -75,6 +75,7 @@ def save_training_checkpoint(
         "checkpoint_path": str(destination),
         "checkpoint_hash": checkpoint_hash,
         "completed_transitions": completed,
+        "target_transitions": int(metadata["target_transitions"]),
         "state_tree_hash": state_hash,
     }
     temporary = root / ".latest.json.tmp"
@@ -171,6 +172,16 @@ def validate_resume_target(metadata: dict, target_transitions: int) -> None:
     if target_transitions <= completed:
         raise ValueError(
             f"resume target {target_transitions} must exceed completed transitions {completed}"
+        )
+
+
+def validate_completed_target(metadata: dict, target_transitions: int) -> None:
+    completed = int(metadata["completed_transitions"])
+    recorded_target = int(metadata["target_transitions"])
+    if completed != target_transitions or recorded_target != target_transitions:
+        raise ValueError(
+            "recovery-only export requires a checkpoint completed at the exact "
+            f"attainable target ({completed}/{recorded_target} != {target_transitions})"
         )
 
 

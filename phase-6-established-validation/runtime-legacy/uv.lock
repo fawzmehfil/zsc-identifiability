@@ -1,0 +1,8 @@
+version = 1
+revision = 3
+requires-python = ">=3.9, <3.11"
+
+[[package]]
+name = "stage6-legacy-runtime"
+version = "0.1.0"
+source = { editable = "." }

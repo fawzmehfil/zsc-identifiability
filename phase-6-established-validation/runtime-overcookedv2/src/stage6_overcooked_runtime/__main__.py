@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import os
 import platform
 import subprocess
 from pathlib import Path
@@ -45,6 +46,10 @@ def main():
             from stage6_overcooked_runtime.training import train_official_method
 
             payload = train_official_method(request, project_root)
+    elif operation == "recover_training":
+        from stage6_overcooked_runtime.training import recover_official_training
+
+        payload = recover_official_training(request, project_root)
     elif operation == "collect":
         from stage6_overcooked_runtime.collect import collect_traces
 
@@ -153,6 +158,7 @@ def _validate_environment(payload):
 def _validate_method_ports():
     import numpy as np
 
+    from stage6_overcooked_runtime.checkpointing import validate_completed_target
     from stage6_overcooked_runtime.ported_methods import (
         csp_probe_reward,
         pace_bonus_weight,
@@ -163,6 +169,16 @@ def _validate_method_ports():
     from stage6_overcooked_runtime.resumable_upstream import load_resumable_make_train
 
     similarity = tbs_similarity_matrix(np.asarray([[1.0, 0.2], [0.2, 1.0]]))
+    validate_completed_target(
+        {"completed_transitions": 8, "target_transitions": 8}, 8
+    )
+    recovery_rejects_incomplete = False
+    try:
+        validate_completed_target(
+            {"completed_transitions": 7, "target_transitions": 8}, 8
+        )
+    except ValueError:
+        recovery_rejects_incomplete = True
     checks = {
         "pace_schedule": np.isclose(pace_bonus_weight(0, 300), 0.2)
         and np.isclose(pace_bonus_weight(250, 300), 0.0),
@@ -171,6 +187,7 @@ def _validate_method_ports():
         "csp_reward": np.isclose(float(csp_probe_reward(1.0, 2.0)), 1.2),
         "csp_selector": select_csp_cluster([0, 0], [[0, 0], [2, 2]]) == 0,
         "resumable_source_adapter": callable(load_resumable_make_train()),
+        "recovery_requires_completed_target": recovery_rejects_incomplete,
     }
     checks = {key: bool(value) for key, value in checks.items()}
     return {"passed": all(checks.values()), **checks}
@@ -249,6 +266,14 @@ def _verify_upstreams(request, project_root):
 
 
 def _project_root(request_path):
+    configured = os.environ.get("ZSC_IDENTIFIABILITY_PROJECT_ROOT")
+    if configured:
+        root = Path(configured).resolve()
+        if (root / "pyproject.toml").is_file() and (
+            root / "src/zsc_identifiability"
+        ).is_dir():
+            return root
+        raise ValueError("configured zsc-identifiability project root is invalid")
     for parent in request_path.parents:
         if (parent / "pyproject.toml").is_file() and (parent / "src/zsc_identifiability").is_dir():
             return parent
