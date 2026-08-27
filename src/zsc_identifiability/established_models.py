@@ -16,6 +16,18 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 RuntimeKind = Literal["overcookedv2_py310", "zsceval_py39", "tomzsc_py310"]
 SplitName = Literal["train", "validation", "evaluation"]
+PartnerPoolStage = Literal["screen", "finalist"]
+PartnerCandidateStatus = Literal[
+    "inactive",
+    "pending_screen",
+    "screen_running",
+    "screen_rejected",
+    "pending_finalist",
+    "finalist_running",
+    "finalist_rejected",
+    "eligible",
+    "failed",
+]
 EstablishedMethod = Literal[
     "rnn_ippo",
     "fcp",
@@ -152,11 +164,13 @@ class PartnerGenerationSpec(FrozenEstablishedModel):
     maximum_nonzero_behavior_preferences: int = Field(default=3, ge=1, le=3)
     screen_transitions: int = Field(default=5_000_000, ge=1)
     finalist_transitions: int = Field(default=30_000_000, ge=1)
-    seeds_per_reward_vector: int = Field(default=2, ge=2)
+    seeds_per_reward_vector: Literal[2] = 2
     validation_rollouts: int = Field(default=100, ge=1)
     minimum_correct_delivery_rate: float = Field(default=0.8, ge=0, le=1)
     training_partner_quota: int = Field(default=24, ge=1)
+    training_candidate_cap: int = Field(default=48, ge=1)
     validation_partner_quota: int = Field(default=8, ge=1)
+    validation_candidate_cap: int = Field(default=16, ge=1)
     evaluation_candidate_quota: int = Field(default=32, ge=1)
     evaluation_candidate_cap: int = Field(default=64, ge=32)
     expansion_block_size: int = Field(default=8, ge=1)
@@ -171,8 +185,21 @@ class PartnerGenerationSpec(FrozenEstablishedModel):
             raise ValueError("preference_values must be nonempty and non-zero")
         if self.finalist_transitions < self.screen_transitions:
             raise ValueError("finalist budget cannot be below the screen budget")
-        if self.evaluation_candidate_cap < self.evaluation_candidate_quota:
-            raise ValueError("evaluation candidate cap cannot be below the quota")
+        quotas_and_caps = (
+            (self.training_partner_quota, self.training_candidate_cap),
+            (self.validation_partner_quota, self.validation_candidate_cap),
+            (self.evaluation_candidate_quota, self.evaluation_candidate_cap),
+        )
+        if any(cap < quota for quota, cap in quotas_and_caps):
+            raise ValueError("partner candidate caps cannot be below their quotas")
+        grouping_values = (
+            *(value for pair in quotas_and_caps for value in pair),
+            self.expansion_block_size,
+        )
+        if any(value % self.seeds_per_reward_vector for value in grouping_values):
+            raise ValueError(
+                "partner quotas, caps, and expansion size must preserve complete seed groups"
+            )
         if sum(self.split_proportions) <= 0 or any(value <= 0 for value in self.split_proportions):
             raise ValueError("partner split proportions must be positive")
         return self
@@ -589,8 +616,20 @@ class PartnerCheckpoint(FrozenEstablishedModel):
     layout_id: str
     checkpoint_path: str
     normalized_checkpoint_hash: str
+    checkpoint_content_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     training_state_checkpoint_path: str | None = None
     training_state_checkpoint_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    stage: PartnerPoolStage | None = None
+    requested_transitions: int | None = Field(default=None, ge=1)
+    training_request_path: str | None = None
+    training_request_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    training_result_path: str | None = None
+    training_result_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    competence_request_path: str | None = None
+    competence_request_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    competence_result_path: str | None = None
+    competence_result_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    source_plan_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     transitions: int = Field(ge=0)
     validation_correct_delivery_rate: float = Field(ge=0, le=1)
     competent: bool
@@ -600,6 +639,208 @@ class PartnerCheckpoint(FrozenEstablishedModel):
         has_path = self.training_state_checkpoint_path is not None
         if has_path != (self.training_state_checkpoint_hash is not None):
             raise ValueError("partner training-state checkpoint path and hash must be paired")
+        if (self.training_request_path is None) != (self.training_request_hash is None):
+            raise ValueError("partner training request path and hash must be paired")
+        if (self.training_result_path is None) != (self.training_result_hash is None):
+            raise ValueError("partner training result path and hash must be paired")
+        has_competence_path = self.competence_result_path is not None
+        if has_competence_path != (self.competence_result_hash is not None):
+            raise ValueError("partner competence result path and hash must be paired")
+        if (self.competence_request_path is None) != (self.competence_request_hash is None):
+            raise ValueError("partner competence request path and hash must be paired")
+        return self
+
+
+class PartnerPoolCandidatePlan(FrozenEstablishedModel):
+    candidate_id: str
+    split: SplitName
+    candidate_index: int = Field(ge=0)
+    reward_vector_index: int = Field(ge=0)
+    replicate: int = Field(ge=0)
+    seed: int = Field(ge=0)
+    reward_vector: dict[str, float]
+    reward_vector_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    initially_active: bool
+
+
+class PartnerPoolBuildPlan(FrozenEstablishedModel):
+    schema_version: Literal[1] = 1
+    suite_path: str
+    suite_id: str
+    suite_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    layout_id: str
+    workspace: str
+    project_root: str
+    upstream_commits: dict[str, str]
+    orchestrator_source_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    runtime_source_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    quotas: dict[SplitName, int]
+    caps: dict[SplitName, int]
+    expansion_block_size: int = Field(ge=1)
+    screen_transitions: int = Field(ge=1)
+    finalist_transitions: int = Field(ge=1)
+    validation_rollouts: int = Field(ge=1)
+    minimum_correct_delivery_rate: float = Field(ge=0, le=1)
+    competence_environment_keys: tuple[int, ...]
+    candidates: tuple[PartnerPoolCandidatePlan, ...]
+    plan_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+    @model_validator(mode="after")
+    def validate_pool_build_plan(self) -> PartnerPoolBuildPlan:
+        expected_splits: tuple[SplitName, ...] = ("train", "validation", "evaluation")
+        expected_keys = set(expected_splits)
+        if set(self.quotas) != expected_keys or set(self.caps) != expected_keys:
+            raise ValueError("partner plan quotas and caps must cover exactly all three splits")
+        if any(self.quotas[item] <= 0 for item in expected_splits) or any(
+            self.caps[item] < self.quotas[item] for item in expected_splits
+        ):
+            raise ValueError("partner plan quotas and caps are inconsistent")
+        if len(self.competence_environment_keys) != self.validation_rollouts:
+            raise ValueError("partner plan competence keys do not match the rollout count")
+        identifiers = tuple(item.candidate_id for item in self.candidates)
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("partner build candidate identifiers must be unique")
+        seeds = tuple(item.seed for item in self.candidates)
+        if len(seeds) != len(set(seeds)):
+            raise ValueError("partner build seeds must be globally unique")
+        for split in ("train", "validation", "evaluation"):
+            items = tuple(item for item in self.candidates if item.split == split)
+            if len(items) != self.caps[split]:
+                raise ValueError(f"partner plan does not materialize the {split} cap")
+            if tuple(item.candidate_index for item in items) != tuple(range(self.caps[split])):
+                raise ValueError(f"partner plan {split} candidate order is not contiguous")
+            expected_activation = tuple(
+                index < self.quotas[split] for index in range(self.caps[split])
+            )
+            if tuple(item.initially_active for item in items) != expected_activation:
+                raise ValueError(f"partner plan does not activate the first {split} quota")
+            if any(
+                item.reward_vector_index != item.candidate_index // 2
+                or item.replicate != item.candidate_index % 2
+                for item in items
+            ):
+                raise ValueError(f"partner plan {split} candidates break two-seed grouping")
+            pairs = tuple(zip(items[::2], items[1::2], strict=True))
+            if any(
+                left.reward_vector_hash != right.reward_vector_hash
+                or left.reward_vector != right.reward_vector
+                for left, right in pairs
+            ):
+                raise ValueError(f"partner plan {split} seed pairs use different reward vectors")
+            vector_hashes = tuple(left.reward_vector_hash for left, _right in pairs)
+            if len(vector_hashes) != len(set(vector_hashes)):
+                raise ValueError(f"partner plan {split} repeats a reward-vector pair")
+        return self
+
+
+class PartnerCandidateLedgerEntry(FrozenEstablishedModel):
+    candidate_id: str
+    status: PartnerCandidateStatus
+    active: bool
+    attempts: int = Field(default=0, ge=0)
+    last_error: str | None = None
+    screen_checkpoint: PartnerCheckpoint | None = None
+    finalist_checkpoint: PartnerCheckpoint | None = None
+
+
+class PartnerPoolBuildLedger(FrozenEstablishedModel):
+    schema_version: Literal[1] = 1
+    plan_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    entries: tuple[PartnerCandidateLedgerEntry, ...]
+    frozen_bundle_path: str | None = None
+    frozen_bundle_hash: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    updated_at_utc: str
+
+    @model_validator(mode="after")
+    def validate_frozen_pair(self) -> PartnerPoolBuildLedger:
+        has_path = self.frozen_bundle_path is not None
+        if has_path != (self.frozen_bundle_hash is not None):
+            raise ValueError("frozen bundle path and hash must be supplied together")
+        identifiers = tuple(item.candidate_id for item in self.entries)
+        if len(identifiers) != len(set(identifiers)):
+            raise ValueError("partner ledger candidate identifiers must be unique")
+        return self
+
+
+class PartnerPoolSplitStatus(FrozenEstablishedModel):
+    split: SplitName
+    quota: int
+    cap: int
+    active: int
+    eligible: int
+    rejected: int
+    failed: int
+    pending: int
+    quota_met: bool
+    cap_exhausted: bool
+
+
+class PartnerPoolBuildStatus(FrozenEstablishedModel):
+    schema_version: Literal[1] = 1
+    plan_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    splits: tuple[PartnerPoolSplitStatus, ...]
+    complete: bool
+    frozen: bool
+    unresolved_failures: int = Field(ge=0)
+
+
+class FrozenPartnerPoolManifest(FrozenEstablishedModel):
+    schema_version: Literal[1] = 1
+    suite_id: str
+    suite_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    plan_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    layout_id: str
+    split: SplitName
+    selection_policy: Literal["exact_quota", "all_processed_eligible"]
+    quota: int = Field(ge=1)
+    checkpoints: tuple[PartnerCheckpoint, ...]
+    checkpoint_hashes: tuple[str, ...]
+    frozen_at_utc: str
+
+    @model_validator(mode="after")
+    def validate_frozen_pool(self) -> FrozenPartnerPoolManifest:
+        if len(self.checkpoints) < self.quota:
+            raise ValueError("frozen partner pool does not meet its quota")
+        if len(self.checkpoints) != len(self.checkpoint_hashes):
+            raise ValueError("frozen checkpoint hashes do not align with checkpoints")
+        if any(
+            len(item) != 64 or any(character not in "0123456789abcdef" for character in item)
+            for item in self.checkpoint_hashes
+        ):
+            raise ValueError("frozen checkpoint hashes must be lowercase SHA-256 values")
+        if self.selection_policy == "exact_quota" and len(self.checkpoints) != self.quota:
+            raise ValueError("exact-quota frozen pools must contain exactly their quota")
+        if any(item.split != self.split for item in self.checkpoints):
+            raise ValueError("frozen pool checkpoint split mismatch")
+        if any(
+            checkpoint.checkpoint_content_hash != checkpoint_hash
+            for checkpoint, checkpoint_hash in zip(
+                self.checkpoints, self.checkpoint_hashes, strict=True
+            )
+        ):
+            raise ValueError("frozen pool checkpoint hash does not match its checkpoint")
+        return self
+
+
+class FrozenPartnerPoolBundle(FrozenEstablishedModel):
+    schema_version: Literal[1] = 1
+    suite_id: str
+    suite_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    plan_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    layout_id: str
+    pool_paths: dict[SplitName, str]
+    pool_hashes: dict[SplitName, str]
+    leakage_audit_path: str
+    leakage_audit_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    publication_summary_path: str
+    publication_summary_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    frozen_at_utc: str
+
+    @model_validator(mode="after")
+    def validate_split_maps(self) -> FrozenPartnerPoolBundle:
+        expected = {"train", "validation", "evaluation"}
+        if set(self.pool_paths) != expected or set(self.pool_hashes) != expected:
+            raise ValueError("frozen partner bundle must contain all three split pools")
         return self
 
 

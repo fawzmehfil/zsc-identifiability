@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 from pydantic import ValidationError
 
@@ -35,12 +36,29 @@ from zsc_identifiability.established_models import (
     EstablishedPolicyEvaluation,
     EstablishedTrainingManifest,
     EstablishedValidationSuite,
+    FrozenPartnerPoolBundle,
     MatchedPopulationAudit,
     MatchingSpec,
+    PartnerPoolBuildLedger,
+    PartnerPoolBuildPlan,
+    PartnerPoolBuildStatus,
     PartnerPoolManifest,
     ResponseLibrary,
+    SplitName,
     UpstreamAudit,
     load_established_suite_file,
+)
+from zsc_identifiability.established_partner_pools import (
+    freeze_partner_pools as _freeze_partner_pools,
+)
+from zsc_identifiability.established_partner_pools import (
+    get_partner_pool_status as _get_partner_pool_status,
+)
+from zsc_identifiability.established_partner_pools import (
+    prepare_partner_pool_build as _prepare_partner_pool_build,
+)
+from zsc_identifiability.established_partner_pools import (
+    run_partner_pool_build as _run_partner_pool_build,
 )
 from zsc_identifiability.established_partners import (
     generate_partner_pool_manifest,
@@ -294,6 +312,49 @@ def generate_partner_population(
         split,  # type: ignore[arg-type]
         checkpoints,
     )
+
+
+def prepare_partner_pool_build(
+    suite: EstablishedValidationSuite,
+    layout: str,
+    workspace: str | Path,
+    *,
+    suite_path: str | Path,
+    project_root: str | Path | None = None,
+) -> PartnerPoolBuildPlan:
+    return _prepare_partner_pool_build(
+        suite,
+        suite_path=suite_path,
+        layout=layout,
+        workspace=workspace,
+        project_root=project_root,
+    )
+
+
+def run_partner_pool_build(
+    plan: PartnerPoolBuildPlan | str | Path,
+    splits: tuple[str, ...] = ("train", "validation", "evaluation"),
+    workers: int = 1,
+) -> PartnerPoolBuildLedger:
+    if any(item not in {"train", "validation", "evaluation"} for item in splits):
+        raise ValueError("partner-pool run contains an invalid split")
+    return _run_partner_pool_build(
+        plan,
+        splits=tuple(cast(SplitName, item) for item in splits),
+        workers=workers,
+    )
+
+
+def get_partner_pool_status(
+    plan: PartnerPoolBuildPlan | str | Path,
+) -> PartnerPoolBuildStatus:
+    return _get_partner_pool_status(plan)
+
+
+def freeze_partner_pools(
+    plan: PartnerPoolBuildPlan | str | Path,
+) -> FrozenPartnerPoolBundle:
+    return _freeze_partner_pools(plan)
 
 
 def build_response_library(

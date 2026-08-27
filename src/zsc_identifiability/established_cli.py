@@ -23,9 +23,19 @@ from zsc_identifiability.established_models import (
     EstablishedTrainingManifest,
     MatchedPopulationAudit,
     PartnerCheckpoint,
+    PartnerPoolBuildStatus,
     ResponseLibrary,
+    SplitName,
     TraceManifest,
     load_established_suite_file,
+)
+from zsc_identifiability.established_partner_pools import (
+    freeze_partner_pools,
+    get_partner_pool_status,
+    load_partner_pool_build_plan,
+    partner_seed,
+    prepare_partner_pool_build,
+    run_partner_pool_build,
 )
 from zsc_identifiability.established_partners import (
     generate_partner_pool_manifest,
@@ -84,6 +94,34 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
         "--resume-index",
         help="screen checkpoint index used to continue finalist jobs to their total budget",
     )
+
+    pools = subcommands.add_parser(
+        "partner-pools", help="prepare, resume, inspect, or freeze partner pools"
+    )
+    pool_commands = pools.add_subparsers(dest="partner_pools_command", required=True)
+    pool_prepare = pool_commands.add_parser(
+        "prepare", help="write an immutable deterministic build plan without training"
+    )
+    pool_prepare.add_argument("--suite", required=True)
+    pool_prepare.add_argument("--layout", default="demo_cook_simple")
+    pool_prepare.add_argument("--workspace", required=True)
+    pool_prepare.add_argument("--project-root")
+    pool_run = pool_commands.add_parser("run", help="run or resume the planned queue")
+    pool_run.add_argument("--plan", required=True)
+    pool_run.add_argument(
+        "--splits",
+        nargs="+",
+        choices=("train", "validation", "evaluation"),
+        default=("train", "validation", "evaluation"),
+    )
+    pool_run.add_argument("--workers", type=int, default=1)
+    pool_run.add_argument("--freeze-on-success", action="store_true")
+    pool_status = pool_commands.add_parser("status", help="inspect a build without training")
+    pool_status.add_argument("--plan", required=True)
+    pool_freeze = pool_commands.add_parser(
+        "freeze", help="verify and immutably publish completed pools"
+    )
+    pool_freeze.add_argument("--plan", required=True)
 
     responses = subcommands.add_parser(
         "build-responses", help="freeze the empirical response-loss matrix"
@@ -210,6 +248,8 @@ def dispatch_established(args: argparse.Namespace) -> int:
         return 0 if report["runtime_ready"] and report["scientific_analysis_ready"] else 4
     if command == "train-partners":
         return _partner_jobs(args, root)
+    if command == "partner-pools":
+        return _partner_pool_command(args, root)
     if command == "build-responses":
         suite = load_established_suite_file(args.suite)
         values = _read_object(args.values)
@@ -363,7 +403,7 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
     for vector_index, vector in enumerate(selected, start=args.offset):
         vector_hash = reward_vector_hash(vector)
         for replicate in range(suite.partner_generation.seeds_per_reward_vector):
-            seed = 41001 + 2 * vector_index + replicate
+            seed = partner_seed(cast(SplitName, args.split), vector_index, replicate)
             job_id = f"{args.split}-{vector_hash[:12]}-seed{seed}-{args.gate}"
             job_dir = output / "jobs" / job_id
             payload = {
@@ -488,6 +528,51 @@ def _partner_jobs(args: argparse.Namespace, root: Path) -> int:
         _write_json(output / f"{args.split}-{args.gate}-pool-manifest.json", pool.to_dict())
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0
+
+
+def _partner_pool_command(args: argparse.Namespace, root: Path) -> int:
+    operation = args.partner_pools_command
+    if operation == "prepare":
+        suite = load_established_suite_file(args.suite)
+        plan = prepare_partner_pool_build(
+            suite,
+            suite_path=args.suite,
+            layout=args.layout,
+            workspace=args.workspace,
+            project_root=root,
+        )
+        print(json.dumps(plan.to_dict(), indent=2, sort_keys=True))
+        return 0
+    plan = load_partner_pool_build_plan(args.plan)
+    if operation == "run":
+        ledger = run_partner_pool_build(
+            plan,
+            splits=tuple(cast(SplitName, item) for item in args.splits),
+            workers=args.workers,
+            freeze_on_success=args.freeze_on_success,
+        )
+        status = get_partner_pool_status(plan, ledger=ledger)
+        print(json.dumps(status.to_dict(), indent=2, sort_keys=True))
+        return _partner_pool_status_code(status)
+    if operation == "status":
+        status = get_partner_pool_status(plan)
+        print(json.dumps(status.to_dict(), indent=2, sort_keys=True))
+        return _partner_pool_status_code(status)
+    if operation == "freeze":
+        bundle = freeze_partner_pools(plan)
+        print(json.dumps(bundle.to_dict(), indent=2, sort_keys=True))
+        return 0
+    raise ValueError(f"unknown partner-pool command: {operation!r}")
+
+
+def _partner_pool_status_code(status: PartnerPoolBuildStatus) -> int:
+    if status.complete:
+        return 0
+    if status.unresolved_failures:
+        return 2
+    if any(item.cap_exhausted and not item.quota_met for item in status.splits):
+        return 3
+    return 4
 
 
 def _match(args: argparse.Namespace) -> int:
