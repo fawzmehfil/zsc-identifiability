@@ -15,7 +15,13 @@ import numpy as np
 from hydra import compose, initialize_config_dir
 from omegaconf import OmegaConf
 
+from stage6_overcooked_runtime.checkpointing import (
+    restore_training_checkpoint,
+    save_training_checkpoint,
+    validate_resume_target,
+)
 from stage6_overcooked_runtime.events import BehaviorPreferenceWrapper
+from stage6_overcooked_runtime.resumable_upstream import pinned_ippo_source_hash
 
 
 def train_official_method(request, project_root):
@@ -33,13 +39,14 @@ def train_official_method(request, project_root):
         )
     upstream = Path(project_root) / request["upstreams"]["overcookedv2"]["path"]
     config_dir = upstream / "experiments/overcooked_v2_experiments/ppo/config"
+    schedule_target = int(payload.get("schedule_target_transitions", payload["transitions"]))
     overrides = [
         f"+experiment={experiment}",
         f"+env={payload['layout_id']}",
         f"SEED={int(payload['seed'])}",
         "NUM_SEEDS=1",
-        f"model.TOTAL_TIMESTEPS={int(payload['transitions'])}",
-        f"model.REW_SHAPING_HORIZON={int(payload['transitions']) // 2}",
+        f"model.TOTAL_TIMESTEPS={schedule_target}",
+        f"model.REW_SHAPING_HORIZON={schedule_target // 2}",
         f"model.LR={float(payload['learning_rate'])}",
         f"model.ENT_COEF={float(payload['entropy_coefficient'])}",
         "NUM_CHECKPOINTS=3",
@@ -64,6 +71,7 @@ def train_official_method(request, project_root):
 
     import jaxmarl
     import wandb
+
     original_make = jaxmarl.make
     preferences = payload.get("behavior_preferences", {})
 
@@ -79,50 +87,151 @@ def train_official_method(request, project_root):
         config=json.loads(json.dumps(config, default=str)),
         reinit=True,
     )
+    configuration_hash = _configuration_hash(config)
+    resume_path = payload.get("resume_checkpoint")
+    resumed = resume_path is not None
+    initial_runner_state = None
+    completed = 0
+    parent_checkpoint_hash = None
+    resume_parent_hash = None
+    if resumed:
+        template = _single_run(config, initialize_only=True)
+        template = jax.block_until_ready(template)
+        initial_runner_state, resume_metadata, resolved_resume, parent_checkpoint_hash = (
+            restore_training_checkpoint(
+                resume_path,
+                expected={
+                    "suite_id": request["suite_id"],
+                    "method_id": method,
+                    "layout_id": payload["layout_id"],
+                    "seed": int(payload["seed"]),
+                    "configuration_hash": configuration_hash,
+                    "upstream_commit": request["upstreams"]["overcookedv2"]["commit"],
+                    "upstream_source_hash": pinned_ippo_source_hash(),
+                },
+                target_state=template["runner_state"],
+            )
+        )
+        resume_parent_hash = parent_checkpoint_hash
+        validate_resume_target(resume_metadata, int(payload["transitions"]))
+        completed = int(resume_metadata["completed_transitions"])
     try:
-        result = _single_run(config)
-        result = jax.block_until_ready(result)
+        result = None
+        checkpoint_paths = []
+        checkpoint_hashes = {}
+        checkpoint_interval = int(payload.get("checkpoint_interval", 1_000_000))
+        transitions_per_update = int(config["model"]["NUM_STEPS"]) * int(
+            config["model"]["NUM_ENVS"]
+        )
+        attainable_target = (
+            int(payload["transitions"]) // transitions_per_update
+        ) * transitions_per_update
+        if attainable_target <= completed:
+            raise ValueError("requested target does not contain a new complete PPO update")
+        while completed < attainable_target:
+            chunk_target = min(
+                attainable_target,
+                (
+                    (((completed // checkpoint_interval) + 1) * checkpoint_interval)
+                    // transitions_per_update
+                )
+                * transitions_per_update,
+            )
+            if chunk_target <= completed:
+                chunk_target = min(attainable_target, completed + transitions_per_update)
+            result = _single_run(
+                config,
+                initial_runner_state=initial_runner_state,
+                completed_transitions=completed,
+                stop_transitions=chunk_target,
+            )
+            result = jax.block_until_ready(result)
+            initial_runner_state = result["runner_state"]
+            completed = chunk_target
+            metadata = {
+                "suite_id": request["suite_id"],
+                "method_id": method,
+                "layout_id": payload["layout_id"],
+                "seed": int(payload["seed"]),
+                "component_id": "task_policy",
+                "completed_transitions": completed,
+                "target_transitions": attainable_target,
+                "configuration_hash": configuration_hash,
+                "dataset_hashes": tuple(payload.get("dataset_hashes", ())),
+                "upstream_commit": request["upstreams"]["overcookedv2"]["commit"],
+                "upstream_source_hash": pinned_ippo_source_hash(),
+                "device": _device_description(),
+                "parent_checkpoint_hash": parent_checkpoint_hash,
+                "exact_continuation": all(device.platform == "cpu" for device in jax.devices()),
+            }
+            checkpoint_path, checkpoint_hash = save_training_checkpoint(
+                output / "training-state",
+                initial_runner_state,
+                metadata,
+            )
+            checkpoint_paths.append(str(checkpoint_path))
+            checkpoint_hashes[str(checkpoint_path)] = checkpoint_hash
+            parent_checkpoint_hash = checkpoint_hash
     finally:
         jaxmarl.make = original_make
         wandb_run.finish()
-    checkpoints = result["runner_state"][1]
-    run_count = jax.tree_util.tree_flatten(checkpoints)[0][0].shape[0]
-    checkpoint_count = int(config["NUM_CHECKPOINTS"])
+    if result is None:
+        raise RuntimeError("training completed without producing a runner state")
+    train_states = result["runner_state"][0]
+    registered_checkpoints = result["runner_state"][1]
+    run_count = jax.tree_util.tree_flatten(train_states.params)[0][0].shape[0]
     written = []
     parameter_hashes = {}
     for run_number in range(run_count):
-        for checkpoint in range(checkpoint_count):
-            params = jax.tree_util.tree_map(
-                lambda value, run=run_number, item=checkpoint: value[run][item],
-                checkpoints,
+        checkpoint_count = jax.tree_util.tree_flatten(registered_checkpoints)[0][0].shape[1]
+        for checkpoint_number in range(checkpoint_count):
+            checkpoint_params = jax.tree_util.tree_map(
+                lambda value, run=run_number, checkpoint=checkpoint_number: value[run, checkpoint],
+                registered_checkpoints,
             )
             _store_checkpoint(
                 output,
                 config,
-                params,
+                checkpoint_params,
                 run_number=run_number,
-                checkpoint=checkpoint,
-                final=checkpoint == checkpoint_count - 1,
+                checkpoint=checkpoint_number,
+                final=False,
             )
-            checkpoint_name = (
-                "ckpt_final"
-                if checkpoint == checkpoint_count - 1
-                else f"ckpt_{checkpoint}"
-            )
-            written.append(str(output / f"run_{run_number}" / checkpoint_name))
-            parameter_hashes[written[-1]] = _parameter_tree_hash(params)
+            checkpoint_path = output / f"run_{run_number}" / f"ckpt_{checkpoint_number}"
+            written.append(str(checkpoint_path))
+            parameter_hashes[str(checkpoint_path)] = _parameter_tree_hash(checkpoint_params)
+        params = jax.tree_util.tree_map(
+            lambda value, run=run_number: value[run],
+            train_states.params,
+        )
+        _store_checkpoint(
+            output,
+            config,
+            params,
+            run_number=run_number,
+            checkpoint=0,
+            final=True,
+        )
+        written.append(str(output / f"run_{run_number}" / "ckpt_final"))
+        parameter_hashes[written[-1]] = _parameter_tree_hash(params)
     return {
         "method_id": method,
         "layout_id": payload["layout_id"],
         "seed": int(payload["seed"]),
         "requested_transitions": int(payload["transitions"]),
-        "completed_transitions": int(payload["transitions"]),
+        "completed_transitions": completed,
         "checkpoint_paths": written,
         "checkpoint_parameter_hashes": parameter_hashes,
         "device": _device_description(),
-        "configuration_hash": hashlib.sha256(
-            json.dumps(config, sort_keys=True, default=str).encode()
-        ).hexdigest(),
+        "configuration_hash": configuration_hash,
+        "resumed": resumed,
+        "resume_checkpoint_path": None if resume_path is None else str(resume_path),
+        "parent_checkpoint_hash": resume_parent_hash,
+        "training_state_paths": checkpoint_paths,
+        "training_state_hashes": checkpoint_hashes,
+        "policy_kind": "ppo",
+        "component_transitions": {"task_policy": completed},
+        "aggregate_training_transitions": completed,
     }
 
 
@@ -136,6 +245,22 @@ def _device_description():
             }
         )
     )
+
+
+def _configuration_hash(config):
+    portable = copy.deepcopy(config)
+    portable.pop("RUN_BASE_DIR", None)
+    root = Path(__file__).resolve().parent
+    local_sources = hashlib.sha256()
+    for name in ("checkpointing.py", "resumable_upstream.py", "training.py"):
+        path = root / name
+        local_sources.update(name.encode())
+        local_sources.update(path.read_bytes())
+    payload = {
+        "config": portable,
+        "runtime_source_hash": local_sources.hexdigest(),
+    }
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, default=str).encode()).hexdigest()
 
 
 def _parameter_tree_hash(params):
@@ -177,7 +302,14 @@ def _json_safe(value):
     return value
 
 
-def _single_run(config):
+def _single_run(
+    config,
+    *,
+    initial_runner_state=None,
+    completed_transitions=0,
+    stop_transitions=None,
+    initialize_only=False,
+):
     """Invoke the pinned official PPO core without its unused BC import.
 
     The upstream ``ppo.run`` module imports the optional ``overcooked_ai_py``
@@ -195,7 +327,6 @@ def _single_run(config):
     sys.modules.setdefault(
         "models", importlib.import_module("overcooked_v2_experiments.ppo.models")
     )
-    from overcooked_v2_experiments.ppo.ippo import make_train
     from overcooked_v2_experiments.ppo.policy import PPOParams
     from overcooked_v2_experiments.ppo.utils.store import load_all_checkpoints
     from overcooked_v2_experiments.ppo.utils.utils import get_num_devices
@@ -205,6 +336,9 @@ def _single_run(config):
     # the exact loss checks in smoke tests, but disable the very expensive JAX
     # debug re-execution path for registered training runs.
     jax.config.update("jax_debug_nans", False)
+    from stage6_overcooked_runtime.resumable_upstream import load_resumable_make_train
+
+    make_train = load_resumable_make_train()
 
     num_runs = int(config["NUM_SEEDS"])
     population = None
@@ -217,8 +351,24 @@ def _single_run(config):
         population = population.params
 
     rngs = jax.random.split(jax.random.PRNGKey(int(config["SEED"])), num_runs)
-    train = jax.jit(make_train(copy.deepcopy(config), population_config=population_config))
+    transitions_per_update = int(config["model"]["NUM_STEPS"]) * int(config["model"]["NUM_ENVS"])
+    stop = int(config["model"]["TOTAL_TIMESTEPS"] if stop_transitions is None else stop_transitions)
+    remaining_updates = (stop - int(completed_transitions)) // transitions_per_update
+    if remaining_updates <= 0 and not initialize_only:
+        raise ValueError("training chunk does not contain a complete PPO update")
+    update_offset = int(completed_transitions) // transitions_per_update
+    train = jax.jit(
+        make_train(
+            copy.deepcopy(config),
+            update_step_offset=update_offset,
+            update_step_num_overwrite=remaining_updates,
+            population_config=population_config,
+            initialize_only=initialize_only,
+        )
+    )
     extra = {} if population is None else {"population": population}
+    if initial_runner_state is not None:
+        extra["initial_runner_state"] = initial_runner_state
     return mini_batch_pmap(train, get_num_devices())(rngs, **extra)
 
 
