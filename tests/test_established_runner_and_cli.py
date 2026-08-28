@@ -7,7 +7,7 @@ from zsc_identifiability.cli import main
 from zsc_identifiability.established_runner import execute_established_audit
 
 ROOT = Path(__file__).resolve().parents[1]
-SUITE = ROOT / "phase-6-established-validation/suites/canonical.json"
+SUITE = ROOT / "phase-6-established-validation/suites/full-scale-overcookedv2.json"
 
 
 def test_established_validate_distinguishes_valid_schema_from_missing_runtime(

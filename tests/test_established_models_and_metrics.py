@@ -50,7 +50,7 @@ from zsc_identifiability.established_statistics import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-SUITE_PATH = ROOT / "phase-6-established-validation/suites/canonical.json"
+SUITE_PATH = ROOT / "phase-6-established-validation/suites/full-scale-overcookedv2.json"
 
 
 def test_canonical_stage6_suite_locks_protocol() -> None:

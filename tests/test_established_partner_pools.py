@@ -28,7 +28,7 @@ from zsc_identifiability.established_partner_pools import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_SUITE = ROOT / "phase-6-established-validation/suites/canonical.json"
+CANONICAL_SUITE = ROOT / "phase-6-established-validation/suites/full-scale-overcookedv2.json"
 
 
 def _sha(value: str) -> str:
