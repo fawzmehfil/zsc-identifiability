@@ -2,47 +2,42 @@
 
 ## Current verdict
 
-**Pending established-environment execution.**
+**Pending official-checkpoint execution.**
 
-The Stage 6 implementation and compact verification suite pass. This is an
-experiment platform, not yet an empirical OvercookedV2 finding.
+The laptop-feasible inference platform is implemented and verified. This is not
+yet an empirical established-environment result.
 
-## Implemented gates
+## Implemented engineering platform
 
-- Full upstream pins and isolated runtime manifests.
-- Natural pot-content commitment detection.
-- Pre-commitment, eventual, and censored-history extraction.
-- Frozen approximate response-loss library and conflict audit.
-- Cross-fitted event and GRU DRI estimation.
-- Identity-information versus response-information separation.
-- Sparse behavior-preference vectors and leakage-safe hash splits.
-- Frozen mixed-integer matching with confirmatory significance checks.
-- Ordinary task-option controllers and restricted empirical frontier.
-- Leave-one-reward-vector-out regression and hierarchical bootstrap utilities.
-- Explicit incomplete, redesign, stop, evaluation-only, and reopen-Phase-5
-  verdict paths.
-- PACE auxiliary, PACE-style, TBS-style, and CSP-style OvercookedV2 ports with
-  frozen-partner sampling and deployment-only policy factories.
-- Exact update-boundary continuation, multi-component pipeline resumption,
-  compact exports, and best-validation checkpoint retention.
-- Deterministic frozen partner-pool planning, resumable screen-to-finalist queue,
-  adaptive eight-candidate expansion, stage-boundary ledger publication,
-  completed-state recovery export, and immutable leakage-audited freezing.
+- The canonical suite forbids partner and ZSC-policy training.
+- Asset selection is locked to the complete official benchmark YAMLs.
+- Minimal asset synchronization is pinned, hashed, duplicate-audited, and
+  usable offline.
+- All 50 partners retain their matching co-trained response counterpart.
+- Six official methods retain five published seeds in both layouts.
+- Rollouts are CPU-only, bounded to four workers, atomic, compressed, and
+  resumable at partner-policy shard boundaries.
+- Historical seat-0 integration smokes pass in `random3_m` and
+  `small_corridor`; the canonical two-seat parity gate remains pending the
+  explicit smoke run after asset synchronization.
+- Response conflict, pairwise event/GRU DRI, intervention traces, and nested
+  leave-one-HSP-scheme-out regression are implemented.
+- The retired custom partner run produced zero checkpoints; its files are
+  preserved and cannot be reused by the official audit.
 
 ## Open scientific gates
 
-The memo remains pending until independently trained partners produce at least
-two response-conflicting classes, a frozen matched population survives untouched
-confirmation, an ordinary task option changes DRI before commitment, estimator
-agreement passes, DRI adds held-out value, and the effect reproduces on the wide
-layout or official ZSC-Eval cross-check.
+The final verdict requires complete official rollouts. At least 12 competent
+primary partners, two robust response-conflicting classes, reliable commitment,
+estimator calibration, and complete exclusion reporting must pass before the
+primary analysis is interpreted.
 
-The method-port and partner-pool orchestration engineering gates are complete.
-The next gate is execution of the registered queue to generate competent,
-response-conflicting frozen partner pools, followed by the response library and
-registered experiments. No result from the smoke fixtures or mocked queue tests
-is treated as an empirical paper claim.
+The top-paper framing requires DRI to improve scheme-held-out prediction beyond
+the registered controls, reproduce directionally in `small_corridor`, and
+either identify a qualifying ordinary intervention or expose a robust inability
+of official methods to exploit one.
 
-If those conditions pass and existing methods handle the diagnostic action, the
-verdict is `complete_evaluation_only`. Phase 5 reopens only if a robust active gap
-survives all registered controls in two layouts.
+Possible final verdicts are `continue_top_paper_package`,
+`complete_evaluation_only`, `complete_measurement_only`, `redesign`, and `stop`.
+Negative results are retained rather than converted into an unregistered method
+claim.

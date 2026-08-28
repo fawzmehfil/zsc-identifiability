@@ -5,9 +5,8 @@ agent can obtain decision-useful evidence about an unfamiliar partner before an
 irreversible coordination choice. Phase 2 supplies finite-game solvers and
 metrics. Phase 3 supplies matched populations that vary timely identifiability
 while holding standard controls fixed. Stage 4 adds a controlled learned-agent
-audit over those exact populations. Stage 6 adds an isolated, pinned
-OvercookedV2 validation pipeline for testing whether the same measurement is
-useful in an established environment.
+audit over those exact populations. Stage 6 adds an inference-only audit of the
+pinned official ZSC-Eval benchmark and pretrained policy pool.
 
 Stage 4's confirmatory audit is complete. Existing methods reach the exact active
 oracle in the canonical games, the preregistered strict ranking-reversal count is
@@ -15,10 +14,13 @@ zero, and the current scientific verdict is `continue_without_repair`. The next
 research step is established-environment validation rather than a new repair
 algorithm.
 
-The Stage 6 core environment and measurement platform is implemented and
-verified, but its method-specific TBS/PACE/CSP ports and large partner and
-confirmatory matrices remain open. No established-environment scientific result
-is claimed yet.
+The Stage 6 v2 platform is implemented. Historical seat-0 integration smokes
+pass on both layouts; the canonical two-seat parity gate runs after the locked
+assets are synchronized. The audit uses 50 externally selected partners and six
+published ZSC method families without policy training. The complete rollout
+matrix remains open, so no established-environment scientific result is claimed
+yet. The previous custom OvercookedV2 path remains an optional full-compute
+extension.
 
 The exact package uses finite, static hidden partner modes and belief-state dynamic
 programming. Neural baselines are isolated behind the optional `learning` extra;
@@ -40,8 +42,9 @@ uv run --extra learning zsc-identifiability learn validate \
 uv run pytest
 uv run ruff check .
 uv run mypy src
-uv run zsc-identifiability established validate \
-  --suite phase-6-established-validation/suites/canonical.json
+uv run --extra established zsc-identifiability established official prepare \
+  --suite phase-6-established-validation/suites/canonical.json \
+  --workspace phase-6-established-validation/runs/official-checkpoints
 ```
 
 The Phase 3 canonical suite generates 94 exact populations across two benchmark

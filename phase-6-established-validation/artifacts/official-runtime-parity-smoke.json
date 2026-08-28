@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "audit_mode": "official_checkpoint_evaluation",
+  "verification_scope": "historical seat-0 integration smoke on both layouts",
+  "canonical_two-seat_smoke_status": "pending official asset synchronization",
+  "layouts": {
+    "random3_m": {
+      "deterministic_replay_equal": true,
+      "observation_action_reward_hash": "bf33c47320ba13aa08dc79972d250931394f1feb179d4331cea835365b420e98",
+      "reference_checkpoint_hash": "1e16f9e62800f9146e72d7e669c3692436c795df8ae1e725afa024984625f526"
+    },
+    "small_corridor": {
+      "deterministic_replay_equal": true,
+      "observation_action_reward_hash": "23401848f547ec3f2de86b857c77b4d8a5fe228ed599a98cad720c6845e12d74",
+      "reference_checkpoint_hash": "e2ba2eff015a1d5b2e530fcae4901032d5b78c2f850a3fa219c326a360cea290"
+    }
+  },
+  "device": "cpu",
+  "policy_training_performed": false,
+  "official_source_commit": "f940869afc42b688332a385892d8dbb57a190f95",
+  "policy_pool_revision": "a39b45a326c6fb9c4aee79550903a7de702c6974",
+  "policy_loader": "zsceval.algorithms.r_mappo.algorithm.R_MAPPOPolicy",
+  "environment_class": "official_zsceval_overcooked",
+  "runtime": {
+    "python": "3.9.6",
+    "torch": "2.2.2",
+    "numpy": "1.23.5",
+    "gym": "0.22.0"
+  },
+  "passed": true
+}

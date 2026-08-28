@@ -1,5 +1,10 @@
 # Partner Generation and Population Freezing
 
+This document describes the optional full-compute extension configured by
+`suites/full-scale-overcookedv2.json`. The canonical v2 study does not generate
+or train partners: it retains every partner listed in the pinned official
+ZSC-Eval benchmark YAML files.
+
 Behavior-preferring partners retain the original shared task reward and add at
 most three nonzero event preferences. Registered events cover ingredient type,
 counter use, pot and cooking activity, plates and delivery, recipe-button use,

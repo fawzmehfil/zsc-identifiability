@@ -1,115 +1,64 @@
 # Reproducibility
 
-## Pinned sources
+## Locked sources
 
-| Source | Commit |
+| Source | Revision |
 |---|---|
-| OvercookedV2 experiments | `5ce1707cf31c1c115e6f6ba96db7bc9cc80a850e` |
 | ZSC-Eval | `f940869afc42b688332a385892d8dbb57a190f95` |
-| ToMZSC | `a4b41d53fc77e452cdfca8edc95fd153d51d13cd` |
+| Official ZSC-Eval policy pool | `a39b45a326c6fb9c4aee79550903a7de702c6974` |
 
-Bootstrap verifies the complete checked-out hash and origin URL. Runtime requests
-repeat the expected hash and refuse to execute against another checkout.
-The OvercookedV2 and ToMZSC runtimes lock JAX 0.4.38 with its compatible Flax
-stack; the legacy ZSC-Eval asset audit remains isolated on Python 3.9.
+Both sources use the MIT license. The asset lock records every selected path,
+revision, size when known, file hash, and normalized tensor hash. Duplicate
+weights remain visible and cannot count as independent seeds.
 
-## Compact validation
+## Verify the implementation
 
 ```bash
-uv sync --extra established --dev
+uv sync --all-extras --group dev
 uv run pytest
-uv run ruff check src tests phase-6-established-validation/runtime-overcookedv2/src
+uv run ruff check .
 uv run mypy src
-uv run zsc-identifiability established validate \
-  --suite phase-6-established-validation/suites/canonical.json
+uv lock --check
+uv lock --project phase-6-established-validation/runtime-zsceval --check
+git diff --check
 ```
 
-`established validate` may return exit code 4 before external runtimes are
-bootstrapped. The JSON still distinguishes schema validity and analytical DRI
-calibration from missing external assets.
-
-## Artifact boundary
-
-Committed files contain schemas, suite configuration, compact manifests, tables,
-and final PDF/PNG figures. The following stay untracked:
-
-- `.external/` upstream repositories;
-- isolated `.venv/` directories;
-- checkpoints and optimizer state;
-- raw trace JSONL and rollout data;
-- policy pools, logs, and videos.
-
-Every runtime request and result carries a schema version and content hash. Trace
-manifests record checkpoint hashes, partner identifiers, evaluation keys, and
-whether post-commitment evidence was excluded.
-
-## Frozen partner-pool queue
-
-Create the deterministic plan first. This command performs validation and file
-generation only:
+The isolated runtime is synchronized separately:
 
 ```bash
-uv run zsc-identifiability established partner-pools prepare \
-  --suite phase-6-established-validation/suites/canonical.json \
-  --layout demo_cook_simple \
-  --workspace phase-6-established-validation/runs/partner-pools/demo-cook-simple
+uv sync --project phase-6-established-validation/runtime-zsceval
 ```
 
-The queue is safe to detach and invoke again after interruption. The transition
-targets are totals, and completed hash-valid work is skipped:
+Its pinned compatibility stack uses Python 3.9, PyTorch 2.2, NumPy 1.23, and
+Gym 0.22. The main package remains on Python 3.12.
 
-```bash
-nohup caffeinate -is uv run zsc-identifiability established partner-pools run \
-  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json \
-  --workers 1 \
-  --freeze-on-success \
-  > phase-6-established-validation/runs/partner-pools/demo-cook-simple/queue.log 2>&1 &
-```
+## Resumption and storage
 
-Read-only status inspection:
+The rollout plan partitions work at partner-policy shard boundaries. A ledger
+is atomically replaced after each boundary. A completed shard is skipped only
+when its result file still matches the recorded SHA-256 hash. An interrupted
+`running` entry becomes pending on resume; failures are retained and do not
+erase completed work.
 
-```bash
-uv run zsc-identifiability established partner-pools status \
-  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
-```
+CPU workers are capped at four and default to two. Every worker disables CUDA
+and limits numerical-library threads. Result shards are gzip-compressed. Full
+reference observations are retained only for fixed evidence policies; method
+evaluation retains compact visible event histories.
 
-Exit code `2` identifies unresolved job failures, `3` means a split exhausted
-its cap without meeting quota, and `4` means the requested subset is valid but
-the complete three-split pool is not ready. A successful immutable freeze
-returns `0`.
+Raw checkpoints, source checkouts, rollout shards, logs, and measurement-model
+states remain ignored. Committed artifacts contain the suite, asset hashes,
+compact tables, reports, and publication figures.
 
-## Resumable training
+## Statistical contract
 
-`established train-method` accepts `--resume` with either a full update-boundary
-checkpoint or a multi-component `pipeline-state.json`. The target transition
-count is total, never additive. Resume validates the method, layout, seed,
-partner-pool hashes, architecture, hyperparameters, suite, upstream commit, and
-local runner source before restoring optimizer, environment, recurrent,
-partner-index, schedule, auxiliary-model, and PRNG state.
+All response-conflicting partner pairs are analyzed. Mid/final checkpoints from
+one HSP scheme are grouped together. The primary prediction model holds out
+every pair involving one HSP scheme and selects ridge strength using nested
+scheme-level folds. BR-Prox is a secondary outcome and is never used to predict
+response-library regret.
 
-TBS additionally requires `--cross-play-values`. TBS and CSP accept
-`--compute-allocation per-specialist|split-total`; reports retain both component
-and aggregate transition counts. A resumed multi-component pipeline verifies
-completed artifacts by content hash and skips them.
-
-Full checkpoints remain untracked. Ported methods retain the latest two and the
-best fixed-key validation snapshot. `latest.json` and `best.json` are published
-only after the new state has been restored and hash-verified. Compact deployment
-artifacts contain frozen inference components only.
-
-The low-level compatibility command can still continue qualifying partner
-screens manually:
-
-```bash
-uv run zsc-identifiability established train-partners \
-  --suite phase-6-established-validation/suites/canonical.json \
-  --split train \
-  --layout demo_cook_simple \
-  --gate finalist \
-  --resume-index SCREEN_CHECKPOINT_INDEX.json \
-  --output phase-6-established-validation/runs/partner-finalists \
-  --execute
-```
-
-Notebook output is not an accepted source for a reported number. Compact results
-must be reproduced by a registered CLI command.
+Sensitivity analyses retain every official partner and report any exclusions.
+They vary response adequacy, estimator family, deployment stochasticity,
+commitment definition, checkpoint stage, player seat, competence filtering,
+identity information, and prefix-TV substitution. Null and negative folds are
+reported.

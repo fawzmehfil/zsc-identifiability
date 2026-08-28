@@ -1,6 +1,21 @@
-# Established-Environment Baselines
+# Official-Checkpoint Baselines
 
-The central single-encounter comparison registers recurrent IPPO, FCP,
+The canonical audit evaluates the official FCP, MEP, TrajeDi, HSP, COLE, and
+E3T checkpoints. Each method contributes five published seeds on both layouts.
+Inference uses each checkpoint's official architecture and stochastic action
+sampling; neither weights nor hyperparameters are changed. FCP, MEP, TrajeDi,
+and HSP are recurrent on both layouts. E3T is feed-forward on both layouts;
+COLE is feed-forward on `random3_m` and recurrent on `small_corridor`, matching
+the pinned evaluator scripts. Exact or parameter-level duplicates remain
+reported but cannot count as independent seeds.
+
+The fixed FCP seed-1 greedy policy is also the preregistered passive evidence
+collector. This role was fixed before measuring DRI. Method-induced DRI is
+estimated from compact visible histories produced by each official method.
+
+## Optional full-compute extension
+
+The preserved full-compute suite registers recurrent IPPO, FCP,
 Other-Play, TBS-style specialist selection, PACE auxiliary prediction, and
 PACE-style peer-identification exploration. CSP-style receives a separate
 same-partner reconnaissance episode and is excluded from central rankings.
@@ -49,11 +64,11 @@ confirmatory seeds, optimization controls, matching, and leakage checks.
 
 ## Runtime status
 
-The isolated runtime executes pinned recurrent IPPO, FCP, Other-Play, PACE
+The optional isolated runtime executes pinned recurrent IPPO, FCP, Other-Play, PACE
 auxiliary, PACE-style, TBS-style, and CSP-style. Ported methods emit
 discriminated deployment artifacts rather than masquerading as ordinary IPPO.
 Registered smokes cover PACE classification and peer reward, pinned TBS
 clustering and routing, CSP trajectory clustering and two-episode selection,
 artifact reload, and metadata-leakage controls. The remaining work is
-experimental execution on the frozen Stage 6 partner populations, not a missing
-baseline implementation.
+experimental execution on a custom frozen population. These ports are not used
+by the canonical official-checkpoint audit.

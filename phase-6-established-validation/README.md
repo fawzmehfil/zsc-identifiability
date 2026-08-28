@@ -1,187 +1,130 @@
-# Stage 6: Established-Environment Validation
+# Stage 6: Official-Checkpoint Validation
 
-Stage 6 tests whether pre-commitment decision-relevant identifiability (DRI)
-explains zero-shot coordination performance beyond competence, BR-Div, BR-Prox,
-behavioral predictability, and trajectory divergence in OvercookedV2. It skips a
-standalone repair-method phase because Stage 4 found that existing mechanisms
-already reach the active oracle in the exact games.
+Stage 6 is an inference-only audit of the official ZSC-Eval benchmark. It asks
+whether pre-commitment decision-relevant identifiability (DRI) explains
+coordination regret beyond competence, BR-Div, visible-action predictability,
+and trajectory divergence.
 
-The environment, measurement platform, method-specific TBS/PACE/CSP ports,
-exact checkpoint-resumption layer, and frozen partner-pool orchestrator are
-implemented. Partner generation and the development and confirmatory matrices
-have not been executed, so the current scientific verdict remains `pending`.
+The canonical study does not train partners or coordination policies. It uses:
 
-## Fixed protocol
+- all 30 officially selected `random3_m` partners;
+- all 20 officially selected `small_corridor` partners;
+- each partner's official co-trained response counterpart;
+- five published checkpoints for FCP, MEP, TrajeDi, HSP, COLE, and E3T;
+- CPU inference plus small cross-fitted event and GRU measurement models.
 
-- The primary environment is the official `demo_cook_simple` OvercookedV2
-  layout. `test_time_simple` audits evidence timing,
-  `grounded_coord_simple` is the recipe-information control, and
-  `demo_cook_wide` is the geometry replication.
-- Episodes use 400 steps, view radius 2, randomized agent positions, negative
-  incorrect-delivery reward, and recipe resampling after delivery.
-- The commitment point is an actual increase in pot ingredient count. The event
-  itself is excluded from pre-commitment evidence.
-- The recipe button is always classified as environment information, never as a
-  teammate probe.
-- Hidden partner modes are frozen checkpoints. A fixed empirical response
-  library defines approximate response loss; it is not called a globally
-  optimal oracle.
-- GRU and high-level-event DRI estimators train on calibration traces, calibrate
-  on validation traces, and report only on disjoint confirmatory traces. Their
-  selected response is scored against the held-out partner's frozen loss row,
-  so confident classifier error cannot masquerade as useful information.
-- Partner populations are selected on discovery data and then frozen. Failed
-  confirmatory matching cannot be repaired by changing partners or margins.
+The previous custom OvercookedV2 partner-generation study remains available as
+the optional `suites/full-scale-overcookedv2.json` extension. It is not part of
+the default workflow and its partial run is not reused.
 
-## Runtime isolation
+Asset provenance and redistribution boundaries are documented in
+`official-assets-and-license-card.md`.
 
-The exact Python 3.12 package never imports JAX or the legacy repositories.
-Versioned JSON requests, trace JSONL, and compact result manifests cross the
-runtime boundary.
+## Fixed scientific boundary
 
-| Runtime | Purpose |
-|---|---|
-| Python 3.12 | DRI, response loss, matching, statistics, reports |
-| Python 3.10 | pinned OvercookedV2/JAX environment and policies |
-| Python 3.9 | pinned ZSC-Eval asset audit |
-| Python 3.10 | pinned ToMZSC reference tooling (JAX 0.4.38) |
+Partner membership comes only from the official benchmark YAML files. No
+checkpoint may be selected or removed using measured DRI. Both player seats and
+paired environment keys are evaluated. The primary commitment point is the
+first successful ingredient placement into a pot; delivery feedback is
+post-commitment evidence and cannot change pre-commitment DRI.
 
-The suite pins full upstream commit hashes. `.external/`, checkpoints, raw
-traces, runtime environments, and logs are ignored by Git.
+The empirical response library is made from official co-trained counterparts.
+It is an approximate response-library oracle, not a globally optimal oracle.
+Response conflict is reported at adequacy margins `0.01`, `0.02`, and `0.05`.
 
-## Commands
+The passive reference is FCP seed 1 in greedy mode. The event estimator and a
+five-seed 64-unit GRU ensemble fit on calibration keys, calibrate on validation
+keys, and score only untouched confirmatory keys. GRU fitting is measurement,
+not policy training.
 
-Validate the schema, local pins, isolated runtimes, and analytical DRI bridge:
+## Runtime and asset boundary
 
-```bash
-uv run zsc-identifiability established validate \
-  --suite phase-6-established-validation/suites/canonical.json
-```
+The main Python 3.12 package handles asset locks, response loss, DRI, statistics,
+and reports. A Python 3.9 runtime loads the pinned official environment and
+checkpoints. File-based, content-hashed requests cross this boundary.
 
-Bootstrap the three pinned repositories and isolated runtimes:
+Only the two benchmark YAMLs, four policy configs, 50 partner checkpoints, 50
+response counterparts, and 60 method checkpoints are downloaded. The complete
+policy pool is never synchronized. Confirmatory inference works offline after
+asset synchronization.
 
-```bash
-uv run zsc-identifiability established bootstrap \
-  --suite phase-6-established-validation/suites/canonical.json
-```
+The runtime imports official environment and policy classes directly, disables
+CUDA, does not import an upstream trainer, and rejects any request that does not
+declare `policy_training_allowed: false`. Historical seat-0 integration smokes
+pass for both layouts. The canonical two-seat parity smoke is deliberately
+pending until the locked official assets are synchronized.
 
-Prepare the complete deterministic partner-pool plan without launching training:
+Every official method checkpoint is evaluated using its published stochastic
+sampling semantics and a greedy sensitivity deployment under identical
+environment keys.
+
+## Canonical workflow
+
+Create the immutable asset lock:
 
 ```bash
-uv run zsc-identifiability established partner-pools prepare \
+uv run --extra established zsc-identifiability established official prepare \
   --suite phase-6-established-validation/suites/canonical.json \
-  --layout demo_cook_simple \
-  --workspace phase-6-established-validation/runs/partner-pools/demo-cook-simple
+  --workspace phase-6-established-validation/runs/official-checkpoints
 ```
 
-The plan materializes every candidate through the registered caps and activates
-only the first quota-sized batch. Run the resumable queue separately when
-compute is available:
+Synchronize only the locked assets. This also creates the rollout plan:
 
 ```bash
-nohup caffeinate -is uv run zsc-identifiability established partner-pools run \
-  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json \
-  --workers 1 \
-  --freeze-on-success \
-  > phase-6-established-validation/runs/partner-pools/demo-cook-simple/queue.log 2>&1 &
-```
-
-Inspect it without starting or modifying training:
-
-```bash
-uv run zsc-identifiability established partner-pools status \
-  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
-```
-
-If the queue was run without `--freeze-on-success`, freeze the verified pools:
-
-```bash
-uv run zsc-identifiability established partner-pools freeze \
-  --plan phase-6-established-validation/runs/partner-pools/demo-cook-simple/build-plan.json
-```
-
-`established train-partners` remains available as the low-level compatibility
-interface for manually prepared job slices. It is not the recommended complete
-pool workflow.
-
-Run the registered 100k-transition trainer/checkpoint smoke for one method:
-
-```bash
-uv run zsc-identifiability established train-method \
+uv run --extra established zsc-identifiability established official sync \
   --suite phase-6-established-validation/suites/canonical.json \
-  --method rnn_ippo \
-  --layout demo_cook_simple \
-  --seed 5101 \
-  --gate smoke \
-  --learning-rate 0.00025 \
-  --entropy-coefficient 0.01 \
-  --output phase-6-established-validation/runs/smoke/rnn-ippo \
-  --execute
+  --lock phase-6-established-validation/runs/official-checkpoints/official-asset-lock.json
 ```
 
-Ported methods additionally receive frozen training and validation pools. TBS
-also receives a training-only cross-play matrix; CSP is always labelled as a
-two-episode reconnaissance protocol:
+Run evaluator parity before the full audit:
 
 ```bash
-uv run zsc-identifiability established train-method \
-  --suite phase-6-established-validation/suites/canonical.json \
-  --method pace_style \
-  --layout demo_cook_simple \
-  --seed 5101 \
-  --gate smoke \
-  --learning-rate 0.00025 \
-  --entropy-coefficient 0.01 \
-  --train-pool TRAIN_POOL.json \
-  --validation-pool VALIDATION_POOL.json \
-  --output phase-6-established-validation/runs/smoke/pace-style \
-  --execute
+uv run --extra established zsc-identifiability established official smoke \
+  --plan phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json \
+  --workers 2
 ```
 
-Build the frozen response-loss matrix from cross-play values:
+Run or resume the CPU rollout queue:
 
 ```bash
-uv run zsc-identifiability established build-responses \
-  --suite phase-6-established-validation/suites/canonical.json \
-  --values phase-6-established-validation/runs/response-values.json \
-  --clusters phase-6-established-validation/runs/response-clusters.json \
-  --output phase-6-established-validation/runs/response-library.json
+caffeinate -is uv run --extra established zsc-identifiability established official run \
+  --plan phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json \
+  --workers 2
 ```
 
-The `collect`, `match`, `train-method`, `evaluate`, `audit-diagnostics`,
-`estimate-dri`, `regress`, `secondary-audit`, `audit`, and `run` subcommands
-expose the remaining registered stages. Heavy runtime commands write a request
-first and execute only when `--execute` is supplied.
+Inspect status without running inference:
 
-Exit code `4` means required external assets are not available. Exit code `3`
-means execution completed but a scientific contract failed. Neither is silently
-converted into a successful result.
+```bash
+uv run --extra established zsc-identifiability established official status \
+  --plan phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json
+```
+
+Build the response-conflict and pairwise-identifiability artifacts:
+
+```bash
+uv run --extra established zsc-identifiability established official analyze \
+  --suite phase-6-established-validation/suites/canonical.json \
+  --plan phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json \
+  --ledger phase-6-established-validation/runs/official-checkpoints/official-rollout-ledger.json \
+  --output phase-6-established-validation/artifacts/official-checkpoint-audit
+```
+
+Exit code `2` denotes an engineering or integrity failure, `3` a completed
+scientific-gate failure, and `4` missing assets or incomplete shards.
 
 ## Current status
 
-- Suite, trace, response-library, partner-pool, DRI, matching, training, and
-  evaluation schemas: implemented.
-- Commitment extraction and leakage controls: implemented and tested.
-- Event and GRU posterior-to-DRI estimators: implemented.
-- Disjoint visible-action LoBP-style predictability control: implemented.
-- Mode-conditioned ego-visible prefix-TV divergence curves: implemented.
-- Sparse reward-vector generation and SHA-based splits: implemented.
-- Frozen mixed-integer matching and confirmatory audit: implemented.
-- Natural diagnostic goal controllers and restricted empirical frontier:
-  implemented.
-- Cross-fitted incremental regression and hierarchical bootstrap utilities:
-  implemented.
-- Pinned upstream bootstrap and file-based runtime boundary: implemented.
-- Official environment, commitment, 100k-transition training/checkpoint, and
-  checkpoint-to-trace integration smokes: passed.
-- PACE auxiliary, PACE-style, TBS-style, and CSP-style method ports: implemented
-  and smoke-verified with reloadable deployment artifacts.
-- Exact update-boundary continuation, method-pipeline resumption, best-validation
-  retention, and screening-to-finalist partner continuation: implemented.
-- Deterministic partner-pool planning, queue expansion, per-stage atomic ledger,
-  streamed logs, recovery-only compact export, leakage audit, and immutable
-  freezing: implemented and tested without training.
-- Established-environment partner pools, trained methods, matched contrasts, and
-  scientific verdict: pending execution.
+- v2 schema and inference-only policy: implemented and tested;
+- official asset discovery, minimal synchronization, hashing, and duplicate
+  detection: implemented;
+- atomic CPU rollout plan, ledger, recovery, and offline boundary: implemented;
+- official policy/environment loading and two-seat parity harness: implemented;
+- historical seat-0 integration parity on both layouts: verified;
+- canonical two-seat parity: pending the explicit `official smoke` execution;
+- response-library, conflict, event/GRU DRI, and scheme-held-out statistical
+  components: implemented;
+- custom full-compute extension: preserved but retired from the default path;
+- complete official rollout matrix and scientific verdict: pending execution.
 
-See `stage-6-exit-memo.md` for the exact gate that remains open.
+No established-environment scientific finding is claimed before the complete
+official audit and sensitivity analyses pass.
