@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import os
@@ -27,26 +28,53 @@ def main():
     if observed != expected:
         raise ValueError("legacy runtime request hash mismatch")
     root = _project_root(request_path)
-    _verify_upstreams(request, root)
     operation = request["operation"]
+    official_operations = {
+        "official_parity",
+        "official_response_rollout",
+        "official_trace_rollout",
+        "official_method_rollout",
+    }
+    if operation in official_operations:
+        from stage6_legacy_runtime.official_eval import run_official_operation
+
+        payload = run_official_operation(request)
+    else:
+        _verify_upstreams(request, root)
     if operation == "validate":
         payload = {"imports_deferred": True, "pins_verified": True}
     elif operation == "audit_assets":
         payload = _audit_assets(request["payload"], root)
     elif operation == "tomzsc_command":
         payload = _tomzsc_command(request["payload"], root, request)
-    else:
+    elif operation not in official_operations:
         raise ValueError(f"unsupported legacy runtime operation: {operation!r}")
-    result = {
-        "schema_version": 1,
-        "request_hash": expected,
-        "operation": operation,
-        "status": payload.get("status", "complete"),
-        "python_version": platform.python_version(),
-        "payload": payload,
-    }
+    if operation in official_operations:
+        result = {
+            "schema_version": 1,
+            "request_hash": expected,
+            "operation": operation,
+            "status": payload.pop("status", "complete"),
+            "python_version": platform.python_version(),
+            **payload,
+        }
+    else:
+        result = {
+            "schema_version": 1,
+            "request_hash": expected,
+            "operation": operation,
+            "status": payload.get("status", "complete"),
+            "python_version": platform.python_version(),
+            "payload": payload,
+        }
     result_path.parent.mkdir(parents=True, exist_ok=True)
-    result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
+    if result_path.suffix == ".gz":
+        temporary = result_path.with_suffix(result_path.suffix + ".tmp")
+        with gzip.open(temporary, "wt", encoding="utf-8") as handle:
+            json.dump(result, handle, separators=(",", ":"), sort_keys=True)
+        temporary.replace(result_path)
+    else:
+        result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
 
 
 def _audit_assets(payload, root):

@@ -48,6 +48,47 @@ from zsc_identifiability.established_models import (
     UpstreamAudit,
     load_established_suite_file,
 )
+from zsc_identifiability.established_official_analysis import (
+    analyze_official_checkpoint_audit,
+)
+from zsc_identifiability.established_official_analysis import (
+    audit_official_estimator_calibration as _audit_official_estimator_calibration,
+)
+from zsc_identifiability.established_official_analysis import (
+    build_official_response_library as _build_official_response_library,
+)
+from zsc_identifiability.established_official_analysis import (
+    estimate_official_pairwise_dri as _estimate_official_pairwise_dri,
+)
+from zsc_identifiability.established_official_assets import (
+    prepare_official_asset_lock as _prepare_official_asset_lock,
+)
+from zsc_identifiability.established_official_assets import (
+    sync_official_assets as _sync_official_assets,
+)
+from zsc_identifiability.established_official_models import (
+    OfficialAssetInventory,
+    OfficialAssetLock,
+    OfficialCheckpointAuditManifest,
+    OfficialCheckpointAuditSuiteV2,
+    OfficialResponseValueMatrix,
+    OfficialRolloutLedger,
+    OfficialRolloutPlan,
+    OfficialTraceIndex,
+    PairwiseIdentifiabilityRow,
+)
+from zsc_identifiability.established_official_models import (
+    load_official_checkpoint_suite as _load_official_checkpoint_suite,
+)
+from zsc_identifiability.established_official_reporting import (
+    run_complete_official_checkpoint_analysis as _run_complete_official_checkpoint_analysis,
+)
+from zsc_identifiability.established_official_rollouts import (
+    prepare_official_rollouts as _prepare_official_rollouts,
+)
+from zsc_identifiability.established_official_rollouts import (
+    run_official_rollouts as _run_official_rollouts,
+)
 from zsc_identifiability.established_partner_pools import (
     freeze_partner_pools as _freeze_partner_pools,
 )
@@ -485,3 +526,79 @@ def audit_learning_smoke_matrix(
     from zsc_identifiability.learning_runner import audit_smoke_matrix
 
     return audit_smoke_matrix(suite_config, runs_dir, output_path)
+
+
+def load_official_checkpoint_suite(path: str | Path) -> OfficialCheckpointAuditSuiteV2:
+    return _load_official_checkpoint_suite(path)
+
+
+def prepare_official_asset_lock(
+    suite: OfficialCheckpointAuditSuiteV2 | str | Path,
+    workspace: str | Path,
+) -> OfficialAssetLock:
+    return _prepare_official_asset_lock(suite, workspace)
+
+
+def sync_official_assets(
+    lock: OfficialAssetLock | str | Path,
+    suite: OfficialCheckpointAuditSuiteV2 | str | Path,
+) -> OfficialAssetInventory:
+    return _sync_official_assets(lock, suite)
+
+
+def prepare_official_rollouts(
+    suite: OfficialCheckpointAuditSuiteV2 | str | Path,
+    assets: OfficialAssetInventory | str | Path,
+    workspace: str | Path,
+) -> OfficialRolloutPlan:
+    return _prepare_official_rollouts(suite, assets, workspace)
+
+
+def run_official_rollouts(
+    plan: OfficialRolloutPlan | str | Path,
+    workers: int = 2,
+    resume: bool = True,
+) -> OfficialRolloutLedger:
+    return _run_official_rollouts(plan, workers=workers, resume=resume)
+
+
+def build_official_response_library(
+    response_results: str | Path | tuple[str | Path, ...],
+    config: OfficialCheckpointAuditSuiteV2 | str | Path,
+) -> tuple[OfficialResponseValueMatrix, ...]:
+    return _build_official_response_library(response_results, config)
+
+
+def estimate_official_pairwise_dri(
+    trace_index: OfficialTraceIndex | str | Path,
+    response_library: OfficialResponseValueMatrix,
+    config: OfficialCheckpointAuditSuiteV2 | str | Path,
+) -> tuple[PairwiseIdentifiabilityRow, ...]:
+    return _estimate_official_pairwise_dri(trace_index, response_library, config)
+
+
+def audit_official_estimator_calibration(
+    trace_index: OfficialTraceIndex | str | Path,
+    response_libraries: tuple[OfficialResponseValueMatrix, ...],
+    pairwise_rows: tuple[PairwiseIdentifiabilityRow, ...],
+    config: OfficialCheckpointAuditSuiteV2 | str | Path,
+) -> dict[str, object]:
+    return _audit_official_estimator_calibration(
+        trace_index, response_libraries, pairwise_rows, config
+    )
+
+
+def run_official_checkpoint_analysis(
+    suite: OfficialCheckpointAuditSuiteV2 | str | Path,
+    plan: OfficialRolloutPlan | str | Path,
+    ledger: OfficialRolloutLedger | str | Path,
+    output_dir: str | Path,
+) -> OfficialCheckpointAuditManifest:
+    return _run_complete_official_checkpoint_analysis(suite, plan, ledger, output_dir)
+
+
+def analyze_official_audit(
+    suite: OfficialCheckpointAuditSuiteV2 | str | Path,
+    results: dict[str, object],
+) -> OfficialCheckpointAuditManifest:
+    return analyze_official_checkpoint_audit(suite, results)

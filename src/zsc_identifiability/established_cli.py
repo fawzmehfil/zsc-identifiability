@@ -29,6 +29,24 @@ from zsc_identifiability.established_models import (
     TraceManifest,
     load_established_suite_file,
 )
+from zsc_identifiability.established_official_assets import (
+    load_official_asset_inventory,
+    load_official_asset_lock,
+    prepare_official_asset_lock,
+    sync_official_assets,
+)
+from zsc_identifiability.established_official_models import (
+    OfficialRolloutLedger,
+    load_official_checkpoint_suite,
+)
+from zsc_identifiability.established_official_reporting import (
+    run_complete_official_checkpoint_analysis,
+)
+from zsc_identifiability.established_official_rollouts import (
+    get_official_rollout_status,
+    prepare_official_rollouts,
+    run_official_rollouts,
+)
 from zsc_identifiability.established_partner_pools import (
     freeze_partner_pools,
     get_partner_pool_status,
@@ -122,6 +140,45 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
         "freeze", help="verify and immutably publish completed pools"
     )
     pool_freeze.add_argument("--plan", required=True)
+
+    official = subcommands.add_parser(
+        "official", help="run the inference-only official ZSC-Eval checkpoint audit"
+    )
+    official_commands = official.add_subparsers(dest="official_command", required=True)
+    official_prepare = official_commands.add_parser(
+        "prepare", help="lock official assets and materialize rollout shards"
+    )
+    official_prepare.add_argument("--suite", required=True)
+    official_prepare.add_argument("--workspace", required=True)
+    official_prepare.add_argument(
+        "--inventory", help="prepare rollouts immediately from an existing synced inventory"
+    )
+    official_sync = official_commands.add_parser(
+        "sync", help="download only the pinned minimal policy assets"
+    )
+    official_sync.add_argument("--suite", required=True)
+    official_sync.add_argument("--lock", required=True)
+    official_smoke = official_commands.add_parser(
+        "smoke", help="run only official evaluator parity shards"
+    )
+    official_smoke.add_argument("--plan", required=True)
+    official_smoke.add_argument("--workers", type=int, default=2)
+    official_run = official_commands.add_parser(
+        "run", help="run or resume all official partner-policy shards"
+    )
+    official_run.add_argument("--plan", required=True)
+    official_run.add_argument("--workers", type=int, default=2)
+    official_status = official_commands.add_parser(
+        "status", help="inspect the official rollout ledger without execution"
+    )
+    official_status.add_argument("--plan", required=True)
+    official_analyze = official_commands.add_parser(
+        "analyze", help="build response conflicts, DRI, and the Stage 6 v2 verdict"
+    )
+    official_analyze.add_argument("--suite", required=True)
+    official_analyze.add_argument("--plan", required=True)
+    official_analyze.add_argument("--ledger", required=True)
+    official_analyze.add_argument("--output", required=True)
 
     responses = subcommands.add_parser(
         "build-responses", help="freeze the empirical response-loss matrix"
@@ -250,6 +307,8 @@ def dispatch_established(args: argparse.Namespace) -> int:
         return _partner_jobs(args, root)
     if command == "partner-pools":
         return _partner_pool_command(args, root)
+    if command == "official":
+        return _official_command(args)
     if command == "build-responses":
         suite = load_established_suite_file(args.suite)
         values = _read_object(args.values)
@@ -365,6 +424,76 @@ def dispatch_established(args: argparse.Namespace) -> int:
             return 4
         return 3 if stage6_manifest.scientific_verdict in {"redesign", "stop"} else 0
     raise ValueError(f"unknown established command: {command!r}")
+
+
+def _official_command(args: argparse.Namespace) -> int:
+    operation = args.official_command
+    if operation == "prepare":
+        suite = load_official_checkpoint_suite(args.suite)
+        lock = prepare_official_asset_lock(args.suite, args.workspace)
+        payload: dict[str, Any] = {"asset_lock": lock.to_dict()}
+        if args.inventory:
+            inventory = load_official_asset_inventory(args.inventory)
+            plan = prepare_official_rollouts(args.suite, inventory, args.workspace)
+            payload["rollout_plan"] = plan.to_dict()
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0 if suite.policy_training_allowed is False else 2
+    if operation == "sync":
+        lock = load_official_asset_lock(args.lock)
+        inventory = sync_official_assets(lock, args.suite)
+        if inventory.complete:
+            prepare_official_rollouts(args.suite, inventory, lock.workspace)
+        print(json.dumps(inventory.to_dict(), indent=2, sort_keys=True))
+        return 0 if inventory.complete else 4
+    if operation in {"smoke", "run"}:
+        ledger = run_official_rollouts(
+            args.plan,
+            workers=args.workers,
+            resume=True,
+            kinds=("parity",) if operation == "smoke" else None,
+        )
+        print(json.dumps(_official_status_payload(ledger), indent=2, sort_keys=True))
+        if ledger.failed_shards:
+            return 2
+        if operation == "smoke":
+            plan_payload = _read_object(args.plan)
+            parity_ids = {
+                str(item["shard_id"]) for item in plan_payload["shards"] if item["kind"] == "parity"
+            }
+            parity_complete = all(
+                entry.status == "complete"
+                for entry in ledger.entries
+                if entry.shard_id in parity_ids
+            )
+            return 0 if parity_ids and parity_complete else 4
+        return 0 if ledger.complete else 4
+    if operation == "status":
+        ledger = get_official_rollout_status(args.plan)
+        print(json.dumps(_official_status_payload(ledger), indent=2, sort_keys=True))
+        if ledger.failed_shards:
+            return 2
+        return 0 if ledger.complete else 4
+    if operation == "analyze":
+        manifest = run_complete_official_checkpoint_analysis(
+            args.suite, args.plan, args.ledger, args.output
+        )
+        print(json.dumps(manifest.to_dict(), indent=2, sort_keys=True))
+        if manifest.status == "incomplete":
+            return 4
+        return 3 if manifest.verdict in {"redesign", "stop"} else 0
+    raise ValueError(f"unknown official-checkpoint command: {operation!r}")
+
+
+def _official_status_payload(ledger: OfficialRolloutLedger) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+    for entry in ledger.entries:
+        counts[entry.status] = counts.get(entry.status, 0) + 1
+    return {
+        "suite_id": ledger.suite_id,
+        "complete": ledger.complete,
+        "counts": counts,
+        "failed_shards": list(ledger.failed_shards),
+    }
 
 
 def _partner_jobs(args: argparse.Namespace, root: Path) -> int:

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fawzmehfil.github.io/zsc-identifiability/official-checkpoint-suite-v2.schema.json",
+  "title": "OfficialCheckpointAuditSuiteV2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "audit_mode",
+    "suite_id",
+    "state_directory",
+    "policy_training_allowed",
+    "partner_selection_criterion",
+    "upstream",
+    "runtime",
+    "layouts",
+    "methods",
+    "evidence",
+    "estimator",
+    "statistics",
+    "split_key_salts",
+    "required_policy_configs"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "audit_mode": {"const": "official_checkpoint_evaluation"},
+    "suite_id": {"type": "string", "minLength": 1},
+    "state_directory": {"type": "string", "minLength": 1},
+    "policy_training_allowed": {"const": false},
+    "partner_selection_criterion": {"const": "official_benchmark_yaml_only"},
+    "upstream": {"type": "object"},
+    "runtime": {"type": "object"},
+    "layouts": {"type": "array", "minItems": 2, "uniqueItems": true},
+    "methods": {"type": "array", "minItems": 4, "uniqueItems": true},
+    "evidence": {"type": "object"},
+    "estimator": {"type": "object"},
+    "statistics": {"type": "object"},
+    "split_key_salts": {
+      "type": "object",
+      "required": ["calibration", "validation", "confirmatory"],
+      "additionalProperties": false
+    },
+    "required_policy_configs": {"type": "array", "minItems": 1}
+  },
+  "not": {
+    "anyOf": [
+      {"required": ["training"]},
+      {"required": ["training_budget"]},
+      {"required": ["transition_budget"]},
+      {"required": ["partner_generation"]}
+    ]
+  }
+}

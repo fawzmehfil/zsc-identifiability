@@ -15,11 +15,13 @@ dependencies = [
   "numpy>=2.0,<3",
   "pandas>=2.2,<3",
   "pydantic>=2.8,<3",
+  "pyyaml>=6,<7",
 ]
 
 [project.optional-dependencies]
 learning = [
   "torch>=2.5,<3",
+  "types-PyYAML>=6,<7",
 ]
 established = [
   "scipy>=1.14,<2",

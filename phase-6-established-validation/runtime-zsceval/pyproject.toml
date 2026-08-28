@@ -6,7 +6,29 @@ build-backend = "hatchling.build"
 name = "stage6-zsceval-runtime"
 version = "0.1.0"
 requires-python = ">=3.9,<3.10"
-dependencies = ["stage6-legacy-runtime"]
+dependencies = [
+  "absl-py>=2,<3",
+  "cloudpickle>=2.2,<3",
+  "dppy>=0.3,<0.4",
+  "einops>=0.7,<1",
+  "gym==0.22.0",
+  "icecream>=2.1,<3",
+  "ipython>=8,<9",
+  "ipywidgets>=8,<9",
+  "loguru>=0.7,<1",
+  "numpy>=1.23.5,<1.24",
+  "psutil>=5.9,<6",
+  "pyastar2d>=1.0,<2",
+  "pygame>=2.6,<3",
+  "pyyaml>=6,<7",
+  "scipy>=1.10,<1.11",
+  "setproctitle>=1.3,<2",
+  "stage6-legacy-runtime",
+  "tensorboardX>=2.6,<3",
+  "torch>=2.2,<2.3",
+  "torchvision>=0.17,<0.18",
+  "tqdm>=4.66,<5",
+]
 
 [tool.uv.sources]
 stage6-legacy-runtime = { path = "../runtime-legacy", editable = true }
