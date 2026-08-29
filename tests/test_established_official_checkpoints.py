@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import gzip
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -297,6 +299,59 @@ def test_official_runtime_source_contains_no_training_path() -> None:
     assert "optimizer =" not in source.lower()
     assert '"partner_deployment": "stochastic"' in source
     assert "partner_deterministic" in source
+
+
+def test_script_controller_bridges_new_recipe_capacity_name() -> None:
+    runtime = _load_official_runtime_module()
+    mdp = SimpleNamespace(max_num_items_for_soup=3)
+    state = object()
+
+    class CapacityReadingPeriod:
+        def reset(self, candidate: Any, received_state: Any, player: int) -> None:
+            assert candidate is mdp
+            assert candidate.num_items_for_soup == 3
+            assert received_state is state
+            assert player == 1
+
+        def done(self, candidate: Any, received_state: Any, player: int) -> bool:
+            assert candidate.num_items_for_soup == 3
+            assert received_state is state
+            assert player == 1
+            return False
+
+    controller = runtime._Controller(CapacityReadingPeriod(), physical_ego=1)
+    env = SimpleNamespace(base_env=SimpleNamespace(mdp=mdp, state=state))
+
+    assert controller.done(env) is False
+    assert mdp.num_items_for_soup == mdp.max_num_items_for_soup == 3
+
+
+def test_script_controller_preserves_old_capacity_and_rejects_ambiguity() -> None:
+    runtime = _load_official_runtime_module()
+    old_mdp = SimpleNamespace(num_items_for_soup=3)
+    assert runtime._script_controller_mdp(old_mdp) is old_mdp
+    assert not hasattr(old_mdp, "max_num_items_for_soup")
+
+    conflicting = SimpleNamespace(num_items_for_soup=2, max_num_items_for_soup=3)
+    with pytest.raises(ValueError, match="soup-capacity fields disagree"):
+        runtime._script_controller_mdp(conflicting)
+
+    with pytest.raises(AttributeError, match="requires a positive"):
+        runtime._script_controller_mdp(SimpleNamespace())
+    with pytest.raises(AttributeError, match="requires a positive"):
+        runtime._script_controller_mdp(SimpleNamespace(num_items_for_soup=0))
+
+
+def _load_official_runtime_module() -> Any:
+    path = (
+        ROOT
+        / "phase-6-established-validation/runtime-legacy/src/stage6_legacy_runtime/official_eval.py"
+    )
+    spec = importlib.util.spec_from_file_location("stage6_test_official_eval", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def _minimal_suite() -> OfficialCheckpointAuditSuiteV2:

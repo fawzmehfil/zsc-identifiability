@@ -370,7 +370,8 @@ class _Controller:
 
     def _reset(self, env):
         if not self.was_reset and self.period is not None:
-            self.period.reset(env.base_env.mdp, env.base_env.state, self.physical_ego)
+            mdp = _script_controller_mdp(env.base_env.mdp)
+            self.period.reset(mdp, env.base_env.state, self.physical_ego)
         self.was_reset = True
 
     def action(self, env):
@@ -378,14 +379,67 @@ class _Controller:
         self.calls += 1
         if self.period is None:
             return 4  # Action.STAY in the official six-action mapping.
-        action = self.period.step(env.base_env.mdp, env.base_env.state, self.physical_ego)
+        mdp = _script_controller_mdp(env.base_env.mdp)
+        action = self.period.step(mdp, env.base_env.state, self.physical_ego)
         return _action_index(env, action)
 
     def done(self, env):
         self._reset(env)
         if self.period is None:
             return self.calls >= self.maximum_stay
-        return bool(self.period.done(env.base_env.mdp, env.base_env.state, self.physical_ego))
+        mdp = _script_controller_mdp(env.base_env.mdp)
+        return bool(self.period.done(mdp, env.base_env.state, self.physical_ego))
+
+
+def _script_controller_mdp(mdp):
+    """Bridge the pinned new-environment recipe-capacity rename.
+
+    ZSC-Eval's bundled ``overcooked_new`` scripted controller still reads the
+    legacy ``num_items_for_soup`` field, while its matching MDP exposes the
+    same capacity as ``max_num_items_for_soup``.  Add the legacy read alias to
+    the per-episode MDP instance only when a scripted diagnostic controller is
+    used.  Ordinary official-policy inference never passes through this path.
+    """
+
+    legacy_value = getattr(mdp, "num_items_for_soup", None)
+    current_value = getattr(mdp, "max_num_items_for_soup", None)
+    if legacy_value is not None:
+        if (
+            not isinstance(legacy_value, int)
+            or isinstance(legacy_value, bool)
+            or legacy_value <= 0
+        ):
+            raise AttributeError(
+                "scripted diagnostic controller requires a positive "
+                "num_items_for_soup or max_num_items_for_soup capacity"
+            )
+        if current_value is not None and (
+            not isinstance(current_value, int)
+            or isinstance(current_value, bool)
+            or current_value <= 0
+        ):
+            raise AttributeError(
+                "scripted diagnostic controller requires a positive "
+                "num_items_for_soup or max_num_items_for_soup capacity"
+            )
+        if current_value is not None and legacy_value != current_value:
+            raise ValueError(
+                "script-controller soup-capacity fields disagree: "
+                f"num_items_for_soup={legacy_value!r}, "
+                f"max_num_items_for_soup={current_value!r}"
+            )
+        return mdp
+    if (
+        not isinstance(current_value, int)
+        or isinstance(current_value, bool)
+        or current_value <= 0
+    ):
+        raise AttributeError(
+            "scripted diagnostic controller requires a positive "
+            "num_items_for_soup or max_num_items_for_soup capacity"
+        )
+    mdp.num_items_for_soup = current_value
+    return mdp
 
 
 def _make_controller(layout, option, env, ego_seat):
