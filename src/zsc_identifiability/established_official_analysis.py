@@ -6,6 +6,8 @@ import gzip
 import hashlib
 import json
 import math
+import os
+import tempfile
 from collections import Counter, defaultdict
 from collections.abc import Iterable, Mapping, Sequence
 from pathlib import Path
@@ -19,7 +21,10 @@ from zsc_identifiability.established_dri import (
     summarize_posteriors,
     synthetic_dri_calibration,
 )
-from zsc_identifiability.established_gru import fit_cross_fitted_gru_posterior
+from zsc_identifiability.established_gru import (
+    fit_cross_fitted_gru_posterior,
+    fit_streaming_cross_fitted_gru_posterior,
+)
 from zsc_identifiability.established_official_models import (
     OfficialCheckpointAuditManifest,
     OfficialCheckpointAuditSuiteV2,
@@ -30,6 +35,10 @@ from zsc_identifiability.established_official_models import (
     OfficialTraceIndexEntry,
     PairwiseIdentifiabilityRow,
     load_official_checkpoint_suite,
+)
+from zsc_identifiability.established_official_trace_store import (
+    CompactTraceEpisode,
+    OfficialCompactTraceStore,
 )
 
 
@@ -186,8 +195,11 @@ def estimate_official_pairwise_dri(
     config: OfficialCheckpointAuditSuiteV2 | str | Path,
     *,
     full_population_rows: list[dict[str, Any]] | None = None,
+    trace_store: OfficialCompactTraceStore | None = None,
+    analysis_state_dir: str | Path | None = None,
+    progress: Any | None = None,
 ) -> tuple[PairwiseIdentifiabilityRow, ...]:
-    """Fit full-population estimators, then audit all conflicting pairs."""
+    """Fit full-population estimators with bounded memory and resumable units."""
 
     suite = _suite(config)
     index = _trace_index(trace_index)
@@ -198,29 +210,90 @@ def estimate_official_pairwise_dri(
     prior = np.full(len(partner_ids), 1.0 / len(partner_ids), dtype=np.float64)
     primary_conflicts = response_library.conflicting_pairs_by_margin["0.02"]
     entries = [entry for entry in index.entries if entry.layout_id == response_library.layout_id]
-    grouped: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
-    for entry in entries:
-        result = _read_result(Path(entry.path))
-        _validate_result(result, "official_trace_rollout")
-        for episode in result["episodes"]:
-            record = dict(episode)
-            record["partner_id"] = entry.partner_id
-            grouped[(entry.evidence_policy, entry.split)].append(record)
+    if trace_store is None:
+        if analysis_state_dir is None:
+            with tempfile.TemporaryDirectory(prefix="zsc-official-analysis-") as temporary:
+                return estimate_official_pairwise_dri(
+                    index,
+                    response_library,
+                    suite,
+                    full_population_rows=full_population_rows,
+                    analysis_state_dir=temporary,
+                    progress=progress,
+                )
+        trace_store = OfficialCompactTraceStore.prepare(
+            index,
+            Path(analysis_state_dir) / "trace-cache",
+            progress=progress,
+        )
+    checkpoint_root = (
+        None
+        if analysis_state_dir is None
+        else Path(analysis_state_dir).resolve() / "pairwise-work-units"
+    )
+    if checkpoint_root is not None:
+        checkpoint_root.mkdir(parents=True, exist_ok=True)
     prefixes: tuple[int | str, ...] = (*suite.evidence.prefix_steps, "pre_commitment", "eventual")
     rows: list[PairwiseIdentifiabilityRow] = []
     evidence_policies = tuple(sorted({entry.evidence_policy for entry in entries}))
     for evidence_policy in evidence_policies:
-        calibration = grouped[(evidence_policy, "calibration")]
-        validation = grouped[(evidence_policy, "validation")]
-        confirmatory = grouped[(evidence_policy, "confirmatory")]
-        _assert_disjoint_episode_keys(calibration, validation, confirmatory)
         for prefix in prefixes:
-            event_train = [_event_tokens(item, prefix) for item in calibration]
-            event_confirm = [_event_tokens(item, prefix) for item in confirmatory]
-            calibration_labels = [partner_to_label[str(item["partner_id"])] for item in calibration]
-            confirmatory_labels = [
-                partner_to_label[str(item["partner_id"])] for item in confirmatory
-            ]
+            checkpoint = _pairwise_checkpoint_path(
+                checkpoint_root,
+                response_library.layout_id,
+                evidence_policy,
+                prefix,
+            )
+            signature = _pairwise_work_signature(
+                suite,
+                response_library,
+                entries,
+                evidence_policy,
+                prefix,
+            )
+            cached = _load_pairwise_checkpoint(checkpoint, signature)
+            if cached is not None:
+                rows.extend(cached[0])
+                if full_population_rows is not None:
+                    full_population_rows.extend(cached[1])
+                if progress is not None:
+                    progress(
+                        f"pairwise resume: {response_library.layout_id}/{evidence_policy}/{prefix}"
+                    )
+                continue
+            if progress is not None:
+                progress(f"pairwise start: {response_library.layout_id}/{evidence_policy}/{prefix}")
+            calibration_source = trace_store.sequence_source(
+                response_library.layout_id,
+                evidence_policy,
+                "calibration",
+                partner_to_label,
+                prefix,
+            )
+            validation_source = trace_store.sequence_source(
+                response_library.layout_id,
+                evidence_policy,
+                "validation",
+                partner_to_label,
+                prefix,
+            )
+            confirmatory_source = trace_store.sequence_source(
+                response_library.layout_id,
+                evidence_policy,
+                "confirmatory",
+                partner_to_label,
+                prefix,
+            )
+            calibration = calibration_source.episodes
+            validation = validation_source.episodes
+            confirmatory = confirmatory_source.episodes
+            _assert_disjoint_compact_episode_keys(calibration, validation, confirmatory)
+            event_train = [item.event_tokens(prefix) for item in calibration]
+            event_confirm = [item.event_tokens(prefix) for item in confirmatory]
+            calibration_labels = list(calibration_source.labels)
+            confirmatory_labels = list(confirmatory_source.labels)
+            unit_rows: list[PairwiseIdentifiabilityRow] = []
+            unit_full_population: list[dict[str, Any]] = []
             event_model = fit_event_posterior(
                 event_train,
                 calibration_labels,
@@ -231,21 +304,20 @@ def estimate_official_pairwise_dri(
             event_full_posteriors = event_posteriors.copy()
             if prefix == "pre_commitment":
                 _assign_prior_to_censored(event_full_posteriors, confirmatory, prior.tolist())
-            if full_population_rows is not None:
-                full_population_rows.append(
-                    _full_population_row(
-                        response_library,
-                        evidence_policy,
-                        "event",
-                        str(prefix),
-                        prior,
-                        losses,
-                        event_full_posteriors,
-                        confirmatory_labels,
-                        confirmatory,
-                    )
+            unit_full_population.append(
+                _full_population_row(
+                    response_library,
+                    evidence_policy,
+                    "event",
+                    str(prefix),
+                    prior,
+                    losses,
+                    event_full_posteriors,
+                    confirmatory_labels,
+                    confirmatory,
                 )
-            rows.extend(
+            )
+            unit_rows.extend(
                 _pairwise_rows(
                     response_library,
                     primary_conflicts,
@@ -260,65 +332,82 @@ def estimate_official_pairwise_dri(
                     event_confirm,
                 )
             )
-            gru_train = [_gru_features(item, prefix) for item in calibration]
-            gru_validation = [_gru_features(item, prefix) for item in validation]
-            gru_confirm = [_gru_features(item, prefix) for item in confirmatory]
-            validation_labels = [partner_to_label[str(item["partner_id"])] for item in validation]
             ensemble: list[np.ndarray] = []
             for seed in suite.estimator.gru_seeds:
-                fit = fit_cross_fitted_gru_posterior(
-                    gru_train,
-                    calibration_labels,
-                    gru_validation,
-                    validation_labels,
-                    gru_confirm,
-                    confirmatory_labels,
+                seed_checkpoint = _gru_seed_checkpoint_path(checkpoint, seed)
+                cached_posterior = _load_gru_seed_checkpoint(
+                    seed_checkpoint,
+                    signature,
+                    confirmatory_source.size,
+                    len(partner_ids),
+                )
+                if cached_posterior is not None:
+                    ensemble.append(cached_posterior)
+                    if progress is not None:
+                        progress(
+                            "gru seed resume "
+                            f"{seed}: {response_library.layout_id}/{evidence_policy}/{prefix}"
+                        )
+                    continue
+                if progress is not None:
+                    progress(
+                        "gru seed "
+                        f"{seed}: {response_library.layout_id}/{evidence_policy}/{prefix}"
+                    )
+                fit = fit_streaming_cross_fitted_gru_posterior(
+                    calibration_source,
+                    validation_source,
+                    confirmatory_source,
                     prior.tolist(),
                     losses.tolist(),
                     hidden_size=suite.estimator.gru_hidden_size,
                     seed=seed,
                 )
                 ensemble.append(fit.posteriors)
+                _write_gru_seed_checkpoint(
+                    seed_checkpoint,
+                    signature,
+                    fit.posteriors,
+                )
             gru_posteriors = np.mean(np.stack(ensemble), axis=0)
             gru_full_posteriors = gru_posteriors.copy()
             if prefix == "pre_commitment":
                 _assign_prior_to_censored(gru_full_posteriors, confirmatory, prior.tolist())
-            if full_population_rows is not None:
-                seed_dri: list[float | None] = []
-                for posterior in ensemble:
-                    seed_posterior = posterior.copy()
-                    if prefix == "pre_commitment":
-                        _assign_prior_to_censored(seed_posterior, confirmatory, prior.tolist())
-                    seed_dri.append(
-                        _full_population_row(
-                            response_library,
-                            evidence_policy,
-                            "gru",
-                            str(prefix),
-                            prior,
-                            losses,
-                            seed_posterior,
-                            confirmatory_labels,
-                            confirmatory,
-                        )["dri"]
-                    )
-                full = _full_population_row(
-                    response_library,
-                    evidence_policy,
-                    "gru",
-                    str(prefix),
-                    prior,
-                    losses,
-                    gru_full_posteriors,
-                    confirmatory_labels,
-                    confirmatory,
+            seed_dri: list[float | None] = []
+            for posterior in ensemble:
+                seed_posterior = posterior.copy()
+                if prefix == "pre_commitment":
+                    _assign_prior_to_censored(seed_posterior, confirmatory, prior.tolist())
+                seed_dri.append(
+                    _full_population_row(
+                        response_library,
+                        evidence_policy,
+                        "gru",
+                        str(prefix),
+                        prior,
+                        losses,
+                        seed_posterior,
+                        confirmatory_labels,
+                        confirmatory,
+                    )["dri"]
                 )
-                finite_seed_dri = [float(value) for value in seed_dri if value is not None]
-                full["gru_seed_dri_standard_deviation"] = (
-                    float(np.std(finite_seed_dri, ddof=1)) if len(finite_seed_dri) > 1 else 0.0
-                )
-                full_population_rows.append(full)
-            rows.extend(
+            full = _full_population_row(
+                response_library,
+                evidence_policy,
+                "gru",
+                str(prefix),
+                prior,
+                losses,
+                gru_full_posteriors,
+                confirmatory_labels,
+                confirmatory,
+            )
+            finite_seed_dri = [float(value) for value in seed_dri if value is not None]
+            full["gru_seed_dri_standard_deviation"] = (
+                float(np.std(finite_seed_dri, ddof=1)) if len(finite_seed_dri) > 1 else 0.0
+            )
+            unit_full_population.append(full)
+            unit_rows.extend(
                 _pairwise_rows(
                     response_library,
                     primary_conflicts,
@@ -333,7 +422,200 @@ def estimate_official_pairwise_dri(
                     event_confirm,
                 )
             )
+            rows.extend(unit_rows)
+            if full_population_rows is not None:
+                full_population_rows.extend(unit_full_population)
+            _write_pairwise_checkpoint(
+                checkpoint,
+                signature,
+                unit_rows,
+                unit_full_population,
+            )
+            if progress is not None:
+                progress(
+                    f"pairwise complete: {response_library.layout_id}/"
+                    f"{evidence_policy}/{prefix}"
+                )
     return tuple(rows)
+
+
+def _pairwise_checkpoint_path(
+    root: Path | None,
+    layout_id: str,
+    evidence_policy: str,
+    prefix: int | str,
+) -> Path | None:
+    if root is None:
+        return None
+    identifier = hashlib.sha256(
+        f"{layout_id}|{evidence_policy}|{prefix}".encode()
+    ).hexdigest()[:16]
+    return root / f"{layout_id}--{evidence_policy}--{prefix}--{identifier}.json"
+
+
+def _pairwise_work_signature(
+    suite: OfficialCheckpointAuditSuiteV2,
+    library: OfficialResponseValueMatrix,
+    entries: Sequence[OfficialTraceIndexEntry],
+    evidence_policy: str,
+    prefix: int | str,
+) -> str:
+    relevant = [
+        {
+            "trace_id": entry.trace_id,
+            "content_hash": entry.content_hash,
+        }
+        for entry in entries
+        if entry.evidence_policy == evidence_policy
+    ]
+    return _hash_json(
+        {
+            "schema_version": 1,
+            "suite": suite.to_dict(),
+            "library": library.to_dict(),
+            "traces": relevant,
+            "evidence_policy": evidence_policy,
+            "prefix": prefix,
+        }
+    )
+
+
+def _gru_seed_checkpoint_path(path: Path | None, seed: int) -> Path | None:
+    if path is None:
+        return None
+    return path.with_name(f"{path.stem}--gru-seed-{seed}.npz")
+
+
+def _load_gru_seed_checkpoint(
+    path: Path | None,
+    signature: str,
+    rows: int,
+    columns: int,
+) -> np.ndarray | None:
+    if path is None or not path.is_file():
+        return None
+    try:
+        with np.load(path, allow_pickle=False) as arrays:
+            if str(arrays["signature"][0]) != signature:
+                return None
+            posteriors: np.ndarray = np.asarray(arrays["posteriors"]).copy()
+    except (KeyError, OSError, ValueError):
+        return None
+    if posteriors.shape != (rows, columns) or not np.all(np.isfinite(posteriors)):
+        return None
+    return posteriors
+
+
+def _write_gru_seed_checkpoint(
+    path: Path | None,
+    signature: str,
+    posteriors: np.ndarray,
+) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(dir=path.parent, suffix=".npz", delete=False) as handle:
+        temporary = Path(handle.name)
+        np.savez_compressed(
+            handle,
+            signature=np.asarray([signature]),
+            posteriors=np.asarray(posteriors, dtype=np.float64),
+        )
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary, path)
+
+
+def _load_pairwise_checkpoint(
+    path: Path | None,
+    signature: str,
+) -> tuple[list[PairwiseIdentifiabilityRow], list[dict[str, Any]]] | None:
+    if path is None or not path.is_file():
+        return None
+    raw = _read_json(path)
+    if raw.get("schema_version") != 1 or raw.get("signature") != signature:
+        return None
+    return (
+        [PairwiseIdentifiabilityRow.model_validate(item) for item in raw["pairwise_rows"]],
+        [dict(item) for item in raw["full_population_rows"]],
+    )
+
+
+def _write_pairwise_checkpoint(
+    path: Path | None,
+    signature: str,
+    rows: Sequence[PairwiseIdentifiabilityRow],
+    full_population_rows: Sequence[Mapping[str, Any]],
+) -> None:
+    if path is None:
+        return
+    payload = {
+        "schema_version": 1,
+        "signature": signature,
+        "pairwise_rows": [row.to_dict() for row in rows],
+        "full_population_rows": [dict(row) for row in full_population_rows],
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False
+    ) as handle:
+        json.dump(payload, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+        temporary = Path(handle.name)
+    os.replace(temporary, path)
+
+
+def _load_mapping_checkpoint(
+    path: Path | None,
+    signature: str,
+) -> dict[str, Any] | None:
+    if path is None or not path.is_file():
+        return None
+    raw = _read_json(path)
+    if raw.get("schema_version") != 1 or raw.get("signature") != signature:
+        return None
+    payload = raw.get("payload")
+    return dict(payload) if isinstance(payload, dict) else None
+
+
+def _write_mapping_checkpoint(
+    path: Path | None,
+    signature: str,
+    payload: Mapping[str, Any],
+) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    wrapper = {
+        "schema_version": 1,
+        "signature": signature,
+        "payload": dict(payload),
+    }
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False
+    ) as handle:
+        json.dump(wrapper, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+        temporary = Path(handle.name)
+    os.replace(temporary, path)
+
+
+def _assert_disjoint_compact_episode_keys(
+    *groups: Sequence[CompactTraceEpisode],
+) -> None:
+    keys = [{item.environment_key for item in group} for group in groups]
+    if keys[0] & keys[1] or keys[0] & keys[2] or keys[1] & keys[2]:
+        raise ValueError("official calibration, validation, and confirmatory keys overlap")
+
+
+def _commitment_reached(episode: Mapping[str, Any] | CompactTraceEpisode) -> bool:
+    if isinstance(episode, CompactTraceEpisode):
+        return episode.commitment_reached
+    return bool(episode.get("commitment_reached", False))
 
 
 def _full_population_row(
@@ -345,7 +627,7 @@ def _full_population_row(
     losses: np.ndarray,
     posteriors: np.ndarray,
     labels: Sequence[int],
-    episodes: Sequence[Mapping[str, Any]],
+    episodes: Sequence[Mapping[str, Any] | CompactTraceEpisode],
 ) -> dict[str, Any]:
     signatures = tuple(
         library.response_ids[int(np.argmin(losses[index]))]
@@ -369,7 +651,7 @@ def _full_population_row(
         "identity_mi_nats": summary.identity_mutual_information_nats,
         "decision_signature_mi_nats": summary.response_signature_mutual_information_nats,
         "commitment_rate": float(
-            np.mean([bool(item.get("commitment_reached", False)) for item in episodes])
+            np.mean([_commitment_reached(item) for item in episodes])
         ),
     }
 
@@ -379,11 +661,27 @@ def audit_official_estimator_calibration(
     response_libraries: Sequence[OfficialResponseValueMatrix],
     pairwise_rows: Sequence[PairwiseIdentifiabilityRow],
     config: OfficialCheckpointAuditSuiteV2 | str | Path,
+    *,
+    trace_store: OfficialCompactTraceStore | None = None,
+    analysis_state_dir: str | Path | None = None,
 ) -> dict[str, Any]:
     """Run preregistered synthetic, treatment, refit, and label-shuffle controls."""
 
     suite = _suite(config)
     index = _trace_index(trace_index)
+    if trace_store is None:
+        if analysis_state_dir is None:
+            with tempfile.TemporaryDirectory(prefix="zsc-official-calibration-") as temporary:
+                return audit_official_estimator_calibration(
+                    index,
+                    response_libraries,
+                    pairwise_rows,
+                    suite,
+                    analysis_state_dir=temporary,
+                )
+        trace_store = OfficialCompactTraceStore.prepare(
+            index, Path(analysis_state_dir) / "trace-cache"
+        )
     treatment = _estimator_treatment_agreement(pairwise_rows, suite)
     refits: list[dict[str, Any]] = []
     shuffle_rows: list[dict[str, Any]] = []
@@ -410,12 +708,18 @@ def audit_official_estimator_calibration(
         ): row
         for row in pairwise_rows
     }
+    direct_checkpoint_root = (
+        None
+        if analysis_state_dir is None
+        else Path(analysis_state_dir).resolve() / "direct-pairwise-refits"
+    )
+    if direct_checkpoint_root is not None:
+        direct_checkpoint_root.mkdir(parents=True, exist_ok=True)
     for library in response_libraries:
-        grouped = _load_trace_groups(index, library.layout_id)
         partners = {partner: number for number, partner in enumerate(library.partner_ids)}
         losses = np.asarray(library.normalized_losses, dtype=np.float64)
         ordinary = {
-            split: grouped[("ordinary_progress", split)]
+            split: trace_store.episodes(library.layout_id, "ordinary_progress", split)
             for split in ("calibration", "validation", "confirmatory")
         }
         shuffle_rows.append(
@@ -424,14 +728,43 @@ def audit_official_estimator_calibration(
         for layout_id, left, right in selected:
             if layout_id != library.layout_id:
                 continue
-            direct = _direct_pairwise_refit(
-                ordinary,
-                left,
-                right,
-                partners,
-                losses,
-                suite,
+            direct_signature = _hash_json(
+                {
+                    "schema_version": 1,
+                    "suite": suite.to_dict(),
+                    "library": library.to_dict(),
+                    "left": left,
+                    "right": right,
+                    "ordinary_trace_hashes": [
+                        entry.source_hash
+                        for entry in trace_store.entries
+                        if entry.layout_id == library.layout_id
+                        and entry.evidence_policy == "ordinary_progress"
+                        and entry.partner_id in {left, right}
+                    ],
+                }
             )
+            direct_path = (
+                None
+                if direct_checkpoint_root is None
+                else direct_checkpoint_root
+                / (
+                    hashlib.sha256(f"{layout_id}|{left}|{right}".encode()).hexdigest()[:20]
+                    + ".json"
+                )
+            )
+            direct = _load_mapping_checkpoint(direct_path, direct_signature)
+            if direct is None:
+                direct = _direct_pairwise_refit_streaming(
+                    trace_store,
+                    library.layout_id,
+                    left,
+                    right,
+                    partners,
+                    losses,
+                    suite,
+                )
+                _write_mapping_checkpoint(direct_path, direct_signature, direct)
             for estimator in ("event", "gru"):
                 restricted = row_lookup[
                     (layout_id, left, right, "ordinary_progress", estimator, "pre_commitment")
@@ -580,7 +913,7 @@ def _pairwise_rows(
     estimator: str,
     prefix: str,
     posteriors: np.ndarray,
-    episodes: Sequence[Mapping[str, Any]],
+    episodes: Sequence[Mapping[str, Any] | CompactTraceEpisode],
     labels: Sequence[int],
     losses: np.ndarray,
     history_keys: Sequence[Sequence[str]],
@@ -602,7 +935,7 @@ def _pairwise_rows(
         )
         if prefix == "pre_commitment":
             for pair_row, episode_number in enumerate(selected):
-                if not bool(episodes[episode_number].get("commitment_reached", False)):
+                if not _commitment_reached(episodes[episode_number]):
                     pair_posteriors[pair_row] = (0.5, 0.5)
         true_modes = [0 if labels[number] == left_index else 1 for number in selected]
         pair_losses = losses[[left_index, right_index]]
@@ -621,9 +954,7 @@ def _pairwise_rows(
         ]
         prefix_tv = _empirical_history_tv(left_histories, right_histories)
         commitment_rate = float(
-            np.mean(
-                [bool(episodes[number].get("commitment_reached", False)) for number in selected]
-            )
+            np.mean([_commitment_reached(episodes[number]) for number in selected])
         )
         output.append(
             PairwiseIdentifiabilityRow(
@@ -830,8 +1161,94 @@ def _direct_pairwise_refit(
     }
 
 
+def _direct_pairwise_refit_streaming(
+    trace_store: OfficialCompactTraceStore,
+    layout_id: str,
+    left: str,
+    right: str,
+    partner_indices: Mapping[str, int],
+    full_losses: np.ndarray,
+    suite: OfficialCheckpointAuditSuiteV2,
+) -> dict[str, Any]:
+    modes = (left, right)
+    pair_labels = {left: 0, right: 1}
+    selected_partners = set(modes)
+    sources = {
+        split: trace_store.sequence_source(
+            layout_id,
+            "ordinary_progress",
+            split,
+            pair_labels,
+            "pre_commitment",
+            partners=selected_partners,
+        )
+        for split in ("calibration", "validation", "confirmatory")
+    }
+    prior = (0.5, 0.5)
+    pair_losses = full_losses[[partner_indices[left], partner_indices[right]]]
+    calibration_histories = [
+        row.event_tokens("pre_commitment") for row in sources["calibration"].episodes
+    ]
+    confirmatory_histories = [
+        row.event_tokens("pre_commitment") for row in sources["confirmatory"].episodes
+    ]
+    event_model = fit_event_posterior(
+        calibration_histories,
+        sources["calibration"].labels,
+        2,
+        smoothing=suite.estimator.event_laplace_alpha,
+    )
+    event_posteriors = predict_event_posteriors(
+        event_model, confirmatory_histories, prior
+    )
+    _assign_prior_to_censored(
+        event_posteriors, sources["confirmatory"].episodes, prior
+    )
+    event_summary = summarize_posteriors(
+        prior,
+        pair_losses.tolist(),
+        event_posteriors.tolist(),
+        response_signatures=modes,
+        true_modes=sources["confirmatory"].labels,
+    )
+    gru_dri: list[float] = []
+    for seed in suite.estimator.gru_seeds:
+        fit = fit_streaming_cross_fitted_gru_posterior(
+            sources["calibration"],
+            sources["validation"],
+            sources["confirmatory"],
+            prior,
+            pair_losses.tolist(),
+            response_signatures=modes,
+            hidden_size=suite.estimator.gru_hidden_size,
+            seed=seed,
+        )
+        posteriors = fit.posteriors.copy()
+        _assign_prior_to_censored(
+            posteriors, sources["confirmatory"].episodes, prior
+        )
+        summary = summarize_posteriors(
+            prior,
+            pair_losses.tolist(),
+            posteriors.tolist(),
+            response_signatures=modes,
+            true_modes=sources["confirmatory"].labels,
+        )
+        if summary.dri is not None:
+            gru_dri.append(float(summary.dri))
+    return {
+        "event_dri": event_summary.dri,
+        "gru_dri": float(np.mean(gru_dri)) if gru_dri else None,
+        "gru_seed_standard_deviation": (
+            float(np.std(gru_dri, ddof=1)) if len(gru_dri) > 1 else 0.0
+        ),
+    }
+
+
 def _label_shuffle_control(
-    split_rows: Mapping[str, Sequence[Mapping[str, Any]]],
+    split_rows: Mapping[
+        str, Sequence[Mapping[str, Any] | CompactTraceEpisode]
+    ],
     partner_indices: Mapping[str, int],
     losses: np.ndarray,
     suite: OfficialCheckpointAuditSuiteV2,
@@ -839,12 +1256,12 @@ def _label_shuffle_control(
 ) -> dict[str, Any]:
     calibration = list(split_rows["calibration"])
     confirmatory = list(split_rows["confirmatory"])
-    train_histories = [_event_tokens(row, "pre_commitment") for row in calibration]
-    confirm_histories = [_event_tokens(row, "pre_commitment") for row in confirmatory]
+    train_histories = [_event_tokens_any(row, "pre_commitment") for row in calibration]
+    confirm_histories = [_event_tokens_any(row, "pre_commitment") for row in confirmatory]
     labels = np.asarray(
-        [partner_indices[str(row["partner_id"])] for row in calibration], dtype=np.int64
+        [partner_indices[_episode_partner_id(row)] for row in calibration], dtype=np.int64
     )
-    confirm_labels = [partner_indices[str(row["partner_id"])] for row in confirmatory]
+    confirm_labels = [partner_indices[_episode_partner_id(row)] for row in confirmatory]
     prior = np.full(len(partner_indices), 1.0 / len(partner_indices), dtype=np.float64)
     rng = np.random.default_rng(7301 + sum(layout_id.encode()))
     values: list[float] = []
@@ -877,12 +1294,12 @@ def _label_shuffle_control(
 
 def _assign_prior_to_censored(
     posteriors: np.ndarray,
-    episodes: Sequence[Mapping[str, Any]],
+    episodes: Sequence[Mapping[str, Any] | CompactTraceEpisode],
     prior: Sequence[float],
 ) -> None:
     prior_row = np.asarray(prior, dtype=np.float64)
     for index, episode in enumerate(episodes):
-        if not bool(episode.get("commitment_reached", False)):
+        if not _commitment_reached(episode):
             posteriors[index] = prior_row
 
 
@@ -900,6 +1317,21 @@ def _event_tokens(episode: Mapping[str, Any], prefix: int | str) -> tuple[str, .
         )
         tokens.append(reward_token)
     return tuple(tokens) or ("zero_step",)
+
+
+def _event_tokens_any(
+    episode: Mapping[str, Any] | CompactTraceEpisode,
+    prefix: int | str,
+) -> tuple[str, ...]:
+    if isinstance(episode, CompactTraceEpisode):
+        return episode.event_tokens(prefix)
+    return _event_tokens(episode, prefix)
+
+
+def _episode_partner_id(episode: Mapping[str, Any] | CompactTraceEpisode) -> str:
+    if isinstance(episode, CompactTraceEpisode):
+        return episode.partner_id
+    return str(episode["partner_id"])
 
 
 def _gru_features(episode: Mapping[str, Any], prefix: int | str) -> np.ndarray:

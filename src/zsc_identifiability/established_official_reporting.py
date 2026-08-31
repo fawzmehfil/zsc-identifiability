@@ -45,6 +45,7 @@ from zsc_identifiability.established_official_statistics import (
     nested_leave_one_scheme_out_feature_regression,
     nested_leave_one_scheme_out_regression,
 )
+from zsc_identifiability.established_official_trace_store import OfficialCompactTraceStore
 from zsc_identifiability.learning_statistics import holm_adjust
 
 
@@ -69,6 +70,19 @@ def run_complete_official_checkpoint_analysis(
         spec,
     )
     trace_index = build_official_trace_index(rollout_plan, rollout_ledger)
+    state_dir = output / ".analysis-state"
+    state_dir.mkdir(parents=True, exist_ok=True)
+
+    def progress(message: str) -> None:
+        print(f"[stage6-analysis] {message}", flush=True)
+
+    progress("preparing resumable compact trace cache")
+    trace_store = OfficialCompactTraceStore.prepare(
+        trace_index,
+        state_dir / "trace-cache",
+        progress=progress,
+    )
+    progress("compact trace cache ready")
     full_population: list[dict[str, Any]] = []
     pairwise = tuple(
         row
@@ -78,18 +92,34 @@ def run_complete_official_checkpoint_analysis(
             library,
             spec,
             full_population_rows=full_population,
+            trace_store=trace_store,
+            analysis_state_dir=state_dir,
+            progress=progress,
         )
     )
-    calibration = audit_official_estimator_calibration(trace_index, libraries, pairwise, spec)
+    progress("pairwise DRI work units complete")
+    calibration = audit_official_estimator_calibration(
+        trace_index,
+        libraries,
+        pairwise,
+        spec,
+        trace_store=trace_store,
+        analysis_state_dir=state_dir,
+    )
     exclusions = _build_exclusion_report(inventory, libraries)
-    method_report = _build_method_report(rollout_plan, libraries, exclusions, trace_index)
-    validation_pairwise = _estimate_validation_event_rows(trace_index, libraries, spec)
+    method_report = _build_method_report(
+        rollout_plan, libraries, exclusions, trace_index, trace_store
+    )
+    validation_pairwise = _estimate_validation_event_rows(
+        trace_index, libraries, spec, trace_store
+    )
     intervention = _build_intervention_audit(
         trace_index,
         libraries,
         pairwise,
         validation_pairwise,
         spec,
+        trace_store,
     )
     regression_rows = _build_regression_rows(
         method_report["partner_method_rows"],
@@ -97,6 +127,7 @@ def run_complete_official_checkpoint_analysis(
         pairwise,
         trace_index,
         exclusions,
+        trace_store,
     )
     episode_regression_rows = _build_episode_regression_rows(
         regression_rows, method_report["episode_rows"]
@@ -203,6 +234,7 @@ def _build_method_report(
     libraries: Sequence[OfficialResponseValueMatrix],
     exclusions: Mapping[str, Any],
     trace_index: OfficialTraceIndex,
+    trace_store: OfficialCompactTraceStore,
 ) -> dict[str, Any]:
     library_by_layout = {item.layout_id: item for item in libraries}
     duplicate_seed_ids = set(str(item) for item in exclusions["duplicate_method_asset_ids"])
@@ -284,7 +316,9 @@ def _build_method_report(
                     "commitment_reached": bool(episode.get("commitment_reached", False)),
                 }
             )
-    induced_dri = _method_induced_event_dri(rows, plan, trace_index, libraries)
+    induced_dri = _method_induced_event_dri(
+        rows, plan, trace_index, libraries, trace_store
+    )
     deployment_sensitivity = _deployment_sensitivity(rows)
     return {
         "schema_version": 1,
@@ -392,9 +426,9 @@ def _method_induced_event_dri(
     plan: OfficialRolloutPlan,
     trace_index: OfficialTraceIndex,
     libraries: Sequence[OfficialResponseValueMatrix],
+    trace_store: OfficialCompactTraceStore,
 ) -> list[dict[str, Any]]:
     shards = [shard for shard in plan.shards if shard.kind == "method"]
-    results = {shard.shard_id: _read_result(Path(shard.result_path)) for shard in shards}
     output: list[dict[str, Any]] = []
     for library in libraries:
         partner_indices = {partner: index for index, partner in enumerate(library.partner_ids)}
@@ -404,11 +438,12 @@ def _method_induced_event_dri(
             library.response_ids[int(np.argmin(losses[index]))]
             for index in range(len(library.partner_ids))
         )
-        traces = _trace_groups(trace_index, library.layout_id)
-        calibration = traces[("ordinary_progress", "calibration")]
-        calibration_labels = [partner_indices[str(item["partner_id"])] for item in calibration]
+        calibration = trace_store.episodes(
+            library.layout_id, "ordinary_progress", "calibration"
+        )
+        calibration_labels = [partner_indices[item.partner_id] for item in calibration]
         model = fit_event_posterior(
-            [_event_tokens(item, "pre_commitment") for item in calibration],
+            [item.event_tokens("pre_commitment") for item in calibration],
             calibration_labels,
             len(library.partner_ids),
         )
@@ -429,18 +464,24 @@ def _method_induced_event_dri(
                 and shard.method_seed == seed
                 and shard.deployment == deployment
             ]
-            episodes: list[Mapping[str, Any]] = []
+            histories: list[tuple[str, ...]] = []
+            commitment_reached: list[bool] = []
             labels: list[int] = []
             for shard in selected_shards:
                 if shard.partner_id is None:
                     continue
-                shard_episodes = results[shard.shard_id]["episodes"]
-                episodes.extend(shard_episodes)
+                shard_result = _read_result(Path(shard.result_path))
+                shard_episodes = shard_result["episodes"]
+                histories.extend(
+                    _event_tokens(item, "pre_commitment") for item in shard_episodes
+                )
+                commitment_reached.extend(
+                    bool(item.get("commitment_reached", False)) for item in shard_episodes
+                )
                 labels.extend([partner_indices[shard.partner_id]] * len(shard_episodes))
-            histories = [_event_tokens(item, "pre_commitment") for item in episodes]
             posteriors = predict_event_posteriors(model, histories, prior.tolist())
-            for index, episode in enumerate(episodes):
-                if not bool(episode.get("commitment_reached", False)):
+            for index, reached in enumerate(commitment_reached):
+                if not reached:
                     posteriors[index] = prior
             summary = summarize_posteriors(
                 prior.tolist(),
@@ -455,7 +496,7 @@ def _method_induced_event_dri(
                     "method_id": method_id,
                     "method_seed": seed,
                     "deployment": deployment,
-                    "episode_count": len(episodes),
+                    "episode_count": len(histories),
                     "estimator_training_policy": "fcp_seed1_greedy_ordinary_progress",
                     "dri": summary.dri,
                     "residual_risk": summary.residual_risk,
@@ -474,6 +515,7 @@ def _build_regression_rows(
     pairwise: Sequence[PairwiseIdentifiabilityRow],
     trace_index: OfficialTraceIndex,
     exclusions: Mapping[str, Any],
+    trace_store: OfficialCompactTraceStore,
 ) -> list[dict[str, Any]]:
     dri_lookup = {
         (row.layout_id, row.left_partner_id, row.right_partner_id): row
@@ -482,7 +524,9 @@ def _build_regression_rows(
         and row.evidence_policy == "ordinary_progress"
         and row.prefix == "pre_commitment"
     }
-    predictability = _pairwise_visible_action_predictability(trace_index, libraries)
+    predictability = _pairwise_visible_action_predictability(
+        trace_index, libraries, trace_store
+    )
     method_lookup = {
         (
             str(row["layout_id"]),
@@ -760,21 +804,36 @@ def _estimate_validation_event_rows(
     trace_index: OfficialTraceIndex,
     libraries: Sequence[OfficialResponseValueMatrix],
     suite: OfficialCheckpointAuditSuiteV2,
+    trace_store: OfficialCompactTraceStore,
 ) -> tuple[PairwiseIdentifiabilityRow, ...]:
     output: list[PairwiseIdentifiabilityRow] = []
     for library in libraries:
-        grouped = _trace_groups(trace_index, library.layout_id)
         partner_indices = {partner: index for index, partner in enumerate(library.partner_ids)}
         schemes = {partner: _scheme(partner) for partner in library.partner_ids}
         losses = np.asarray(library.normalized_losses, dtype=np.float64)
         prior = np.full(len(library.partner_ids), 1.0 / len(library.partner_ids))
-        for evidence_policy in sorted({key[0] for key in grouped if key[1] == "calibration"}):
-            calibration = grouped[(evidence_policy, "calibration")]
-            validation = grouped[(evidence_policy, "validation")]
-            calibration_labels = [partner_indices[str(item["partner_id"])] for item in calibration]
-            validation_labels = [partner_indices[str(item["partner_id"])] for item in validation]
-            calibration_histories = [_event_tokens(item, "pre_commitment") for item in calibration]
-            validation_histories = [_event_tokens(item, "pre_commitment") for item in validation]
+        evidence_policies = sorted(
+            {
+                entry.evidence_policy
+                for entry in trace_index.entries
+                if entry.layout_id == library.layout_id and entry.split == "calibration"
+            }
+        )
+        for evidence_policy in evidence_policies:
+            calibration = trace_store.episodes(
+                library.layout_id, evidence_policy, "calibration"
+            )
+            validation = trace_store.episodes(
+                library.layout_id, evidence_policy, "validation"
+            )
+            calibration_labels = [partner_indices[item.partner_id] for item in calibration]
+            validation_labels = [partner_indices[item.partner_id] for item in validation]
+            calibration_histories = [
+                item.event_tokens("pre_commitment") for item in calibration
+            ]
+            validation_histories = [
+                item.event_tokens("pre_commitment") for item in validation
+            ]
             model = fit_event_posterior(
                 calibration_histories,
                 calibration_labels,
@@ -806,13 +865,13 @@ def _build_intervention_audit(
     confirmatory_rows: Sequence[PairwiseIdentifiabilityRow],
     validation_rows: Sequence[PairwiseIdentifiabilityRow],
     suite: OfficialCheckpointAuditSuiteV2,
+    trace_store: OfficialCompactTraceStore,
 ) -> dict[str, Any]:
     library_by_layout = {item.layout_id: item for item in libraries}
     layout_reports: list[dict[str, Any]] = []
     any_qualifies = False
     for layout in suite.layouts:
         library = library_by_layout[layout.layout_id]
-        groups = _trace_groups(trace_index, layout.layout_id)
         validation_risk = _option_effects(validation_rows, layout.layout_id, "event", metric="risk")
         confirm_event_dri = _option_effects(
             confirmatory_rows, layout.layout_id, "event", metric="dri"
@@ -821,11 +880,11 @@ def _build_intervention_audit(
         confirm_gru_risk = _option_effects(
             confirmatory_rows, layout.layout_id, "gru", metric="risk"
         )
-        validation_metrics = _option_trace_metrics(
-            groups, library, layout.diagnostic_options, "validation"
+        validation_metrics = _option_trace_metrics_from_store(
+            trace_store, library, layout.diagnostic_options, "validation"
         )
-        confirmatory_metrics = _option_trace_metrics(
-            groups, library, layout.diagnostic_options, "confirmatory"
+        confirmatory_metrics = _option_trace_metrics_from_store(
+            trace_store, library, layout.diagnostic_options, "confirmatory"
         )
         options = [item for item in layout.diagnostic_options if item != "ordinary_progress"]
         selection_rows: list[dict[str, Any]] = []
@@ -1139,27 +1198,97 @@ def _option_trace_metrics(
     return output
 
 
+def _option_trace_metrics_from_store(
+    store: OfficialCompactTraceStore,
+    library: OfficialResponseValueMatrix,
+    options: Sequence[str],
+    split: str,
+) -> dict[str, dict[str, float]]:
+    ordinary = store.episodes(library.layout_id, "ordinary_progress", split)
+    ordinary_by_key = {
+        (item.partner_id, item.environment_key): item for item in ordinary
+    }
+    maxima = {
+        partner: max(library.raw_values[index])
+        for index, partner in enumerate(library.partner_ids)
+    }
+    output: dict[str, dict[str, float]] = {}
+    for option in options:
+        if option == "ordinary_progress":
+            continue
+        selected = store.episodes(library.layout_id, option, split)
+        costs: list[float] = []
+        delays: list[float] = []
+        completed: list[float] = []
+        response_histories: dict[str, list[tuple[int, ...]]] = defaultdict(list)
+        for item in selected:
+            key = (item.partner_id, item.environment_key)
+            baseline = ordinary_by_key.get(key)
+            if baseline is None:
+                raise ValueError("intervention and ordinary traces do not share environment keys")
+            costs.append(
+                (baseline.sparse_return - item.sparse_return) / maxima[item.partner_id]
+            )
+            baseline_commit = baseline.commitment_step
+            option_commit = item.commitment_step
+            delays.append(
+                float(
+                    (400 if option_commit is None else option_commit)
+                    - (400 if baseline_commit is None else baseline_commit)
+                )
+            )
+            completion = item.intervention_completed_step
+            completed.append(
+                float(
+                    completion is not None
+                    and (option_commit is None or completion < option_commit)
+                )
+            )
+            response_histories[item.partner_id].append(
+                item.precommitment_partner_actions()
+            )
+        pair_tvs = [
+            _history_tv(response_histories[left], response_histories[right])
+            for left, right in library.conflicting_pairs_by_margin["0.02"]
+        ]
+        output[option] = {
+            "normalized_task_cost": float(np.mean(costs)),
+            "mean_commitment_delay_steps": float(np.mean(delays)),
+            "completion_before_commitment_rate": float(np.mean(completed)),
+            "partner_response_tv": float(np.mean(pair_tvs)) if pair_tvs else 0.0,
+        }
+    return output
+
+
 def _pairwise_visible_action_predictability(
     trace_index: OfficialTraceIndex,
     libraries: Sequence[OfficialResponseValueMatrix],
+    trace_store: OfficialCompactTraceStore,
 ) -> dict[tuple[str, str, str], float]:
     output: dict[tuple[str, str, str], float] = {}
     for library in libraries:
-        groups = _trace_groups(trace_index, library.layout_id)
-        calibration = groups[("ordinary_progress", "calibration")]
-        confirmatory = groups[("ordinary_progress", "confirmatory")]
+        calibration = trace_store.episodes(
+            library.layout_id, "ordinary_progress", "calibration"
+        )
+        confirmatory = trace_store.episodes(
+            library.layout_id, "ordinary_progress", "confirmatory"
+        )
         for left, right in library.conflicting_pairs_by_margin["0.02"]:
-            selected_train = [item for item in calibration if item["partner_id"] in {left, right}]
-            selected_test = [item for item in confirmatory if item["partner_id"] in {left, right}]
+            selected_train = [
+                item for item in calibration if item.partner_id in {left, right}
+            ]
+            selected_test = [
+                item for item in confirmatory if item.partner_id in {left, right}
+            ]
             counts: dict[tuple[int, int, int], Counter[int]] = defaultdict(Counter)
             global_counts: Counter[int] = Counter()
             for episode in selected_train:
-                for context, action in _visible_action_targets(episode):
+                for context, action in episode.visible_action_targets():
                     counts[context][action] += 1
                     global_counts[action] += 1
             losses: list[float] = []
             for episode in selected_test:
-                for context, action in _visible_action_targets(episode):
+                for context, action in episode.visible_action_targets():
                     row = counts.get(context, global_counts)
                     total = sum(row.values()) + 7.0
                     losses.append(-math.log((row.get(action, 0) + 1.0) / total))
