@@ -238,7 +238,7 @@ def _build_method_report(
 ) -> dict[str, Any]:
     library_by_layout = {item.layout_id: item for item in libraries}
     duplicate_seed_ids = set(str(item) for item in exclusions["duplicate_method_asset_ids"])
-    inventory = load_official_asset_inventory(plan.inventory_path)
+    inventory = _load_plan_inventory(plan)
     asset_for_method = {
         (item.layout_id, item.method_id, item.seed): item.asset_id for item in inventory.methods
     }

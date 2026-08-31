@@ -26,7 +26,10 @@ from zsc_identifiability.established_official_models import (
     OfficialPartnerAsset,
     load_official_checkpoint_suite,
 )
-from zsc_identifiability.established_official_reporting import _load_plan_inventory
+from zsc_identifiability.established_official_reporting import (
+    _build_method_report,
+    _load_plan_inventory,
+)
 from zsc_identifiability.established_official_rollouts import (
     get_official_rollout_status,
     prepare_official_rollouts,
@@ -37,6 +40,7 @@ from zsc_identifiability.established_official_statistics import (
     nested_leave_one_scheme_out_feature_regression,
     nested_leave_one_scheme_out_regression,
 )
+from zsc_identifiability.established_official_trace_store import OfficialCompactTraceStore
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITE_PATH = ROOT / "phase-6-established-validation/suites/canonical.json"
@@ -207,6 +211,26 @@ def test_analysis_recovers_hash_validated_legacy_inventory_path(tmp_path: Path) 
     mismatched = legacy_plan.model_copy(update={"inventory_hash": "f" * 64})
     with pytest.raises(ValueError, match="inventory hash does not match"):
         _load_plan_inventory(mismatched)
+
+
+def test_method_report_uses_legacy_inventory_recovery(tmp_path: Path) -> None:
+    suite = _minimal_suite()
+    inventory = _minimal_inventory(suite, tmp_path)
+    plan = prepare_official_rollouts(suite, inventory, tmp_path / "run")
+    legacy_empty_plan = plan.model_copy(
+        update={"inventory_path": "<in-memory>", "shards": tuple()}
+    )
+
+    report = _build_method_report(
+        legacy_empty_plan,
+        (),
+        {"duplicate_method_asset_ids": []},
+        SimpleNamespace(entries=()),  # type: ignore[arg-type]
+        OfficialCompactTraceStore(tmp_path / "cache", ()),
+    )
+
+    assert report["partner_method_rows"] == []
+    assert report["episode_rows"] == []
 
 
 def test_response_library_uses_ratio_loss_and_margin_sensitivity(tmp_path: Path) -> None:
