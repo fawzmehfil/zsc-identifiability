@@ -43,6 +43,10 @@ def prepare_official_rollouts(
         raise ValueError("official asset inventory belongs to a different suite")
     target = Path(workspace).resolve()
     target.mkdir(parents=True, exist_ok=True)
+    if suite_path is None:
+        suite_path = _materialize_suite(target, spec)
+    if inventory_path is None:
+        inventory_path = _materialize_inventory(target, inventory)
     shards: list[OfficialRolloutShard] = []
     partners_by_layout = {
         layout.layout_id: tuple(
@@ -186,13 +190,13 @@ def prepare_official_rollouts(
                             },
                         )
                     )
-    suite_hash = _sha256_path(suite_path) if suite_path is not None else _hash_json(spec.to_dict())
+    suite_hash = _sha256_path(suite_path)
     payload = {
         "schema_version": 1,
         "suite_id": spec.suite_id,
-        "suite_path": str(suite_path or "<in-memory>"),
+        "suite_path": str(suite_path),
         "suite_hash": suite_hash,
-        "inventory_path": str(inventory_path or "<in-memory>"),
+        "inventory_path": str(inventory_path),
         "inventory_hash": inventory.inventory_hash,
         "workspace": str(target),
         "shards": [shard.to_dict() for shard in shards],
@@ -508,6 +512,34 @@ def _resolve_inventory(
         return assets, None
     path = Path(assets).resolve()
     return load_official_asset_inventory(path), path
+
+
+def _materialize_suite(
+    workspace: Path,
+    suite: OfficialCheckpointAuditSuiteV2,
+) -> Path:
+    path = workspace / "official-audit-suite.json"
+    if path.exists():
+        existing = load_official_checkpoint_suite(path)
+        if existing.to_dict() != suite.to_dict():
+            raise ValueError("workspace contains a different materialized official audit suite")
+    else:
+        _atomic_json(path, suite.to_dict())
+    return path
+
+
+def _materialize_inventory(
+    workspace: Path,
+    inventory: OfficialAssetInventory,
+) -> Path:
+    path = workspace / "official-asset-inventory.json"
+    if path.exists():
+        existing = load_official_asset_inventory(path)
+        if existing.inventory_hash != inventory.inventory_hash:
+            raise ValueError("workspace contains a different official asset inventory")
+    else:
+        _atomic_json(path, inventory.to_dict())
+    return path
 
 
 def _resolve_plan(plan: OfficialRolloutPlan | str | Path) -> OfficialRolloutPlan:

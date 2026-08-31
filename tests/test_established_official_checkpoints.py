@@ -14,7 +14,10 @@ from pydantic import ValidationError
 from zsc_identifiability.established_official_analysis import (
     build_official_response_library,
 )
-from zsc_identifiability.established_official_assets import prepare_official_asset_lock
+from zsc_identifiability.established_official_assets import (
+    load_official_asset_inventory,
+    prepare_official_asset_lock,
+)
 from zsc_identifiability.established_official_models import (
     OfficialAssetInventory,
     OfficialAssetRecord,
@@ -23,6 +26,7 @@ from zsc_identifiability.established_official_models import (
     OfficialPartnerAsset,
     load_official_checkpoint_suite,
 )
+from zsc_identifiability.established_official_reporting import _load_plan_inventory
 from zsc_identifiability.established_official_rollouts import (
     get_official_rollout_status,
     prepare_official_rollouts,
@@ -98,6 +102,7 @@ def test_rollout_plan_is_disjoint_resumable_and_training_free(tmp_path: Path) ->
     inventory_path = tmp_path / "inventory.json"
     inventory_path.write_text(json.dumps(inventory.to_dict()), encoding="utf-8")
     plan = prepare_official_rollouts(suite_path, inventory_path, tmp_path / "run")
+    assert plan.inventory_path == str(inventory_path.resolve())
     all_keys = {
         split: {
             key
@@ -175,6 +180,33 @@ def test_rollout_plan_is_disjoint_resumable_and_training_free(tmp_path: Path) ->
     assert not second.complete
     assert len(calls) == first_call_count
     assert get_official_rollout_status(plan).plan_hash == plan.plan_hash
+
+
+def test_rollout_plan_materializes_in_memory_provenance(tmp_path: Path) -> None:
+    suite = _minimal_suite()
+    inventory = _minimal_inventory(suite, tmp_path)
+    workspace = tmp_path / "run"
+
+    plan = prepare_official_rollouts(suite, inventory, workspace)
+
+    assert plan.suite_path == str((workspace / "official-audit-suite.json").resolve())
+    assert plan.inventory_path == str((workspace / "official-asset-inventory.json").resolve())
+    assert load_official_checkpoint_suite(plan.suite_path) == suite
+    assert load_official_asset_inventory(plan.inventory_path) == inventory
+
+
+def test_analysis_recovers_hash_validated_legacy_inventory_path(tmp_path: Path) -> None:
+    suite = _minimal_suite()
+    inventory = _minimal_inventory(suite, tmp_path)
+    workspace = tmp_path / "run"
+    plan = prepare_official_rollouts(suite, inventory, workspace)
+    legacy_plan = plan.model_copy(update={"inventory_path": "<in-memory>"})
+
+    assert _load_plan_inventory(legacy_plan) == inventory
+
+    mismatched = legacy_plan.model_copy(update={"inventory_hash": "f" * 64})
+    with pytest.raises(ValueError, match="inventory hash does not match"):
+        _load_plan_inventory(mismatched)
 
 
 def test_response_library_uses_ratio_loss_and_margin_sensitivity(tmp_path: Path) -> None:

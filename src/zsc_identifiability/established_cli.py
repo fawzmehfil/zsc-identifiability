@@ -30,7 +30,6 @@ from zsc_identifiability.established_models import (
     load_established_suite_file,
 )
 from zsc_identifiability.established_official_assets import (
-    load_official_asset_inventory,
     load_official_asset_lock,
     prepare_official_asset_lock,
     sync_official_assets,
@@ -433,8 +432,7 @@ def _official_command(args: argparse.Namespace) -> int:
         lock = prepare_official_asset_lock(args.suite, args.workspace)
         payload: dict[str, Any] = {"asset_lock": lock.to_dict()}
         if args.inventory:
-            inventory = load_official_asset_inventory(args.inventory)
-            plan = prepare_official_rollouts(args.suite, inventory, args.workspace)
+            plan = prepare_official_rollouts(args.suite, args.inventory, args.workspace)
             payload["rollout_plan"] = plan.to_dict()
         print(json.dumps(payload, indent=2, sort_keys=True))
         return 0 if suite.policy_training_allowed is False else 2
@@ -442,7 +440,11 @@ def _official_command(args: argparse.Namespace) -> int:
         lock = load_official_asset_lock(args.lock)
         inventory = sync_official_assets(lock, args.suite)
         if inventory.complete:
-            prepare_official_rollouts(args.suite, inventory, lock.workspace)
+            prepare_official_rollouts(
+                args.suite,
+                Path(lock.workspace) / "official-asset-inventory.json",
+                lock.workspace,
+            )
         print(json.dumps(inventory.to_dict(), indent=2, sort_keys=True))
         return 0 if inventory.complete else 4
     if operation in {"smoke", "run"}:

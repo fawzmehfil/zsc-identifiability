@@ -62,7 +62,7 @@ def run_complete_official_checkpoint_analysis(
     _require_complete_plan(rollout_plan, rollout_ledger)
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
-    inventory = load_official_asset_inventory(rollout_plan.inventory_path)
+    inventory = _load_plan_inventory(rollout_plan)
 
     libraries = build_official_response_library(
         tuple(shard.result_path for shard in rollout_plan.shards if shard.kind == "response"),
@@ -1982,6 +1982,26 @@ def _plan(plan: OfficialRolloutPlan | str | Path) -> OfficialRolloutPlan:
     if isinstance(plan, OfficialRolloutPlan):
         return plan
     return OfficialRolloutPlan.model_validate(_read_json(Path(plan)))
+
+
+def _load_plan_inventory(plan: OfficialRolloutPlan) -> OfficialAssetInventory:
+    recorded = plan.inventory_path
+    path = (
+        Path(plan.workspace) / "official-asset-inventory.json"
+        if recorded == "<in-memory>"
+        else Path(recorded)
+    )
+    if not path.is_file():
+        raise FileNotFoundError(
+            "official rollout inventory is unavailable at the recorded or legacy workspace path: "
+            f"{path}"
+        )
+    inventory = load_official_asset_inventory(path)
+    if inventory.inventory_hash != plan.inventory_hash:
+        raise ValueError("official rollout inventory hash does not match the rollout plan")
+    if inventory.suite_id != plan.suite_id:
+        raise ValueError("official rollout inventory belongs to a different suite")
+    return inventory
 
 
 def _ledger(ledger: OfficialRolloutLedger | str | Path) -> OfficialRolloutLedger:

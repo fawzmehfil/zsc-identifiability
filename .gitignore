@@ -45,3 +45,4 @@ phase-6-established-validation/checkpoints/
 phase-6-established-validation/raw-traces/
 phase-6-established-validation/policy-pools/
 phase-6-established-validation/logs/
+phase-6-established-validation/artifacts/**/analysis.log
