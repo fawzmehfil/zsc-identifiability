@@ -109,6 +109,12 @@ uv run --extra established zsc-identifiability established official analyze \
   --output phase-6-established-validation/artifacts/official-checkpoint-audit
 ```
 
+Analysis first converts each completed trace shard to an ignored sparse cache,
+then trains the measurement GRUs with bounded mini-batches. Cache construction,
+every layout/policy/prefix work unit, and every GRU seed are checkpointed under
+the output directory's `.analysis-state/`. Repeating the same command resumes
+automatically and never reruns policy inference.
+
 Exit code `2` denotes an engineering or integrity failure, `3` a completed
 scientific-gate failure, and `4` missing assets or incomplete shards.
 
@@ -120,11 +126,12 @@ scientific-gate failure, and `4` missing assets or incomplete shards.
 - atomic CPU rollout plan, ledger, recovery, and offline boundary: implemented;
 - official policy/environment loading and two-seat parity harness: implemented;
 - historical seat-0 integration parity on both layouts: verified;
-- canonical two-seat parity: pending the explicit `official smoke` execution;
+- canonical two-seat parity and complete rollout matrix: complete;
 - response-library, conflict, event/GRU DRI, and scheme-held-out statistical
   components: implemented;
 - custom full-compute extension: preserved but retired from the default path;
-- complete official rollout matrix and scientific verdict: pending execution.
+- bounded-memory, resumable scientific analysis: implemented and under execution;
+- final established-environment verdict: pending completed analysis.
 
 No established-environment scientific finding is claimed before the complete
 official audit and sensitivity analyses pass.

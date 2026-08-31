@@ -14,13 +14,12 @@ zero, and the current scientific verdict is `continue_without_repair`. The next
 research step is established-environment validation rather than a new repair
 algorithm.
 
-The Stage 6 v2 platform is implemented. Historical seat-0 integration smokes
-pass on both layouts; the canonical two-seat parity gate runs after the locked
-assets are synchronized. The audit uses 50 externally selected partners and six
-published ZSC method families without policy training. The complete rollout
-matrix remains open, so no established-environment scientific result is claimed
-yet. The previous custom OvercookedV2 path remains an optional full-compute
-extension.
+The Stage 6 v2 inference matrix is complete: 4,842 shards and 240,800 episodes
+cover 50 externally selected partners and six published ZSC method families
+without policy training. Its scientific analyzer uses a sparse, bounded-memory
+trace cache and resumable estimator checkpoints. The final established-
+environment verdict remains pending until that analysis completes. The previous
+custom OvercookedV2 path remains an optional full-compute extension.
 
 The exact package uses finite, static hidden partner modes and belief-state dynamic
 programming. Neural baselines are isolated behind the optional `learning` extra;
