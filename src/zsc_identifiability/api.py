@@ -80,6 +80,42 @@ from zsc_identifiability.established_official_models import (
 from zsc_identifiability.established_official_models import (
     load_official_checkpoint_suite as _load_official_checkpoint_suite,
 )
+from zsc_identifiability.established_official_redesign import (
+    fit_measurement_representations as _fit_measurement_representations,
+)
+from zsc_identifiability.established_official_redesign import (
+    fit_pairwise_decoders as _fit_pairwise_decoders,
+)
+from zsc_identifiability.established_official_redesign import (
+    get_fresh_confirmation_status as _get_fresh_confirmation_status,
+)
+from zsc_identifiability.established_official_redesign import (
+    prepare_fresh_confirmation as _prepare_fresh_confirmation,
+)
+from zsc_identifiability.established_official_redesign import (
+    prepare_measurement_redesign as _prepare_measurement_redesign,
+)
+from zsc_identifiability.established_official_redesign import (
+    run_fresh_confirmation as _run_fresh_confirmation,
+)
+from zsc_identifiability.established_official_redesign_analysis import (
+    analyze_measurement_redesign as _analyze_measurement_redesign,
+)
+from zsc_identifiability.established_official_redesign_analysis import (
+    evaluate_fresh_decision_value as _evaluate_fresh_decision_value,
+)
+from zsc_identifiability.established_official_redesign_models import (
+    MeasurementFitManifest,
+    MeasurementRepresentationManifest,
+    OfficialConfirmationLedger,
+    OfficialConfirmationPlan,
+    OfficialMeasurementAuditManifestV3,
+    OfficialMeasurementAuditSuiteV3,
+    PairwiseDecisionValueRow,
+)
+from zsc_identifiability.established_official_redesign_models import (
+    load_official_measurement_suite as _load_official_measurement_suite,
+)
 from zsc_identifiability.established_official_reporting import (
     run_complete_official_checkpoint_analysis as _run_complete_official_checkpoint_analysis,
 )
@@ -602,3 +638,75 @@ def analyze_official_audit(
     results: dict[str, object],
 ) -> OfficialCheckpointAuditManifest:
     return analyze_official_checkpoint_audit(suite, results)
+
+
+def load_official_measurement_suite(path: str | Path) -> OfficialMeasurementAuditSuiteV3:
+    return _load_official_measurement_suite(path)
+
+
+def prepare_measurement_redesign(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    workspace: str | Path,
+) -> dict[str, object]:
+    return _prepare_measurement_redesign(suite, workspace)
+
+
+def fit_measurement_representations(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    output_dir: str | Path,
+) -> MeasurementRepresentationManifest:
+    return _fit_measurement_representations(suite, output_dir)
+
+
+def fit_pairwise_decoders(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    representations: MeasurementRepresentationManifest | str | Path,
+    output_dir: str | Path,
+) -> MeasurementFitManifest:
+    return _fit_pairwise_decoders(suite, representations, output_dir)
+
+
+def prepare_fresh_confirmation(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    fit_manifest: MeasurementFitManifest | str | Path,
+    workspace: str | Path,
+) -> OfficialConfirmationPlan:
+    return _prepare_fresh_confirmation(suite, fit_manifest, workspace)
+
+
+def run_fresh_confirmation(
+    plan: OfficialConfirmationPlan | str | Path,
+    workers: int = 2,
+    resume: bool = True,
+) -> OfficialConfirmationLedger:
+    return _run_fresh_confirmation(plan, workers=workers, resume=resume)
+
+
+def get_fresh_confirmation_status(
+    plan: OfficialConfirmationPlan | str | Path,
+) -> OfficialConfirmationLedger:
+    return _get_fresh_confirmation_status(plan)
+
+
+def evaluate_fresh_decision_value(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    plan: OfficialConfirmationPlan | str | Path,
+    ledger: OfficialConfirmationLedger | str | Path,
+    fit_manifest: MeasurementFitManifest | str | Path,
+    output_dir: str | Path,
+) -> tuple[PairwiseDecisionValueRow, ...]:
+    return _evaluate_fresh_decision_value(
+        suite, plan, ledger, fit_manifest, output_dir
+    )
+
+
+def analyze_measurement_redesign(
+    suite: OfficialMeasurementAuditSuiteV3 | str | Path,
+    plan: OfficialConfirmationPlan | str | Path,
+    ledger: OfficialConfirmationLedger | str | Path,
+    fit_manifest: MeasurementFitManifest | str | Path,
+    output_dir: str | Path,
+) -> OfficialMeasurementAuditManifestV3:
+    return _analyze_measurement_redesign(
+        suite, plan, ledger, fit_manifest, output_dir
+    )

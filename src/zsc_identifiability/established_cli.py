@@ -38,6 +38,18 @@ from zsc_identifiability.established_official_models import (
     OfficialRolloutLedger,
     load_official_checkpoint_suite,
 )
+from zsc_identifiability.established_official_redesign import (
+    fit_measurement_representations,
+    fit_pairwise_decoders,
+    get_fresh_confirmation_status,
+    prepare_fresh_confirmation,
+    prepare_measurement_redesign,
+    run_fresh_confirmation,
+    validate_measurement_redesign,
+)
+from zsc_identifiability.established_official_redesign_analysis import (
+    analyze_measurement_redesign,
+)
 from zsc_identifiability.established_official_reporting import (
     run_complete_official_checkpoint_analysis,
 )
@@ -178,6 +190,42 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
     official_analyze.add_argument("--plan", required=True)
     official_analyze.add_argument("--ledger", required=True)
     official_analyze.add_argument("--output", required=True)
+    redesign = official_commands.add_parser(
+        "redesign", help="run the frozen Stage 6 v3 decision-risk redesign"
+    )
+    redesign_commands = redesign.add_subparsers(dest="redesign_command", required=True)
+    redesign_validate = redesign_commands.add_parser(
+        "validate", help="validate v3 source locks and synthetic controls"
+    )
+    redesign_validate.add_argument("--suite", required=True)
+    redesign_fit = redesign_commands.add_parser(
+        "fit", help="fit and freeze v3 measurement representations and pairwise heads"
+    )
+    redesign_fit.add_argument("--suite", required=True)
+    redesign_fit.add_argument("--output", required=True)
+    redesign_prepare = redesign_commands.add_parser(
+        "prepare-confirmation", help="prepare 9,600 untouched trace-only episodes"
+    )
+    redesign_prepare.add_argument("--suite", required=True)
+    redesign_prepare.add_argument("--fit-manifest", required=True)
+    redesign_prepare.add_argument("--workspace", required=True)
+    redesign_run = redesign_commands.add_parser(
+        "run-confirmation", help="run or resume the trace-only confirmation queue"
+    )
+    redesign_run.add_argument("--plan", required=True)
+    redesign_run.add_argument("--workers", type=int, default=2)
+    redesign_status = redesign_commands.add_parser(
+        "status", help="inspect fresh-confirmation status without launching inference"
+    )
+    redesign_status.add_argument("--plan", required=True)
+    redesign_analyze = redesign_commands.add_parser(
+        "analyze", help="run frozen v3 calibration, regression, and intervention analysis"
+    )
+    redesign_analyze.add_argument("--suite", required=True)
+    redesign_analyze.add_argument("--plan", required=True)
+    redesign_analyze.add_argument("--ledger", required=True)
+    redesign_analyze.add_argument("--fit-manifest", required=True)
+    redesign_analyze.add_argument("--output", required=True)
 
     responses = subcommands.add_parser(
         "build-responses", help="freeze the empirical response-loss matrix"
@@ -427,6 +475,8 @@ def dispatch_established(args: argparse.Namespace) -> int:
 
 def _official_command(args: argparse.Namespace) -> int:
     operation = args.official_command
+    if operation == "redesign":
+        return _official_redesign_command(args)
     if operation == "prepare":
         suite = load_official_checkpoint_suite(args.suite)
         lock = prepare_official_asset_lock(args.suite, args.workspace)
@@ -486,6 +536,69 @@ def _official_command(args: argparse.Namespace) -> int:
     raise ValueError(f"unknown official-checkpoint command: {operation!r}")
 
 
+def _official_redesign_command(args: argparse.Namespace) -> int:
+    operation = args.redesign_command
+    if operation == "validate":
+        report = validate_measurement_redesign(args.suite)
+        print(json.dumps(report, indent=2, sort_keys=True))
+        return 0 if report["valid"] else 3
+    if operation == "fit":
+        output = Path(args.output).resolve()
+        preflight = prepare_measurement_redesign(args.suite, output)
+        representations = fit_measurement_representations(
+            args.suite,
+            output,
+            progress=lambda message: print(f"[stage6-v3-fit] {message}", flush=True),
+        )
+        fit = fit_pairwise_decoders(
+            args.suite,
+            output / "measurement-representations.json",
+            output,
+            progress=lambda message: print(f"[stage6-v3-fit] {message}", flush=True),
+        )
+        payload = {
+            "preflight": preflight,
+            "representation_count": len(representations.artifacts),
+            "fit_manifest": fit.to_dict(),
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0 if fit.complete else 3
+    if operation == "prepare-confirmation":
+        plan = prepare_fresh_confirmation(
+            args.suite,
+            args.fit_manifest,
+            args.workspace,
+        )
+        print(json.dumps(plan.to_dict(), indent=2, sort_keys=True))
+        return 0
+    if operation == "run-confirmation":
+        ledger = run_fresh_confirmation(args.plan, workers=args.workers, resume=True)
+        print(json.dumps(_official_confirmation_status_payload(ledger), indent=2, sort_keys=True))
+        if ledger.failed_shards:
+            return 2
+        return 0 if ledger.complete else 4
+    if operation == "status":
+        ledger = get_fresh_confirmation_status(args.plan)
+        print(json.dumps(_official_confirmation_status_payload(ledger), indent=2, sort_keys=True))
+        if ledger.failed_shards:
+            return 2
+        return 0 if ledger.complete else 4
+    if operation == "analyze":
+        manifest = analyze_measurement_redesign(
+            args.suite,
+            args.plan,
+            args.ledger,
+            args.fit_manifest,
+            args.output,
+            progress=lambda message: print(f"[stage6-v3-analysis] {message}", flush=True),
+        )
+        print(json.dumps(manifest.to_dict(), indent=2, sort_keys=True))
+        if manifest.status == "incomplete":
+            return 4
+        return 3 if manifest.verdict in {"redesign", "stop"} else 0
+    raise ValueError(f"unknown Stage 6 v3 redesign command: {operation!r}")
+
+
 def _official_status_payload(ledger: OfficialRolloutLedger) -> dict[str, Any]:
     counts: dict[str, int] = {}
     for entry in ledger.entries:
@@ -495,6 +608,20 @@ def _official_status_payload(ledger: OfficialRolloutLedger) -> dict[str, Any]:
         "complete": ledger.complete,
         "counts": counts,
         "failed_shards": list(ledger.failed_shards),
+    }
+
+
+def _official_confirmation_status_payload(ledger: Any) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+    for entry in ledger.entries:
+        counts[entry.status] = counts.get(entry.status, 0) + 1
+    return {
+        "suite_id": ledger.suite_id,
+        "complete": ledger.complete,
+        "counts": counts,
+        "failed_shards": list(ledger.failed_shards),
+        "plan_hash": ledger.plan_hash,
+        "frozen_configuration_hash": ledger.frozen_configuration_hash,
     }
 
 

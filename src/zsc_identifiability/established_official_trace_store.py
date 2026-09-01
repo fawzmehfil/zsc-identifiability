@@ -10,7 +10,7 @@ import tempfile
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 
@@ -162,6 +162,52 @@ class CompactTraceEpisode:
             )
         return tuple(tokens) or ("zero_step",)
 
+    def timed_event_tokens(self, prefix: int | str) -> tuple[tuple[int, str], ...]:
+        """Return only ego-visible tokens with their absolute environment step."""
+
+        length = self.prefix_length(prefix)
+        start, _end = self._step_bounds()
+        tokens: list[tuple[int, str]] = []
+        for local_step in range(length):
+            row = start + local_step
+            step = int(self.shard.step_numbers[row])
+            tokens.append((step, f"ego_action:{int(self.shard.ego_actions[row])}"))
+            partner_action = int(self.shard.partner_actions[row])
+            if partner_action >= 0:
+                tokens.append((step, f"partner_action:{partner_action}"))
+            event_start = int(self.shard.event_offsets[row])
+            event_end = int(self.shard.event_offsets[row + 1])
+            tokens.extend(
+                (step, self.shard.event_vocab[int(event_id)])
+                for event_id in self.shard.event_ids[event_start:event_end]
+            )
+            reward = float(self.shard.rewards[row])
+            tokens.append(
+                (
+                    step,
+                    "reward:positive"
+                    if reward > 0
+                    else "reward:negative"
+                    if reward < 0
+                    else "reward:zero",
+                )
+            )
+        return tuple(tokens)
+
+    def history_scalars(self, prefix: int | str) -> tuple[int, float, float]:
+        """Return length, cumulative reward, and visible-partner-action rate."""
+
+        length = self.prefix_length(prefix)
+        if length == 0:
+            return 0, 0.0, 0.0
+        rewards = self.rewards[:length]
+        partner_actions = self.partner_actions[:length]
+        return (
+            length,
+            float(np.sum(rewards)),
+            float(np.count_nonzero(partner_actions >= 0) / length),
+        )
+
     def visible_action_targets(self) -> list[tuple[tuple[int, int, int], int]]:
         output: list[tuple[tuple[int, int, int], int]] = []
         previous_ego = -1
@@ -210,6 +256,8 @@ class SparseTraceSequenceSource:
         shards: Sequence[_CompactShard],
         partner_labels: Mapping[str, int],
         prefix: int | str,
+        *,
+        feature_mode: Literal["v2", "decision_v3"] = "v2",
     ) -> None:
         self._shards = tuple(shards)
         self._prefix = prefix
@@ -233,6 +281,7 @@ class SparseTraceSequenceSource:
         self._labels = tuple(labels)
         self._locations = tuple(locations)
         self._feature_width = next(iter(widths)) + 5 if widths else 0
+        self._feature_mode = feature_mode
 
     @property
     def size(self) -> int:
@@ -262,42 +311,113 @@ class SparseTraceSequenceSource:
             np.random.default_rng(seed).shuffle(order)
         for offset in range(0, self.size, batch_size):
             indices = order[offset : offset + batch_size]
-            episodes = [self._episodes[int(index)] for index in indices]
-            lengths = np.asarray(
-                [max(1, episode.prefix_length(self._prefix)) for episode in episodes],
-                dtype=np.int64,
+            yield self._materialize(indices, indices)
+
+    def subset(self, indices: Sequence[int]) -> IndexedTraceSequenceSource:
+        return IndexedTraceSequenceSource(self, indices)
+
+    def _materialize(
+        self,
+        parent_indices: np.ndarray,
+        output_indices: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        episodes = [self._episodes[int(index)] for index in parent_indices]
+        lengths = np.asarray(
+            [max(1, episode.prefix_length(self._prefix)) for episode in episodes],
+            dtype=np.int64,
+        )
+        features = np.zeros(
+            (len(episodes), int(lengths.max()), self.feature_width), dtype=np.float32
+        )
+        for batch_row, episode in enumerate(episodes):
+            actual_length = episode.prefix_length(self._prefix)
+            if actual_length == 0:
+                continue
+            shard = episode.shard
+            step_start, _step_end = episode._step_bounds()
+            previous_ego_action = -1
+            previous_partner_action = -1
+            previous_reward = 0.0
+            for local_step in range(actual_length):
+                step_row = step_start + local_step
+                sparse_start = int(shard.observation_offsets[step_row])
+                sparse_end = int(shard.observation_offsets[step_row + 1])
+                columns = shard.observation_indices[sparse_start:sparse_end]
+                features[batch_row, local_step, columns] = shard.observation_values[
+                    sparse_start:sparse_end
+                ]
+                current_ego_action = int(shard.ego_actions[step_row])
+                if self._feature_mode == "decision_v3":
+                    action_feature = previous_ego_action
+                    partner_feature = previous_partner_action
+                    reward_feature = previous_reward
+                else:
+                    action_feature = current_ego_action
+                    partner_feature = int(shard.partner_actions[step_row])
+                    reward_feature = float(shard.rewards[step_row])
+                extra_start = self.feature_width - 5
+                features[batch_row, local_step, extra_start:] = (
+                    float(action_feature),
+                    float(partner_feature),
+                    float(reward_feature),
+                    float(shard.step_numbers[step_row]) / 400.0,
+                    1.0,
+                )
+                previous_ego_action = current_ego_action
+                previous_partner_action = int(shard.partner_actions[step_row])
+                previous_reward = float(shard.rewards[step_row])
+        return (
+            features,
+            lengths,
+            np.asarray([self._labels[int(index)] for index in parent_indices], dtype=np.int64),
+            output_indices,
+        )
+
+
+class IndexedTraceSequenceSource:
+    """A deterministic row subset that retains bounded parent mini-batches."""
+
+    def __init__(self, parent: SparseTraceSequenceSource, indices: Sequence[int]) -> None:
+        values = tuple(int(value) for value in indices)
+        if not values or len(set(values)) != len(values):
+            raise ValueError("sequence subset indices must be nonempty and unique")
+        if any(value < 0 or value >= parent.size for value in values):
+            raise ValueError("sequence subset index is outside the parent source")
+        self._parent = parent
+        self._indices = values
+
+    @property
+    def size(self) -> int:
+        return len(self._indices)
+
+    @property
+    def feature_width(self) -> int:
+        return self._parent.feature_width
+
+    @property
+    def labels(self) -> Sequence[int]:
+        return tuple(self._parent.labels[index] for index in self._indices)
+
+    @property
+    def episodes(self) -> Sequence[CompactTraceEpisode]:
+        return tuple(self._parent.episodes[index] for index in self._indices)
+
+    def iter_batches(
+        self,
+        batch_size: int,
+        *,
+        shuffle: bool,
+        seed: int,
+    ) -> Iterator[tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]]:
+        order = np.arange(self.size, dtype=np.int64)
+        if shuffle:
+            np.random.default_rng(seed).shuffle(order)
+        for offset in range(0, self.size, batch_size):
+            local_indices = order[offset : offset + batch_size]
+            parent_indices = np.asarray(
+                [self._indices[int(index)] for index in local_indices], dtype=np.int64
             )
-            features = np.zeros(
-                (len(episodes), int(lengths.max()), self.feature_width), dtype=np.float32
-            )
-            for batch_row, episode in enumerate(episodes):
-                actual_length = episode.prefix_length(self._prefix)
-                if actual_length == 0:
-                    continue
-                shard = episode.shard
-                step_start, _step_end = episode._step_bounds()
-                for local_step in range(actual_length):
-                    step_row = step_start + local_step
-                    sparse_start = int(shard.observation_offsets[step_row])
-                    sparse_end = int(shard.observation_offsets[step_row + 1])
-                    columns = shard.observation_indices[sparse_start:sparse_end]
-                    features[batch_row, local_step, columns] = shard.observation_values[
-                        sparse_start:sparse_end
-                    ]
-                    extra_start = self.feature_width - 5
-                    features[batch_row, local_step, extra_start:] = (
-                        float(shard.ego_actions[step_row]),
-                        float(shard.partner_actions[step_row]),
-                        float(shard.rewards[step_row]),
-                        float(shard.step_numbers[step_row]) / 400.0,
-                        1.0,
-                    )
-            yield (
-                features,
-                lengths,
-                np.asarray([self._labels[int(index)] for index in indices], dtype=np.int64),
-                indices,
-            )
+            yield self._parent._materialize(parent_indices, local_indices)
 
 
 class OfficialCompactTraceStore:
@@ -367,6 +487,25 @@ class OfficialCompactTraceStore:
         )
         shards = tuple(_load_compact_shard(entry) for entry in entries)
         return SparseTraceSequenceSource(shards, partner_labels, prefix)
+
+    def decision_sequence_source(
+        self,
+        layout_id: str,
+        evidence_policy: str,
+        split: str,
+        partner_labels: Mapping[str, int],
+        prefix: int | str,
+        *,
+        partners: set[str] | None = None,
+    ) -> SparseTraceSequenceSource:
+        entries = self.select(layout_id, evidence_policy, split, partners=partners)
+        shards = tuple(_load_compact_shard(entry) for entry in entries)
+        return SparseTraceSequenceSource(
+            shards,
+            partner_labels,
+            prefix,
+            feature_mode="decision_v3",
+        )
 
     def episodes(
         self,
