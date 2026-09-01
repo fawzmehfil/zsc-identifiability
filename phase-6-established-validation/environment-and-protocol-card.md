@@ -32,6 +32,21 @@ Response adequacy is evaluated at margins `0.01`, `0.02`, and `0.05`. Partners
 conflict when they share no adequate response. The response-library maximum is
 not described as globally optimal.
 
+## Decision-risk measurement
+
+Stage 6 v3 measures whether the visible history supports the response decision,
+not whether it identifies a checkpoint. The primary 64-unit GRU learns a frozen
+history representation from v2 calibration traces using partner identity only
+as a representation objective. A direct binary ridge-logistic head is then fit
+for every response-conflicting pair and its posterior is combined with the
+pair's full empirical response-loss rows. A registered prior-shrinkage choice
+can return unreliable histories to the uniform pair prior.
+
+The independent sensitivity maps visible events into a 512-dimensional signed
+hash with absolute temporal bins. Identity mutual information remains a
+diagnostic; decision information groups partners by their best-response
+signature. No-commitment histories are explicitly assigned prior risk.
+
 ## Evidence and interventions
 
 FCP seed 1 greedy is fixed as the passive evidence policy; the evaluated
@@ -41,9 +56,12 @@ ordinary progress, onion staging, tomato staging, and temporary role takeover.
 yielding. Controllers use legal official low-level actions for at most 16 steps
 and continue advancing the FCP recurrent state on the observed history.
 
-An option qualifies only if it completes before commitment, changes the
-response distribution of conflicting partners, increases DRI, has measurable
-cost, and retains decision value after the best fixed response is considered.
+The v3 options selected before fresh confirmation are temporary role takeover
+in `random3_m` and corridor yielding in `small_corridor`; fresh results cannot
+reselect them. An option qualifies only if it completes before commitment,
+changes the response distribution of conflicting partners, increases calibrated
+decision value under the corrected permutation test, has measurable cost, and
+retains decision value after the best fixed response is considered.
 The restricted empirical frontier is never called an exact Bayes frontier.
 
 ## Official method evaluation

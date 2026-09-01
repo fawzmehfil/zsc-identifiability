@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "audit_id": "stage6-official-zsceval-checkpoints-v2",
+  "status": "complete",
+  "verdict": "redesign",
+  "scientific_use": "exploratory_only",
+  "policy_training_performed": false,
+  "total_episodes": 240800,
+  "total_environment_steps": 96320000,
+  "immutable_hashes": {
+    "suite": "f6c48d60ead11a39515017b2f144d4380b61feaea01e63613be0fb5a26020f48",
+    "rollout_plan_file": "d795e32d51b8ff83c24b4a94b2ed6802fe2cc9a0f8ffedd470f02d69b87f62a8",
+    "rollout_plan": "a362714f93130be61190c5005fc0d967c59f9b40597d2da65fbc65cff1cec6b5",
+    "rollout_ledger": "9607453946a13169ebffaa41ce5e6fccadecb94c1e597dc95d68e3ce836d5d4e",
+    "asset_inventory": "94cc38f80070520c098ec431e41ac52c91bad0948e2976b19b26b9ea032dd558",
+    "source_tree": "be753dd4b78b70f979c13717cc0acf4d08809fd79598f0c39d4f61dcb3871894",
+    "trace_index": "fb9b197d032e2d2db5a118257e847db7743664943bf12a2cd69a92601db0fdc2",
+    "response_value_matrices": "22bc203696b447428e598a1f634e26089eab824f2b36e322f36e917467dee77b",
+    "official_method_evaluation": "4075f9922c6e8e179bb41a74e74e1af3a25d6f0fe8965f20a5b4bf616cc5a4b3",
+    "exclusions": "633532f0ea90a4ea547a189e52c9637a63ec65d98c1f3ad02138bda51f6bf622",
+    "completed_manifest": "01469d725ff4d9c6fccf452a8740d874b3c3b7f490a05b2cca508c0475c5b1fe"
+  },
+  "failed_gates": {
+    "estimator_calibration": false,
+    "maximum_event_gru_treatment_difference": 0.37770475335536746,
+    "maximum_direct_refit_difference": 0.23671144859813092,
+    "maximum_absolute_shuffled_dri": 0.31728208061877444,
+    "shuffled_dri_issue": "The v2 gate incorrectly treated harmful negative shuffled decisions as positive evidence by taking an absolute value."
+  },
+  "exploratory_only_results": {
+    "held_out_delta_r2": 0.020648237300571082,
+    "held_out_delta_mae": -0.0033366786562649686,
+    "held_out_delta_mse": -0.00138074100613831,
+    "selected_random3_m_intervention": "temporary_role_takeover",
+    "selected_small_corridor_intervention": "corridor_yield"
+  },
+  "claim_status": "No v2 DRI, regression, or intervention estimate supports a paper claim because estimator calibration failed."
+}

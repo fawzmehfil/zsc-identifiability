@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fawzmehfil/zsc-identifiability/schemas/official-measurement-suite-v3.schema.json",
+  "title": "OfficialMeasurementAuditSuiteV3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "audit_mode",
+    "suite_id",
+    "state_directory",
+    "policy_training_allowed",
+    "measurement_model_training_only",
+    "fresh_confirmation_salt",
+    "v2",
+    "runtime",
+    "layouts",
+    "representations",
+    "decoder",
+    "calibration",
+    "statistics"
+  ],
+  "properties": {
+    "schema_version": {"const": 3},
+    "audit_mode": {"const": "official_measurement_redesign"},
+    "suite_id": {"type": "string", "minLength": 1},
+    "state_directory": {"type": "string", "minLength": 1},
+    "policy_training_allowed": {"const": false},
+    "measurement_model_training_only": {"const": true},
+    "fresh_confirmation_salt": {"const": "zsc-stage6-v3-confirmatory-9d41"},
+    "v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "v2_suite_path", "v2_suite_hash", "v2_rollout_plan_path",
+        "v2_rollout_plan_file_hash", "v2_rollout_plan_hash",
+        "v2_rollout_ledger_path", "v2_rollout_ledger_hash",
+        "v2_asset_inventory_path", "v2_inventory_hash", "v2_manifest_path",
+        "v2_manifest_hash", "v2_source_hash", "v2_trace_index_path",
+        "v2_trace_index_hash", "response_value_matrices_path",
+        "response_value_matrices_hash", "official_method_evaluation_path",
+        "official_method_evaluation_hash", "exclusions_path", "exclusions_hash",
+        "v2_verdict"
+      ],
+      "properties": {
+        "v2_suite_path": {"type": "string"},
+        "v2_suite_hash": {"$ref": "#/$defs/sha256"},
+        "v2_rollout_plan_path": {"type": "string"},
+        "v2_rollout_plan_file_hash": {"$ref": "#/$defs/sha256"},
+        "v2_rollout_plan_hash": {"$ref": "#/$defs/sha256"},
+        "v2_rollout_ledger_path": {"type": "string"},
+        "v2_rollout_ledger_hash": {"$ref": "#/$defs/sha256"},
+        "v2_asset_inventory_path": {"type": "string"},
+        "v2_inventory_hash": {"$ref": "#/$defs/sha256"},
+        "v2_manifest_path": {"type": "string"},
+        "v2_manifest_hash": {"$ref": "#/$defs/sha256"},
+        "v2_source_hash": {"$ref": "#/$defs/sha256"},
+        "v2_trace_index_path": {"type": "string"},
+        "v2_trace_index_hash": {"$ref": "#/$defs/sha256"},
+        "response_value_matrices_path": {"type": "string"},
+        "response_value_matrices_hash": {"$ref": "#/$defs/sha256"},
+        "official_method_evaluation_path": {"type": "string"},
+        "official_method_evaluation_hash": {"$ref": "#/$defs/sha256"},
+        "exclusions_path": {"type": "string"},
+        "exclusions_hash": {"$ref": "#/$defs/sha256"},
+        "v2_verdict": {"const": "redesign"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_project", "upstream_directory", "asset_directory", "python_version", "device", "default_workers", "maximum_workers"],
+      "properties": {
+        "runtime_project": {"type": "string"},
+        "upstream_directory": {"type": "string"},
+        "asset_directory": {"type": "string"},
+        "python_version": {"const": "3.9"},
+        "device": {"const": "cpu"},
+        "default_workers": {"type": "integer", "minimum": 1, "maximum": 4},
+        "maximum_workers": {"const": 4}
+      }
+    },
+    "layouts": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["layout_id", "role", "expected_partner_count", "evidence_policies", "fresh_episodes_per_partner_policy", "frozen_intervention", "max_episode_steps"],
+        "properties": {
+          "layout_id": {"enum": ["random3_m", "small_corridor"]},
+          "role": {"enum": ["primary", "robustness"]},
+          "expected_partner_count": {"type": "integer", "minimum": 1},
+          "evidence_policies": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+          "fresh_episodes_per_partner_policy": {"type": "integer", "minimum": 2, "multipleOf": 2},
+          "frozen_intervention": {"type": "string"},
+          "max_episode_steps": {"const": 400}
+        }
+      }
+    },
+    "representations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "sensitivity", "gru_hidden_size", "gru_seeds", "encoder_training_fraction", "event_feature_width", "event_hash_salt", "temporal_bins", "prefixes"],
+      "properties": {
+        "primary": {"const": "gru"},
+        "sensitivity": {"const": "event"},
+        "gru_hidden_size": {"const": 64},
+        "gru_seeds": {"const": [6173, 6174, 6175, 6176, 6177]},
+        "encoder_training_fraction": {"const": 0.75},
+        "event_feature_width": {"const": 512},
+        "event_hash_salt": {"const": "zsc-dri-v3-event-features"},
+        "temporal_bins": {"const": ["0-7", "8-15", "16-31", "32+"]},
+        "prefixes": {"const": [0, 8, 16, 32, "pre_commitment", "eventual"]}
+      }
+    },
+    "decoder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ridge_strengths", "temperatures", "prior_shrinkages", "maximum_iterations", "convergence_tolerance"],
+      "properties": {
+        "ridge_strengths": {"const": [0.01, 0.1, 1.0, 10.0]},
+        "temperatures": {"type": "array", "minItems": 81, "maxItems": 81, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "prior_shrinkages": {"const": [0.0, 0.25, 0.5, 0.75, 1.0]},
+        "maximum_iterations": {"type": "integer", "minimum": 1},
+        "convergence_tolerance": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "calibration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["synthetic_tolerance", "permutation_repeats", "correction", "permutation_seed", "direct_binary_pair_count", "brier_improvement_required", "event_sign_consistency_required"],
+      "properties": {
+        "synthetic_tolerance": {"const": 0.03},
+        "permutation_repeats": {"const": 100},
+        "correction": {"const": "holm"},
+        "permutation_seed": {"type": "integer"},
+        "direct_binary_pair_count": {"const": 10},
+        "brier_improvement_required": {"const": true},
+        "event_sign_consistency_required": {"const": true}
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ridge_strengths", "bootstrap_resamples", "correction", "held_out_unit", "intervention_completion_threshold"],
+      "properties": {
+        "ridge_strengths": {"const": [0.0, 0.01, 0.1, 1.0, 10.0]},
+        "bootstrap_resamples": {"const": 10000},
+        "correction": {"const": "holm"},
+        "held_out_unit": {"const": "hsp_scheme"},
+        "intervention_completion_threshold": {"const": 0.8}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

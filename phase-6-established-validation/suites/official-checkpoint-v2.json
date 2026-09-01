@@ -1,0 +1,96 @@
+{
+  "schema_version": 2,
+  "audit_mode": "official_checkpoint_evaluation",
+  "suite_id": "stage6-official-zsceval-checkpoints-v2",
+  "state_directory": "phase-6-established-validation/runs/official-checkpoints",
+  "policy_training_allowed": false,
+  "partner_selection_criterion": "official_benchmark_yaml_only",
+  "upstream": {
+    "repository_url": "https://github.com/SJTU-MARL/ZSC-Eval.git",
+    "repository_commit": "f940869afc42b688332a385892d8dbb57a190f95",
+    "policy_pool_url": "https://huggingface.co/Leoxxxxh/ZSC-Eval-policy_pool",
+    "policy_pool_revision": "a39b45a326c6fb9c4aee79550903a7de702c6974",
+    "license": "MIT"
+  },
+  "runtime": {
+    "runtime_project": "phase-6-established-validation/runtime-zsceval",
+    "upstream_directory": ".external/zsc-eval",
+    "asset_directory": ".external/zsc-eval-policy-pool",
+    "python_version": "3.9",
+    "device": "cpu",
+    "default_workers": 2,
+    "maximum_workers": 4
+  },
+  "layouts": [
+    {
+      "layout_id": "random3_m",
+      "role": "primary",
+      "benchmark_yaml_path": "random3_m/hsp/s1/hsp/benchmarks-s30.yml",
+      "expected_partner_count": 30,
+      "expected_scheme_count": 15,
+      "response_episodes_per_pair": 64,
+      "trace_episodes": {"calibration": 32, "validation": 16, "confirmatory": 64},
+      "method_episodes": 64,
+      "diagnostic_options": [
+        "ordinary_progress", "stage_onion", "stage_tomato", "temporary_role_takeover"
+      ],
+      "max_episode_steps": 400
+    },
+    {
+      "layout_id": "small_corridor",
+      "role": "robustness",
+      "benchmark_yaml_path": "small_corridor/hsp/s1/hsp/benchmarks-s20.yml",
+      "expected_partner_count": 20,
+      "expected_scheme_count": 10,
+      "response_episodes_per_pair": 32,
+      "trace_episodes": {"calibration": 16, "validation": 8, "confirmatory": 32},
+      "method_episodes": 32,
+      "diagnostic_options": ["ordinary_progress", "stage_onion", "corridor_yield"],
+      "max_episode_steps": 400
+    }
+  ],
+  "methods": [
+    {"method_id": "fcp", "asset_path_template": "fcp/s2/fcp-S2-s36/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "rnn", "small_corridor": "rnn"}},
+    {"method_id": "mep", "asset_path_template": "mep/s2/mep-S2-s36/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "rnn", "small_corridor": "rnn"}},
+    {"method_id": "trajedi", "asset_path_template": "traj/s2/traj-S2-s36/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "rnn", "small_corridor": "rnn"}},
+    {"method_id": "hsp", "asset_path_template": "hsp/s2/hsp-S2-s36/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "rnn", "small_corridor": "rnn"}},
+    {"method_id": "cole", "asset_path_template": "cole/s2/cole-S2-s75/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "mlp", "small_corridor": "rnn"}},
+    {"method_id": "e3t", "asset_path_template": "e3t/s1/e3t/{seed}.pt", "seeds": [1, 2, 3, 4, 5], "architecture_by_layout": {"random3_m": "mlp", "small_corridor": "mlp"}}
+  ],
+  "evidence": {
+    "passive_reference_method": "fcp",
+    "passive_reference_seed": 1,
+    "passive_reference_greedy": true,
+    "prefix_steps": [0, 8, 16, 32],
+    "commitment_event": "first_successful_pot_ingredient_placement",
+    "post_commitment_endpoint": "first_delivery_feedback",
+    "maximum_option_steps": 16
+  },
+  "estimator": {
+    "event_laplace_alpha": 1.0,
+    "gru_hidden_size": 64,
+    "gru_seeds": [6173, 6174, 6175, 6176, 6177],
+    "temperature_calibration": true,
+    "direct_pairwise_refit_count": 10,
+    "synthetic_tolerance": 0.03,
+    "treatment_agreement_tolerance": 0.05,
+    "label_shuffle_repeats": 100
+  },
+  "statistics": {
+    "ridge_strengths": [0.0, 0.01, 0.1, 1.0, 10.0],
+    "bootstrap_resamples": 10000,
+    "correction": "holm",
+    "held_out_unit": "hsp_scheme",
+    "adequacy_margins": [0.01, 0.02, 0.05],
+    "primary_adequacy_margin": 0.02
+  },
+  "split_key_salts": {
+    "calibration": "zsc-stage6-v2-calibration-63aa",
+    "validation": "zsc-stage6-v2-validation-55d1",
+    "confirmatory": "zsc-stage6-v2-confirmatory-71b2"
+  },
+  "required_policy_configs": [
+    "{layout}/policy_config/mlp_policy_config.pkl",
+    "{layout}/policy_config/rnn_policy_config.pkl"
+  ]
+}

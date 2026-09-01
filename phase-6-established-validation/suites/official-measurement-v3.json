@@ -1,0 +1,97 @@
+{
+  "schema_version": 3,
+  "audit_mode": "official_measurement_redesign",
+  "suite_id": "stage6-official-decision-risk-v3",
+  "state_directory": "phase-6-established-validation/runs/official-measurement-v3",
+  "policy_training_allowed": false,
+  "measurement_model_training_only": true,
+  "fresh_confirmation_salt": "zsc-stage6-v3-confirmatory-9d41",
+  "v2": {
+    "v2_suite_path": "phase-6-established-validation/suites/official-checkpoint-v2.json",
+    "v2_suite_hash": "f6c48d60ead11a39515017b2f144d4380b61feaea01e63613be0fb5a26020f48",
+    "v2_rollout_plan_path": "phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json",
+    "v2_rollout_plan_file_hash": "d795e32d51b8ff83c24b4a94b2ed6802fe2cc9a0f8ffedd470f02d69b87f62a8",
+    "v2_rollout_plan_hash": "a362714f93130be61190c5005fc0d967c59f9b40597d2da65fbc65cff1cec6b5",
+    "v2_rollout_ledger_path": "phase-6-established-validation/runs/official-checkpoints/official-rollout-ledger.json",
+    "v2_rollout_ledger_hash": "9607453946a13169ebffaa41ce5e6fccadecb94c1e597dc95d68e3ce836d5d4e",
+    "v2_asset_inventory_path": "phase-6-established-validation/runs/official-checkpoints/official-asset-inventory.json",
+    "v2_inventory_hash": "94cc38f80070520c098ec431e41ac52c91bad0948e2976b19b26b9ea032dd558",
+    "v2_manifest_path": "phase-6-established-validation/artifacts/official-checkpoint-audit/official-checkpoint-audit-manifest.json",
+    "v2_manifest_hash": "01469d725ff4d9c6fccf452a8740d874b3c3b7f490a05b2cca508c0475c5b1fe",
+    "v2_source_hash": "be753dd4b78b70f979c13717cc0acf4d08809fd79598f0c39d4f61dcb3871894",
+    "v2_trace_index_path": "phase-6-established-validation/artifacts/official-checkpoint-audit/official-trace-index.json",
+    "v2_trace_index_hash": "fb9b197d032e2d2db5a118257e847db7743664943bf12a2cd69a92601db0fdc2",
+    "response_value_matrices_path": "phase-6-established-validation/artifacts/official-checkpoint-audit/response-value-matrices.json",
+    "response_value_matrices_hash": "22bc203696b447428e598a1f634e26089eab824f2b36e322f36e917467dee77b",
+    "official_method_evaluation_path": "phase-6-established-validation/artifacts/official-checkpoint-audit/official-method-evaluation.json",
+    "official_method_evaluation_hash": "4075f9922c6e8e179bb41a74e74e1af3a25d6f0fe8965f20a5b4bf616cc5a4b3",
+    "exclusions_path": "phase-6-established-validation/artifacts/official-checkpoint-audit/partner-inventory-and-exclusions.json",
+    "exclusions_hash": "633532f0ea90a4ea547a189e52c9637a63ec65d98c1f3ad02138bda51f6bf622",
+    "v2_verdict": "redesign"
+  },
+  "runtime": {
+    "runtime_project": "phase-6-established-validation/runtime-zsceval",
+    "upstream_directory": ".external/zsc-eval",
+    "asset_directory": ".external/zsc-eval-policy-pool",
+    "python_version": "3.9",
+    "device": "cpu",
+    "default_workers": 2,
+    "maximum_workers": 4
+  },
+  "layouts": [
+    {
+      "layout_id": "random3_m",
+      "role": "primary",
+      "expected_partner_count": 30,
+      "evidence_policies": [
+        "ordinary_progress", "stage_onion", "stage_tomato", "temporary_role_takeover"
+      ],
+      "fresh_episodes_per_partner_policy": 64,
+      "frozen_intervention": "temporary_role_takeover",
+      "max_episode_steps": 400
+    },
+    {
+      "layout_id": "small_corridor",
+      "role": "robustness",
+      "expected_partner_count": 20,
+      "evidence_policies": ["ordinary_progress", "stage_onion", "corridor_yield"],
+      "fresh_episodes_per_partner_policy": 32,
+      "frozen_intervention": "corridor_yield",
+      "max_episode_steps": 400
+    }
+  ],
+  "representations": {
+    "primary": "gru",
+    "sensitivity": "event",
+    "gru_hidden_size": 64,
+    "gru_seeds": [6173, 6174, 6175, 6176, 6177],
+    "encoder_training_fraction": 0.75,
+    "event_feature_width": 512,
+    "event_hash_salt": "zsc-dri-v3-event-features",
+    "temporal_bins": ["0-7", "8-15", "16-31", "32+"],
+    "prefixes": [0, 8, 16, 32, "pre_commitment", "eventual"]
+  },
+  "decoder": {
+    "ridge_strengths": [0.01, 0.1, 1.0, 10.0],
+    "temperatures": [0.25, 0.2588162309603444, 0.2679433656340733, 0.2773923680169612, 0.2871745887492587, 0.2973017787506803, 0.3077861033362291, 0.3186401568298156, 0.3298769776932235, 0.3415100641885989, 0.3535533905932738, 0.3660214239864064, 0.3789291416275996, 0.3922920489483754, 0.4061261981781178, 0.4204482076268573, 0.4352752816480621, 0.4506252313054152, 0.4665164957684037, 0.4829681644624228, 0.5, 0.5176324619206888, 0.5358867312681466, 0.5547847360339225, 0.5743491774985175, 0.5946035575013605, 0.6155722066724582, 0.6372803136596311, 0.6597539553864472, 0.6830201283771977, 0.7071067811865476, 0.7320428479728127, 0.7578582832551991, 0.7845840978967508, 0.8122523963562357, 0.8408964152537145, 0.8705505632961241, 0.9012504626108303, 0.9330329915368075, 0.9659363289248455, 1.0, 1.035264923841378, 1.071773462536293, 1.109569472067845, 1.148698354997035, 1.189207115002721, 1.231144413344916, 1.274560627319262, 1.319507910772895, 1.366040256754395, 1.414213562373095, 1.464085695945626, 1.515716566510398, 1.569168195793502, 1.624504792712471, 1.681792830507429, 1.741101126592248, 1.802500925221661, 1.866065983073615, 1.931872657849691, 2.0, 2.070529847682756, 2.143546925072586, 2.21913894413569, 2.29739670999407, 2.378414230005442, 2.462288826689833, 2.549121254638524, 2.639015821545789, 2.732080513508791, 2.82842712474619, 2.928171391891252, 3.031433133020796, 3.138336391587004, 3.249009585424943, 3.363585661014858, 3.482202253184497, 3.605001850443321, 3.732131966147229, 3.863745315699383, 4.0],
+    "prior_shrinkages": [0.0, 0.25, 0.5, 0.75, 1.0],
+    "maximum_iterations": 100,
+    "convergence_tolerance": 1e-9
+  },
+  "calibration": {
+    "synthetic_tolerance": 0.03,
+    "permutation_repeats": 100,
+    "correction": "holm",
+    "permutation_seed": 9317,
+    "direct_binary_pair_count": 10,
+    "brier_improvement_required": true,
+    "event_sign_consistency_required": true
+  },
+  "statistics": {
+    "ridge_strengths": [0.0, 0.01, 0.1, 1.0, 10.0],
+    "bootstrap_resamples": 10000,
+    "correction": "holm",
+    "held_out_unit": "hsp_scheme",
+    "intervention_completion_threshold": 0.8
+  }
+}
