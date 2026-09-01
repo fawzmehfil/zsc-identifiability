@@ -49,6 +49,17 @@ Raw checkpoints, source checkouts, rollout shards, logs, and measurement-model
 states remain ignored. Committed artifacts contain the suite, asset hashes,
 compact tables, reports, and publication figures.
 
+Stage 6 v3 adds resumable representation, pairwise-head, direct-binary-GRU,
+permutation, fresh-representation, and layout-analysis work units. A fresh
+confirmation plan is accepted only when its frozen configuration manifest
+already exists and matches by SHA-256. Confirmation keys use
+`zsc-stage6-v3-confirmatory-9d41` and must be disjoint from every v2 key.
+
+The v3 command order is validate, fit, prepare-confirmation, run-confirmation,
+status, and analyze. Preparing and inspecting a confirmation plan performs no
+inference; fitting measurement models performs no policy update; confirmation
+contains only trace rollouts.
+
 ## Statistical contract
 
 All response-conflicting partner pairs are analyzed. Mid/final checkpoints from

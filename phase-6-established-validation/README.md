@@ -1,4 +1,4 @@
-# Stage 6: Official-Checkpoint Validation
+# Stage 6: Official-Checkpoint Decision-Risk Validation
 
 Stage 6 is an inference-only audit of the official ZSC-Eval benchmark. It asks
 whether pre-commitment decision-relevant identifiability (DRI) explains
@@ -32,10 +32,17 @@ The empirical response library is made from official co-trained counterparts.
 It is an approximate response-library oracle, not a globally optimal oracle.
 Response conflict is reported at adequacy margins `0.01`, `0.02`, and `0.05`.
 
-The passive reference is FCP seed 1 in greedy mode. The event estimator and a
-five-seed 64-unit GRU ensemble fit on calibration keys, calibrate on validation
-keys, and score only untouched confirmatory keys. GRU fitting is measurement,
-not policy training.
+The passive reference is FCP seed 1 in greedy mode. Stage 6 v2 completed its
+full inference matrix but failed estimator calibration, so all v2 statistical
+and intervention effects are exploratory only. Its suite, artifacts, and hashes
+are preserved in `suites/official-checkpoint-v2.json` and
+`v2-failed-audit-summary.json`.
+
+Stage 6 v3 fits direct binary decision decoders for every response-conflicting
+pair. A five-seed 64-unit GRU representation is primary and a fixed signed-hash
+event representation is the independent sensitivity. Fitting uses v2
+calibration and validation traces only. A fresh disjoint confirmation set is
+never exposed to tuning. GRU fitting is measurement, not policy training.
 
 ## Runtime and asset boundary
 
@@ -58,13 +65,13 @@ Every official method checkpoint is evaluated using its published stochastic
 sampling semantics and a greedy sensitivity deployment under identical
 environment keys.
 
-## Canonical workflow
+## Archived v2 workflow
 
 Create the immutable asset lock:
 
 ```bash
 uv run --extra established zsc-identifiability established official prepare \
-  --suite phase-6-established-validation/suites/canonical.json \
+  --suite phase-6-established-validation/suites/official-checkpoint-v2.json \
   --workspace phase-6-established-validation/runs/official-checkpoints
 ```
 
@@ -72,7 +79,7 @@ Synchronize only the locked assets. This also creates the rollout plan:
 
 ```bash
 uv run --extra established zsc-identifiability established official sync \
-  --suite phase-6-established-validation/suites/canonical.json \
+  --suite phase-6-established-validation/suites/official-checkpoint-v2.json \
   --lock phase-6-established-validation/runs/official-checkpoints/official-asset-lock.json
 ```
 
@@ -103,17 +110,53 @@ Build the response-conflict and pairwise-identifiability artifacts:
 
 ```bash
 uv run --extra established zsc-identifiability established official analyze \
-  --suite phase-6-established-validation/suites/canonical.json \
+  --suite phase-6-established-validation/suites/official-checkpoint-v2.json \
   --plan phase-6-established-validation/runs/official-checkpoints/official-rollout-plan.json \
   --ledger phase-6-established-validation/runs/official-checkpoints/official-rollout-ledger.json \
   --output phase-6-established-validation/artifacts/official-checkpoint-audit
 ```
 
-Analysis first converts each completed trace shard to an ignored sparse cache,
-then trains the measurement GRUs with bounded mini-batches. Cache construction,
-every layout/policy/prefix work unit, and every GRU seed are checkpointed under
-the output directory's `.analysis-state/`. Repeating the same command resumes
-automatically and never reruns policy inference.
+This workflow is complete and immutable. It must not be rerun or interpreted as
+confirmatory Stage 6 evidence.
+
+## Frozen v3 workflow
+
+Validate the source hashes, protocol, and synthetic controls without fitting:
+
+```bash
+uv run --extra established zsc-identifiability established official redesign validate \
+  --suite phase-6-established-validation/suites/official-measurement-v3.json
+```
+
+Fit and freeze the measurement representations and pairwise decoders using only
+v2 calibration and validation traces:
+
+```bash
+uv run --extra established zsc-identifiability established official redesign fit \
+  --suite phase-6-established-validation/suites/official-measurement-v3.json \
+  --output phase-6-established-validation/runs/official-measurement-v3/fit
+```
+
+Only after the fit manifest exists, prepare the untouched trace-only plan:
+
+```bash
+uv run --extra established zsc-identifiability established official redesign prepare-confirmation \
+  --suite phase-6-established-validation/suites/official-measurement-v3.json \
+  --fit-manifest phase-6-established-validation/runs/official-measurement-v3/fit/measurement-fit-manifest.json \
+  --workspace phase-6-established-validation/runs/official-measurement-v3/confirmation
+```
+
+Run or resume the 9,600 CPU inference episodes:
+
+```bash
+caffeinate -is uv run --extra established zsc-identifiability established official redesign run-confirmation \
+  --plan phase-6-established-validation/runs/official-measurement-v3/confirmation/official-confirmation-plan.json \
+  --workers 2
+```
+
+The status command performs no inference. The final analysis rejects incomplete
+ledgers, changed post-start configurations, v2 confirmatory tuning data, key
+overlap, missing permutation controls, and policy-training requests.
 
 Exit code `2` denotes an engineering or integrity failure, `3` a completed
 scientific-gate failure, and `4` missing assets or incomplete shards.
@@ -130,8 +173,12 @@ scientific-gate failure, and `4` missing assets or incomplete shards.
 - response-library, conflict, event/GRU DRI, and scheme-held-out statistical
   components: implemented;
 - custom full-compute extension: preserved but retired from the default path;
-- bounded-memory, resumable scientific analysis: implemented and under execution;
-- final established-environment verdict: pending completed analysis.
+- bounded-memory, resumable v2 analysis: complete with a `redesign` verdict;
+- direct decision-risk v3 estimator and trace-only confirmation runner:
+  implemented;
+- fresh v3 confirmation inference: not launched;
+- final established-environment verdict: pending calibrated fresh confirmation.
 
-No established-environment scientific finding is claimed before the complete
-official audit and sensitivity analyses pass.
+No established-environment scientific finding is claimed from v2 or before the
+fresh v3 calibration, permutation, regression, intervention, and sensitivity
+gates pass.

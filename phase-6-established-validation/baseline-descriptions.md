@@ -11,7 +11,9 @@ reported but cannot count as independent seeds.
 
 The fixed FCP seed-1 greedy policy is also the preregistered passive evidence
 collector. This role was fixed before measuring DRI. Method-induced DRI is
-estimated from compact visible histories produced by each official method.
+available from the archived v2 diagnostics but is not refit or used as fresh v3
+confirmation. V3 reuses the official method outcomes and replaces only the
+pair-level passive decision-risk feature in the registered regression.
 
 ## Optional full-compute extension
 

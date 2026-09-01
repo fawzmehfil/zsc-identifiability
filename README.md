@@ -16,10 +16,11 @@ algorithm.
 
 The Stage 6 v2 inference matrix is complete: 4,842 shards and 240,800 episodes
 cover 50 externally selected partners and six published ZSC method families
-without policy training. Its scientific analyzer uses a sparse, bounded-memory
-trace cache and resumable estimator checkpoints. The final established-
-environment verdict remains pending until that analysis completes. The previous
-custom OvercookedV2 path remains an optional full-compute extension.
+without policy training. Its estimator calibration failed, so v2 has a
+scientific `redesign` verdict and none of its apparent effects are paper claims.
+Stage 6 v3 now preregisters direct pairwise decision-risk decoders and a fresh,
+disjoint 9,600-episode confirmation audit. The previous custom OvercookedV2
+path remains an optional full-compute extension.
 
 The exact package uses finite, static hidden partner modes and belief-state dynamic
 programming. Neural baselines are isolated behind the optional `learning` extra;
@@ -41,9 +42,8 @@ uv run --extra learning zsc-identifiability learn validate \
 uv run pytest
 uv run ruff check .
 uv run mypy src
-uv run --extra established zsc-identifiability established official prepare \
-  --suite phase-6-established-validation/suites/canonical.json \
-  --workspace phase-6-established-validation/runs/official-checkpoints
+uv run --extra established zsc-identifiability established official redesign validate \
+  --suite phase-6-established-validation/suites/official-measurement-v3.json
 ```
 
 The Phase 3 canonical suite generates 94 exact populations across two benchmark
