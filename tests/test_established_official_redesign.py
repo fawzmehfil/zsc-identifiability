@@ -15,6 +15,7 @@ from hypothesis import strategies as st
 from pydantic import ValidationError
 
 from zsc_identifiability import established_official_redesign as redesign_module
+from zsc_identifiability import established_official_redesign_analysis as analysis_module
 from zsc_identifiability.cli import _parser
 from zsc_identifiability.established_dri import summarize_posteriors
 from zsc_identifiability.established_official_decision import (
@@ -58,6 +59,46 @@ from zsc_identifiability.established_official_representation import (
 ROOT = Path(__file__).resolve().parents[1]
 V2_SUITE = ROOT / "phase-6-established-validation/suites/official-checkpoint-v2.json"
 V3_SUITE = ROOT / "phase-6-established-validation/suites/official-measurement-v3.json"
+
+
+def test_analysis_preserves_file_suite_hash_for_nested_evaluation(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    sentinel = object()
+    monkeypatch.setattr(
+        analysis_module, "_resolve_confirmation_plan", lambda _value: sentinel
+    )
+    monkeypatch.setattr(
+        analysis_module, "_resolve_confirmation_ledger", lambda _value: sentinel
+    )
+    monkeypatch.setattr(
+        analysis_module, "_resolve_fit_manifest", lambda _value: (sentinel, None)
+    )
+    monkeypatch.setattr(analysis_module, "_validate_fit_manifest", lambda *_args: None)
+    monkeypatch.setattr(
+        analysis_module, "_require_confirmation_complete", lambda *_args: None
+    )
+
+    def stop_after_suite_check(
+        suite: object,
+        *_args: object,
+        **_kwargs: object,
+    ) -> tuple[object, ...]:
+        assert Path(suite).resolve() == V3_SUITE.resolve()  # type: ignore[arg-type]
+        raise RuntimeError("nested suite path preserved")
+
+    monkeypatch.setattr(
+        analysis_module, "evaluate_fresh_decision_value", stop_after_suite_check
+    )
+    with pytest.raises(RuntimeError, match="nested suite path preserved"):
+        analysis_module.analyze_measurement_redesign(
+            V3_SUITE,
+            "plan.json",
+            "ledger.json",
+            "fit.json",
+            tmp_path,
+        )
 
 
 def test_v2_is_archived_byte_for_byte_and_v3_is_frozen() -> None:

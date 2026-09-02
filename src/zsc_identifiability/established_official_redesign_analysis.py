@@ -335,7 +335,7 @@ def analyze_measurement_redesign(
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
     rows = evaluate_fresh_decision_value(
-        spec,
+        suite,
         confirmation,
         confirmation_ledger,
         fit,
