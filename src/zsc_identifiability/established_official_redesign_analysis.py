@@ -765,6 +765,7 @@ def _fresh_regression(
             trace_index,
             source["exclusions"],
             trace_store,
+            estimator=representation,
         )
         episode_rows = _build_episode_regression_rows(regression_rows, method_episode_rows)
         reports[representation] = _run_regressions(

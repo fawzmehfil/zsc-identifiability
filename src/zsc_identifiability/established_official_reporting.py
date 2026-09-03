@@ -516,11 +516,13 @@ def _build_regression_rows(
     trace_index: OfficialTraceIndex,
     exclusions: Mapping[str, Any],
     trace_store: OfficialCompactTraceStore,
+    *,
+    estimator: str = "gru",
 ) -> list[dict[str, Any]]:
     dri_lookup = {
         (row.layout_id, row.left_partner_id, row.right_partner_id): row
         for row in pairwise
-        if row.estimator == "gru"
+        if row.estimator == estimator
         and row.evidence_policy == "ordinary_progress"
         and row.prefix == "pre_commitment"
     }

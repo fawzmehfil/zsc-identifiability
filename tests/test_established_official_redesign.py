@@ -16,6 +16,7 @@ from pydantic import ValidationError
 
 from zsc_identifiability import established_official_redesign as redesign_module
 from zsc_identifiability import established_official_redesign_analysis as analysis_module
+from zsc_identifiability import established_official_reporting as reporting_module
 from zsc_identifiability.cli import _parser
 from zsc_identifiability.established_dri import summarize_posteriors
 from zsc_identifiability.established_official_decision import (
@@ -30,10 +31,12 @@ from zsc_identifiability.established_official_decision import (
     synthetic_decision_estimator_controls,
 )
 from zsc_identifiability.established_official_models import (
+    OfficialResponseValueMatrix,
     OfficialRolloutPlan,
     OfficialRolloutShard,
     OfficialTraceIndex,
     OfficialTraceIndexEntry,
+    PairwiseIdentifiabilityRow,
 )
 from zsc_identifiability.established_official_redesign import (
     _fresh_environment_key,
@@ -106,6 +109,76 @@ def test_identity_softmax_normalizes_float32_logits_in_float64() -> None:
     probabilities = analysis_module._softmax(logits)
     assert probabilities.dtype == np.float64
     assert np.max(np.abs(probabilities.sum(axis=1) - 1.0)) <= 1e-12
+
+
+def test_regression_builder_accepts_registered_event_estimator(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    left = "random3_m:hsp1:final"
+    right = "random3_m:hsp2:final"
+    pair_key = ("random3_m", left, right)
+    library = OfficialResponseValueMatrix(
+        suite_id="fixture",
+        layout_id="random3_m",
+        partner_ids=(left, right),
+        response_ids=("response-a", "response-b"),
+        raw_values=((1.0, 0.5), (0.5, 1.0)),
+        raw_value_intervals_95=(((1.0, 1.0), (0.5, 0.5)), ((0.5, 0.5), (1.0, 1.0))),
+        normalized_losses=((0.0, 0.5), (0.5, 0.0)),
+        adequate_response_sets={left: ("response-a",), right: ("response-b",)},
+        conflicting_pairs_by_margin={"0.02": ((left, right),)},
+        conflict_coefficients={f"{left}|{right}": 1.0},
+        best_response_event_features={left: (1.0, 0.0), right: (0.0, 1.0)},
+        rahman_brdiv_return=0.5,
+        zsceval_br_div_raw=1.0,
+        zsceval_br_div_code=1.0,
+    )
+    pairwise = PairwiseIdentifiabilityRow(
+        layout_id="random3_m",
+        left_partner_id=left,
+        right_partner_id=right,
+        left_scheme_id="hsp1",
+        right_scheme_id="hsp2",
+        evidence_policy="ordinary_progress",
+        estimator="event",
+        prefix="pre_commitment",
+        prior_risk=0.25,
+        residual_risk=0.125,
+        dri=0.5,
+        identity_mi_nats=0.1,
+        decision_mi_nats=0.1,
+        prefix_tv=0.2,
+        commitment_rate=1.0,
+    )
+    method_rows = [
+        {
+            "layout_id": "random3_m",
+            "partner_id": partner,
+            "method_id": "fcp",
+            "method_seed": 1,
+            "deployment": "stochastic",
+            "duplicate_seed_excluded_from_inference": False,
+            "normalized_response_library_regret": 0.1,
+            "br_prox": 0.9,
+        }
+        for partner in (left, right)
+    ]
+    monkeypatch.setattr(
+        reporting_module,
+        "_pairwise_visible_action_predictability",
+        lambda *_args: {pair_key: 0.4},
+    )
+    rows = reporting_module._build_regression_rows(
+        method_rows,
+        (library,),
+        (pairwise,),
+        OfficialTraceIndex(suite_id="fixture", entries=()),
+        {"central_excluded_partner_ids": []},
+        object(),  # type: ignore[arg-type]
+        estimator="event",
+    )
+    assert len(rows) == 1
+    assert rows[0]["precommitment_dri"] == pytest.approx(0.5)
 
 
 def test_v2_is_archived_byte_for_byte_and_v3_is_frozen() -> None:
