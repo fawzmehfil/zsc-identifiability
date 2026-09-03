@@ -101,6 +101,13 @@ def test_analysis_preserves_file_suite_hash_for_nested_evaluation(
         )
 
 
+def test_identity_softmax_normalizes_float32_logits_in_float64() -> None:
+    logits = np.zeros((4, 30), dtype=np.float32)
+    probabilities = analysis_module._softmax(logits)
+    assert probabilities.dtype == np.float64
+    assert np.max(np.abs(probabilities.sum(axis=1) - 1.0)) <= 1e-12
+
+
 def test_v2_is_archived_byte_for_byte_and_v3_is_frozen() -> None:
     canonical = ROOT / "phase-6-established-validation/suites/canonical.json"
     assert V2_SUITE.read_bytes() == canonical.read_bytes()

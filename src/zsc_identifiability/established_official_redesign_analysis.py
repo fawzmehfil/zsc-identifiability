@@ -1663,9 +1663,10 @@ def _fresh_environment_steps(plan: OfficialConfirmationPlan) -> int:
 
 
 def _softmax(logits: np.ndarray) -> np.ndarray:
-    shifted = logits - logits.max(axis=1, keepdims=True)
+    stable_logits = np.asarray(logits, dtype=np.float64)
+    shifted = stable_logits - stable_logits.max(axis=1, keepdims=True)
     values = np.exp(shifted)
-    return np.asarray(values / values.sum(axis=1, keepdims=True), dtype=np.float64)
+    return values / values.sum(axis=1, keepdims=True)
 
 
 def _read_list(path: Path) -> list[dict[str, Any]]:
