@@ -781,9 +781,7 @@ def _fresh_regression(
         "official_method_evaluations_rerun": False,
         "gru": reports["gru"],
         "event": reports["event"],
-        "event_same_effect_direction": (
-            gru_point == 0.0 or event_point == 0.0 or np.sign(gru_point) == np.sign(event_point)
-        ),
+        "event_same_effect_direction": _same_effect_direction(gru_point, event_point),
     }
     _atomic_json(output / "held-out-regression-report-v3.json", payload)
     return payload
@@ -1668,6 +1666,10 @@ def _softmax(logits: np.ndarray) -> np.ndarray:
     shifted = stable_logits - stable_logits.max(axis=1, keepdims=True)
     values = np.exp(shifted)
     return values / values.sum(axis=1, keepdims=True)
+
+
+def _same_effect_direction(left: float, right: float) -> bool:
+    return bool(left == 0.0 or right == 0.0 or np.sign(left) == np.sign(right))
 
 
 def _read_list(path: Path) -> list[dict[str, Any]]:

@@ -111,6 +111,12 @@ def test_identity_softmax_normalizes_float32_logits_in_float64() -> None:
     assert np.max(np.abs(probabilities.sum(axis=1) - 1.0)) <= 1e-12
 
 
+def test_effect_direction_is_plain_json_serializable_boolean() -> None:
+    value = analysis_module._same_effect_direction(-0.5, -0.1)
+    assert type(value) is bool
+    assert json.loads(json.dumps({"same_direction": value}))["same_direction"] is True
+
+
 def test_regression_builder_accepts_registered_event_estimator(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
