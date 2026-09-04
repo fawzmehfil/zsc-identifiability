@@ -1,0 +1,36 @@
+{
+  "contains_checkpoints": false,
+  "contains_machine_specific_paths": false,
+  "contains_raw_traces": false,
+  "generated_file_hashes": {
+    "figures/dri-predictive-value.pdf": "03b276f40c024abafcc13f90fe23cc240701772bfa0c5d1c637b8ab424f399ec",
+    "figures/dri-predictive-value.png": "255559c5029c19060a34b87aee05b9546fe8cd355dcf09bc63a6cb01c1d31c4b",
+    "figures/natural-intervention-audit.pdf": "00664a55a26db246defd1bbcaa2a9d99e570d80bcc00b2f1590f1c00aeb092c3",
+    "figures/natural-intervention-audit.png": "e88ea0670d96e3546cbeeaef14c0f4ba429eb3864f1aa0f16a6f70d15b3f3b1e",
+    "figures/passive-dri-permutation.pdf": "ecef1ba9cf171a9e3ba2617ecfd9e46b87c95548e868e1abcc381b9eca69579b",
+    "figures/passive-dri-permutation.png": "c3df88f72832437f2cce5b75fc354d858083df29d37eaf53056d05a77a6f8d24",
+    "intervention-audit.csv": "4b06e8794ec0dbe64493b65187e4e31b25a287c6ca8bbd13a0ea289a43644246",
+    "permutation-tests.csv": "044ec89475842b771a7ab050fdba75fb4354a9af985bd7ac561b9fed7fb2f38f",
+    "predictive-value.csv": "21d17740d3b574bdbd212b78296ce1254807e6ba90e2aca0b3b960d9c423468e",
+    "stage-6-summary.json": "5b822b98845bc9aeeca66e765682b0413a5d9ff0e7c97b847f2844075b8ca3f3"
+  },
+  "schema_version": 1,
+  "source_audit": {
+    "source_hashes": {
+      "confirmation_plan": "a4c623a180a5a5ccca2fad872457b238324c6a1c1477321cd24893cae549ff2c",
+      "fit_configuration": "a5994f0f220586521e550fdf2c6b3b9200a57a19c68f247ec54f3f0d0b826b20",
+      "suite": "4658e2118fcfecd36189a2be73ff5b16d907ca51922341d15b7bd5074cd08dcf",
+      "v2_plan": "a362714f93130be61190c5005fc0d967c59f9b40597d2da65fbc65cff1cec6b5"
+    },
+    "status": "complete",
+    "verdict": "complete_measurement_only"
+  },
+  "source_file_hashes": {
+    "fresh-intervention-audit-v3.json": "e77e9e59cfbc69e2529e609c4d617a1498a3de8fce9f9438cbba2e3d601a43ce",
+    "held-out-regression-report-v3.json": "6b952bdf750948dfb159c9efb110373abfed3ee1ace7d6e464d404d67cf5c5d6",
+    "measurement-calibration-report-v3.json": "e023a411ab72f289c68765a94b339a7f17907442dbfa9c6bbac4d9b8892e9bc1",
+    "measurement-sensitivity-report-v3.json": "16b351d37554f1c02515484b5fc955b4fa364af08d7a1c17d5cea67949aef770",
+    "official-measurement-audit-manifest-v3.json": "23ec04ccc75051bb7beef27ae351ad0dc7ac4557fa29cb332836bcb30308139e",
+    "permutation-report-v3.json": "f9f6b82e5b574cfcfebbf72fbcd3c6eaf9b1a7b33e035b09db30e3b691254355"
+  }
+}

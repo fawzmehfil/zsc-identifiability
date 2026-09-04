@@ -236,6 +236,7 @@ def test_cli_exposes_every_registered_redesign_operation() -> None:
         "run-confirmation",
         "status",
         "analyze",
+        "publish",
     ):
         required = {
             "validate": ["--suite", "suite.json"],
@@ -262,6 +263,7 @@ def test_cli_exposes_every_registered_redesign_operation() -> None:
                 "--output",
                 "out",
             ],
+            "publish": ["--input", "analysis", "--output", "publication"],
         }[operation]
         args = parser.parse_args(["established", "official", "redesign", operation, *required])
         assert args.redesign_command == operation

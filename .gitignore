@@ -48,6 +48,7 @@ phase-6-established-validation/logs/
 phase-6-established-validation/artifacts/**/analysis.log
 phase-6-established-validation/artifacts/**/.analysis-state/
 phase-6-established-validation/artifacts/official-checkpoint-audit/
-phase-6-established-validation/artifacts/official-measurement-v3/pairwise-decision-value.json
-phase-6-established-validation/artifacts/official-measurement-v3/fresh-representation-index.json
-phase-6-established-validation/artifacts/official-measurement-v3/direct-binary-gru/
+# The v3 analysis workspace contains raw pairwise rows, fitted measurement
+# models, caches, and intermediate figures. Publication-safe derivatives live
+# in phase-6-established-validation/results/.
+phase-6-established-validation/artifacts/official-measurement-v3/

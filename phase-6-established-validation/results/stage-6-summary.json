@@ -1,0 +1,263 @@
+{
+  "audit_scale": {
+    "fresh_confirmation_environment_steps": 3840000,
+    "fresh_confirmation_episodes": 9600,
+    "layouts": 2,
+    "official_partners": 50,
+    "official_zsc_method_families": 6,
+    "policy_training_performed": false
+  },
+  "calibration": {
+    "brier_checks": {
+      "random3_m": true,
+      "small_corridor": true
+    },
+    "direct_binary_gru_diagnostic": {
+      "dri_correlation": 0.9861396232783382,
+      "mean_decision_loss_difference": -0.019906746599749548,
+      "mean_seed_dispersion": 0.03195730422376006,
+      "pair_count": 10,
+      "status": "complete"
+    },
+    "fixed_response_checks": {
+      "random3_m": true,
+      "small_corridor": true
+    },
+    "leakage_checks": {
+      "fresh_confirmation_not_used_for_tuning": true,
+      "partner_metadata_excluded": true,
+      "post_commitment_excluded_from_precommitment": true,
+      "v2_confirmatory_not_used_for_tuning": true
+    },
+    "passed": true,
+    "seed_stability": {
+      "random3_m": {
+        "mean_direction_agreement": 0.9794258373205741,
+        "passed": true
+      },
+      "small_corridor": {
+        "mean_direction_agreement": 0.9664804469273743,
+        "passed": true
+      }
+    },
+    "synthetic_controls": {
+      "asymmetric_decisions": [
+        0,
+        1
+      ],
+      "censored_dri": 0.0,
+      "checks": {
+        "asymmetric_loss_decision": true,
+        "binary_q08": true,
+        "censored_prior_fallback": true,
+        "identity_only_zero": true,
+        "inseparable_zero": true,
+        "late_eventual_one": true,
+        "late_precommitment_zero": true
+      },
+      "identity_only_dri": 0.0,
+      "informative_dri": 0.6,
+      "inseparable_dri": 0.0,
+      "late_eventual_dri": 1.0,
+      "late_precommitment_dri": 0.0,
+      "passed": true,
+      "tolerance": 0.03
+    }
+  },
+  "dri_coefficient_intervals": {
+    "event": {
+      "adjusted_for_registered_controls": true,
+      "ci_high": -0.05508632075401017,
+      "ci_low": -0.2839672969909481,
+      "cluster_dimensions": [
+        "method_seed",
+        "hsp_scheme",
+        "episode_key"
+      ],
+      "coefficient_mean": -0.1615784093645246,
+      "coefficient_point": -0.15842638092003655,
+      "method_by_dri_interactions_in_nuisance_model": true,
+      "resamples_completed": 10000,
+      "resamples_requested": 10000
+    },
+    "gru": {
+      "adjusted_for_registered_controls": true,
+      "ci_high": -0.0791756606180491,
+      "ci_low": -0.29499060722102344,
+      "cluster_dimensions": [
+        "method_seed",
+        "hsp_scheme",
+        "episode_key"
+      ],
+      "coefficient_mean": -0.182901699191743,
+      "coefficient_point": -0.18035175426087752,
+      "method_by_dri_interactions_in_nuisance_model": true,
+      "resamples_completed": 10000,
+      "resamples_requested": 10000
+    }
+  },
+  "interventions": [
+    {
+      "ci_high": 0.011101593750362517,
+      "ci_low": -0.0012038473872889332,
+      "completion_rate": 0.94375,
+      "confirmed": false,
+      "conflicting_pair_count": 418,
+      "event_risk_reduction": 0.0053186393851636,
+      "gru_risk_reduction": 0.004896968759643174,
+      "holm_adjusted_p": 0.9900990099009901,
+      "intervention": "temporary_role_takeover",
+      "layout": "random3_m",
+      "normalized_task_cost": 0.0022222222222222222,
+      "partner_response_tv": 0.024493983433371683,
+      "raw_permutation_p": 0.49504950495049505
+    },
+    {
+      "ci_high": 0.008139258410788133,
+      "ci_low": -0.01706740083930011,
+      "completion_rate": 1.0,
+      "confirmed": false,
+      "conflicting_pair_count": 179,
+      "event_risk_reduction": -0.01132055419669888,
+      "gru_risk_reduction": -0.004873179003201993,
+      "holm_adjusted_p": 0.9900990099009901,
+      "intervention": "corridor_yield",
+      "layout": "small_corridor",
+      "normalized_task_cost": -0.004261363636363636,
+      "partner_response_tv": 0.01604200658725909,
+      "raw_permutation_p": 0.9405940594059405
+    }
+  ],
+  "permutation_tests": [
+    {
+      "holm_adjusted_p": 0.039603960396039604,
+      "null_95th_percentile": -0.0845399661079967,
+      "null_mean": -0.09528938188504889,
+      "observed": 0.667429265078189,
+      "passed": true,
+      "permutations": 100,
+      "raw_p": 0.009900990099009901,
+      "test": "random3_m:passive_dri"
+    },
+    {
+      "holm_adjusted_p": 0.9900990099009901,
+      "null_95th_percentile": 0.011114583662991543,
+      "null_mean": 0.004330489694278305,
+      "observed": 0.004896968759643174,
+      "passed": false,
+      "permutations": 100,
+      "raw_p": 0.49504950495049505,
+      "test": "random3_m:selected_intervention"
+    },
+    {
+      "holm_adjusted_p": 0.039603960396039604,
+      "null_95th_percentile": -0.05545703400592982,
+      "null_mean": -0.07134803347990293,
+      "observed": 0.5195168628705609,
+      "passed": true,
+      "permutations": 100,
+      "raw_p": 0.009900990099009901,
+      "test": "small_corridor:passive_dri"
+    },
+    {
+      "holm_adjusted_p": 0.9900990099009901,
+      "null_95th_percentile": 0.010492021833578979,
+      "null_mean": 0.002329444310871503,
+      "observed": -0.004873179003201993,
+      "passed": false,
+      "permutations": 100,
+      "raw_p": 0.9405940594059405,
+      "test": "small_corridor:selected_intervention"
+    }
+  ],
+  "regression": [
+    {
+      "delta_mae": -0.00339395151439989,
+      "delta_mse": -0.0013690199180590445,
+      "delta_r2": 0.020472954747937755,
+      "fold_count": 25,
+      "improved_mae_folds": 19,
+      "improved_mse_folds": 19,
+      "positive_delta_r2_folds": 19,
+      "representation": "gru",
+      "scope": "overall"
+    },
+    {
+      "delta_mae": -0.0021988851835310075,
+      "delta_mse": -0.0008962965601230846,
+      "delta_r2": 0.024257854188036054,
+      "fold_count": 15,
+      "improved_mae_folds": 8,
+      "improved_mse_folds": 11,
+      "positive_delta_r2_folds": 11,
+      "representation": "gru",
+      "scope": "random3_m"
+    },
+    {
+      "delta_mae": -0.0012281867431671034,
+      "delta_mse": -0.000598415455442973,
+      "delta_r2": 0.00744894299679788,
+      "fold_count": 10,
+      "improved_mae_folds": 9,
+      "improved_mse_folds": 8,
+      "positive_delta_r2_folds": 8,
+      "representation": "gru",
+      "scope": "small_corridor"
+    },
+    {
+      "delta_mae": -0.0021492514021720366,
+      "delta_mse": -0.0007891228858724966,
+      "delta_r2": 0.011800907291352414,
+      "fold_count": 25,
+      "improved_mae_folds": 18,
+      "improved_mse_folds": 16,
+      "positive_delta_r2_folds": 16,
+      "representation": "event",
+      "scope": "overall"
+    },
+    {
+      "delta_mae": -0.001925430919176102,
+      "delta_mse": -0.0008026919903506569,
+      "delta_r2": 0.021724489556399273,
+      "fold_count": 15,
+      "improved_mae_folds": 8,
+      "improved_mse_folds": 8,
+      "positive_delta_r2_folds": 8,
+      "representation": "event",
+      "scope": "random3_m"
+    },
+    {
+      "delta_mae": -0.002338723990356728,
+      "delta_mse": -0.0011432244376496023,
+      "delta_r2": 0.014230604492483145,
+      "fold_count": 10,
+      "improved_mae_folds": 9,
+      "improved_mse_folds": 9,
+      "positive_delta_r2_folds": 9,
+      "representation": "event",
+      "scope": "small_corridor"
+    }
+  ],
+  "schema_version": 1,
+  "scientific_gates": {
+    "both_layouts_predictive": true,
+    "clustered_dri_coefficient_negative": true,
+    "event_sensitivity_same_direction": true,
+    "existing_methods_leave_systematic_gap": false,
+    "measurement_calibration": true,
+    "overall_delta_mae_negative": true,
+    "overall_delta_mse_negative": true,
+    "overall_delta_r2_positive": true,
+    "primary_intervention_confirmed": false
+  },
+  "source_hashes": {
+    "confirmation_plan": "a4c623a180a5a5ccca2fad872457b238324c6a1c1477321cd24893cae549ff2c",
+    "fit_configuration": "a5994f0f220586521e550fdf2c6b3b9200a57a19c68f247ec54f3f0d0b826b20",
+    "suite": "4658e2118fcfecd36189a2be73ff5b16d907ca51922341d15b7bd5074cd08dcf",
+    "v2_plan": "a362714f93130be61190c5005fc0d967c59f9b40597d2da65fbc65cff1cec6b5"
+  },
+  "supported_result": "Pre-commitment DRI adds held-out predictive value for normalized response-library regret in both official layouts.",
+  "unsupported_result": "Neither preregistered natural task intervention produced a confirmed decision-risk improvement.",
+  "verdict": "complete_measurement_only",
+  "working_title": "Can Your Teammate Be Identified in Time? Decision-Sufficient Identifiability in Zero-Shot Coordination"
+}

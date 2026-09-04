@@ -38,6 +38,9 @@ from zsc_identifiability.established_official_models import (
     OfficialRolloutLedger,
     load_official_checkpoint_suite,
 )
+from zsc_identifiability.established_official_publication import (
+    export_official_measurement_publication,
+)
 from zsc_identifiability.established_official_redesign import (
     fit_measurement_representations,
     fit_pairwise_decoders,
@@ -226,6 +229,11 @@ def add_established_parser(commands: argparse._SubParsersAction[Any]) -> None:
     redesign_analyze.add_argument("--ledger", required=True)
     redesign_analyze.add_argument("--fit-manifest", required=True)
     redesign_analyze.add_argument("--output", required=True)
+    redesign_publish = redesign_commands.add_parser(
+        "publish", help="export compact path-safe tables and figures from a completed v3 audit"
+    )
+    redesign_publish.add_argument("--input", required=True)
+    redesign_publish.add_argument("--output", required=True)
 
     responses = subcommands.add_parser(
         "build-responses", help="freeze the empirical response-loss matrix"
@@ -596,6 +604,10 @@ def _official_redesign_command(args: argparse.Namespace) -> int:
         if manifest.status == "incomplete":
             return 4
         return 3 if manifest.verdict in {"redesign", "stop"} else 0
+    if operation == "publish":
+        publication_manifest = export_official_measurement_publication(args.input, args.output)
+        print(json.dumps(publication_manifest, indent=2, sort_keys=True))
+        return 0
     raise ValueError(f"unknown Stage 6 v3 redesign command: {operation!r}")
 
 
