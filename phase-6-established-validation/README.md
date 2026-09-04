@@ -5,6 +5,24 @@ whether pre-commitment decision-relevant identifiability (DRI) explains
 coordination regret beyond competence, BR-Div, visible-action predictability,
 and trajectory divergence.
 
+[Final results](results/README.md) ·
+[Statistical claim audit](statistical-claim-audit.md) ·
+[Exit memo](stage-6-exit-memo.md) ·
+[Protocol amendment](protocol-amendment-v3.md)
+
+## Final result
+
+Stage 6 is complete with verdict **`complete_measurement_only`**. In the fresh
+v3 confirmation set, adding pre-commitment DRI improved aggregate held-out
+regret prediction overall and in both layouts. The independent event estimator
+preserved the effect direction. The primary adjusted DRI coefficient was
+`-0.18035`, with clustered 95% interval `[-0.29499, -0.07918]`.
+
+Neither preregistered natural intervention confirmed. The paper may therefore
+claim established-environment support for DRI as a measurement, but not for
+natural active probing. Compact tables, figures, and path-safe provenance
+hashes are in [`results/`](results/README.md).
+
 The canonical study does not train partners or coordination policies. It uses:
 
 - all 30 officially selected `random3_m` partners;
@@ -57,9 +75,8 @@ asset synchronization.
 
 The runtime imports official environment and policy classes directly, disables
 CUDA, does not import an upstream trainer, and rejects any request that does not
-declare `policy_training_allowed: false`. Historical seat-0 integration smokes
-pass for both layouts. The canonical two-seat parity smoke is deliberately
-pending until the locked official assets are synchronized.
+declare `policy_training_allowed: false`. Canonical two-seat policy and
+environment parity passed for both layouts.
 
 Every official method checkpoint is evaluated using its published stochastic
 sampling semantics and a greedy sensitivity deployment under identical
@@ -158,27 +175,33 @@ The status command performs no inference. The final analysis rejects incomplete
 ledgers, changed post-start configurations, v2 confirmatory tuning data, key
 overlap, missing permutation controls, and policy-training requests.
 
+Run the frozen analysis and export the compact publication package:
+
+```bash
+uv run --extra established zsc-identifiability established official redesign analyze \
+  --suite phase-6-established-validation/suites/official-measurement-v3.json \
+  --plan phase-6-established-validation/runs/official-measurement-v3/confirmation/official-confirmation-plan.json \
+  --ledger phase-6-established-validation/runs/official-measurement-v3/confirmation/official-confirmation-ledger.json \
+  --fit-manifest phase-6-established-validation/runs/official-measurement-v3/fit/measurement-fit-manifest.json \
+  --output phase-6-established-validation/artifacts/official-measurement-v3
+
+uv run zsc-identifiability established official redesign publish \
+  --input phase-6-established-validation/artifacts/official-measurement-v3 \
+  --output phase-6-established-validation/results
+```
+
 Exit code `2` denotes an engineering or integrity failure, `3` a completed
 scientific-gate failure, and `4` missing assets or incomplete shards.
 
-## Current status
+## Completion status
 
-- v2 schema and inference-only policy: implemented and tested;
-- official asset discovery, minimal synchronization, hashing, and duplicate
-  detection: implemented;
-- atomic CPU rollout plan, ledger, recovery, and offline boundary: implemented;
-- official policy/environment loading and two-seat parity harness: implemented;
-- historical seat-0 integration parity on both layouts: verified;
-- canonical two-seat parity and complete rollout matrix: complete;
-- response-library, conflict, event/GRU DRI, and scheme-held-out statistical
-  components: implemented;
-- custom full-compute extension: preserved but retired from the default path;
-- bounded-memory, resumable v2 analysis: complete with a `redesign` verdict;
-- direct decision-risk v3 estimator and trace-only confirmation runner:
-  implemented;
-- fresh v3 confirmation inference: not launched;
-- final established-environment verdict: pending calibrated fresh confirmation.
+- official asset, two-seat parity, duplicate, and leakage audits: passed;
+- v2 checkpoint matrix: complete and preserved as a failed estimator audit;
+- v3 direct decision-risk calibration and synthetic controls: passed;
+- fresh disjoint 9,600-episode confirmation inference: complete;
+- GRU and event held-out regression analyses: complete and directionally aligned;
+- passive DRI permutation tests: passed in both layouts;
+- natural-intervention confirmation tests: failed in both layouts;
+- final established-environment verdict: `complete_measurement_only`.
 
-No established-environment scientific finding is claimed from v2 or before the
-fresh v3 calibration, permutation, regression, intervention, and sensitivity
-gates pass.
+Stage 6 requires no further training or inference for the current paper claim.

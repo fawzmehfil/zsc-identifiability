@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "zsc-identifiability"
 version = "0.1.0"
-description = "Exact finite convention games for commitment-timed zero-shot coordination research"
+description = "Decision-sufficient identifiability benchmarks for zero-shot coordination"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 license = { text = "MIT" }
