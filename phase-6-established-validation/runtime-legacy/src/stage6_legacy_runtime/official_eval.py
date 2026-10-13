@@ -38,6 +38,8 @@ def run_official_operation(request):
         result = _pair_rollout(layout, payload, pool, kind="method")
     elif operation == "official_trace_rollout":
         result = _pair_rollout(layout, payload, pool, kind="trace")
+    elif operation == "official_demo_replay":
+        result = _pair_rollout(layout, payload, pool, kind="demo")
     else:
         raise ValueError(f"unsupported official operation: {operation!r}")
     result["official_source_commit"] = request["repository_commit"]
@@ -78,7 +80,13 @@ def _pair_rollout(layout, payload, pool, kind):
     episodes = []
     event_totals = []
     for episode_index, environment_key in enumerate(payload["episode_keys"]):
-        seat = episode_index % 2 if payload.get("balanced_seats", True) else 0
+        seat = (
+            int(payload["ego_seat"])
+            if kind == "demo" and "ego_seat" in payload
+            else episode_index % 2
+            if payload.get("balanced_seats", True)
+            else 0
+        )
         episode = _run_episode(
             layout,
             ego_path,
@@ -91,6 +99,7 @@ def _pair_rollout(layout, payload, pool, kind):
             int(payload.get("maximum_option_steps", 16)),
             retain_history=kind in {"trace", "method"},
             retain_observations=kind == "trace",
+            retain_visual_state=kind == "demo",
             loaded=loaded,
         )
         episodes.append(episode)
@@ -106,7 +115,7 @@ def _pair_rollout(layout, payload, pool, kind):
         "episode_returns": returns,
         "episode_lengths": episode_lengths,
         "mean_ego_event_features": feature_mean,
-        "episodes": episodes if kind in {"trace", "method"} else [],
+        "episodes": episodes if kind in {"trace", "method", "demo"} else [],
         "ego_deployment": "greedy" if ego_deterministic else "stochastic",
         "partner_deployment": "stochastic",
         "peak_memory_bytes": _peak_rss_bytes(),
@@ -122,7 +131,7 @@ def _pair_rollout(layout, payload, pool, kind):
     else:
         base["partner_id"] = _checkpoint_identity(partner_path, layout, partner=True)
         base["evidence_policy"] = evidence_policy
-        base["split"] = payload["split"]
+        base["split"] = payload.get("split", "demo")
     return base
 
 
@@ -138,6 +147,7 @@ def _run_episode(
     maximum_option_steps,
     retain_history,
     retain_observations,
+    retain_visual_state=False,
     loaded=None,
 ):
     import numpy as np
@@ -156,6 +166,12 @@ def _run_episode(
     env.agent_idx = int(ego_seat)
     physical_ego = int(ego_seat)
     observation, _, available = env.reset()
+    initial_visual_state = (
+        _json_safe(env.base_env.state.to_dict()) if retain_visual_state else None
+    )
+    visual_terrain = (
+        _json_safe(env.base_env.mdp.terrain_mtx) if retain_visual_state else None
+    )
     # The wrapper orders the controlled ego first regardless of physical seat.
     ego_policy.reset(1, 2)
     partner_policy.reset(1, 2)
@@ -239,7 +255,7 @@ def _run_episode(
             for key, value in zip(shaped_keys, step_features)  # noqa: B905 - Python 3.9 runtime
             if float(value) > 0
         ]
-        if retain_history:
+        if retain_history or retain_visual_state:
             step_row = {
                 "step": step,
                 "ego_action": int(ego_action),
@@ -251,6 +267,8 @@ def _run_episode(
                 step_row["ego_observation"] = (
                     np.asarray(observation[0], dtype=np.float32).reshape(-1).tolist()
                 )
+            if retain_visual_state:
+                step_row["world_state"] = _json_safe(env.base_env.state.to_dict())
             step_rows.append(step_row)
         observation = next_observation
         available = next_available
@@ -274,8 +292,24 @@ def _run_episode(
         "ego_event_features": event_features.tolist(),
         "steps_elapsed": step + 1,
     }
+    if retain_visual_state:
+        result["terrain"] = visual_terrain
+        result["initial_state"] = initial_visual_state
+        result["visual_state_schema"] = "official-overcooked-state-v1"
     env.close()
     return result
+
+
+def _json_safe(value):
+    """Convert official environment state payloads into stable JSON values."""
+
+    if isinstance(value, dict):
+        return {str(key): _json_safe(child) for key, child in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(child) for child in value]
+    if hasattr(value, "item"):
+        return value.item()
+    return value
 
 
 def _make_environment(layout, policy_args, environment_key):

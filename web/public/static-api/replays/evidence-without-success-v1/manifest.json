@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "diagnostics.json": "6994091cf474d6892fd990556a079992e3bf544f786182452d422d462daf60a3",
+    "events.json": "a9463ca5246a9bf06553e649120a97e20bd8c42138f180038117c65fb13bb91c",
+    "frames.json": "3c2887e48785d0d27cf55128e2fd814fa74bd62498520767460efd2dc546f9a0",
+    "initial.json": "c36714f496eec00818cc4ba31888d95fb2286afc2604957476ae354416670b02"
+  },
+  "caption": "The trace is highly diagnostic of the partner mode, but useful evidence does not guarantee a successful team outcome.",
+  "category": "evidence_outcome_gap",
+  "collection_id": "beforecommit-official-v1",
+  "commitment": {
+    "definition": "first_successful_ingredient_placement",
+    "frame": 13,
+    "reached": true,
+    "step": 12
+  },
+  "diagnostic_count": 6,
+  "event_count": 769,
+  "featured": false,
+  "frame_count": 401,
+  "partner_modes": {
+    "left": "random3_m:hsp39:final",
+    "right": "random3_m:hsp46:final"
+  },
+  "replay_id": "evidence-without-success-v1",
+  "representative": false,
+  "responses": [
+    {
+      "alias": "Response A",
+      "optimal_for": [
+        "left"
+      ],
+      "response_id": "random3_m:hsp39:final"
+    },
+    {
+      "alias": "Response B",
+      "optimal_for": [
+        "right"
+      ],
+      "response_id": "random3_m:hsp46:final"
+    }
+  ],
+  "schema_version": "beforecommit_replay_1.0.0",
+  "selection_note": "Illustrative zero-return confirmation episode from a response-conflicting pair with primary precommitment DRI equal to 1.0.",
+  "short_title": "Informed, still failed",
+  "source": {
+    "checkpoint_hashes": {
+      "ego": "1e16f9e62800f9146e72d7e669c3692436c795df8ae1e725afa024984625f526",
+      "partner": "8081a40a2c4f612a7ce76eb40dee887b3a0776bc2be842f83d634c40002fbff6"
+    },
+    "ego_policy_id": "1",
+    "ego_seat": 0,
+    "environment_key": 7499128558043144021,
+    "evidence_policy": "ordinary_progress",
+    "layout_id": "random3_m",
+    "partner_id": "random3_m:hsp39:final",
+    "policy_training_performed": false,
+    "source_artifact_hashes": {
+      "request": "6718196a42ce1f35178f825c9905ddd4049caa9e038e1ada3f98c1e60ce265bd",
+      "stored_trace": "e4a36258f44075fc4859ab4d9745b51d82deccccff4edc445c38d54c1a915caf",
+      "visual_capture": "69f295f0f39da30e5cec2f2f3ef1674d6d5d5191c224f0100c33169cd5f8a7f5"
+    },
+    "suite_id": "stage6-official-decision-risk-v3"
+  },
+  "status": "complete",
+  "summary": {
+    "aggregate_dri_event": 1.0,
+    "aggregate_dri_primary": 1.0,
+    "aggregate_residual_risk_primary": 0.0,
+    "eventual_dri_primary": 1.0,
+    "first_delivery_step": null,
+    "prior_risk": 0.4967447916666667,
+    "selected_response_loss_at_commitment": 0.0,
+    "sparse_return": 0.0,
+    "steps_elapsed": 400
+  },
+  "terrain": [
+    [
+      "X",
+      "X",
+      "X",
+      "P",
+      "P",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "D",
+      " ",
+      "X",
+      "X",
+      "X",
+      "X",
+      " ",
+      "S"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "X",
+      "O",
+      "O",
+      "X",
+      "X",
+      "T",
+      "T",
+      "X"
+    ]
+  ],
+  "title": "Evidence without success"
+}

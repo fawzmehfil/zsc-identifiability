@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "diagnostics.json": "bc1efe225b1857b072c9f90f309da15ad611ca660aac073ae4fa65bfcaa00372",
+    "events.json": "47206f9e3382af11fb823536e60d57d18c40e8a8de3117be7eebfdcb51c8c369",
+    "frames.json": "e863780a5f2dd948cde7527c97613991754382293af50faab327fa6b4190fe82",
+    "initial.json": "c36714f496eec00818cc4ba31888d95fb2286afc2604957476ae354416670b02"
+  },
+  "caption": "The modes remain hard to separate before commitment even though the full trajectory eventually becomes informative.",
+  "category": "late_evidence",
+  "collection_id": "beforecommit-official-v1",
+  "commitment": {
+    "definition": "first_successful_ingredient_placement",
+    "frame": 10,
+    "reached": true,
+    "step": 9
+  },
+  "diagnostic_count": 6,
+  "event_count": 550,
+  "featured": false,
+  "frame_count": 401,
+  "partner_modes": {
+    "left": "random3_m:hsp11:final",
+    "right": "random3_m:hsp12:mid"
+  },
+  "replay_id": "answer-arrives-late-v1",
+  "representative": false,
+  "responses": [
+    {
+      "alias": "Response A",
+      "optimal_for": [
+        "left"
+      ],
+      "response_id": "random3_m:hsp46:final"
+    },
+    {
+      "alias": "Response B",
+      "optimal_for": [
+        "right"
+      ],
+      "response_id": "random3_m:hsp12:final"
+    }
+  ],
+  "schema_version": "beforecommit_replay_1.0.0",
+  "selection_note": "Illustrative confirmation episode from the pair with the largest gap between eventual and precommitment primary DRI among pairs with prior risk above 0.05.",
+  "short_title": "Too late",
+  "source": {
+    "checkpoint_hashes": {
+      "ego": "1e16f9e62800f9146e72d7e669c3692436c795df8ae1e725afa024984625f526",
+      "partner": "2cb2f4ac3f9852b1314eb577b470b45ac5ce5f1a23bafb225ae2eed4592617ba"
+    },
+    "ego_policy_id": "1",
+    "ego_seat": 0,
+    "environment_key": 7986446422691653799,
+    "evidence_policy": "ordinary_progress",
+    "layout_id": "random3_m",
+    "partner_id": "random3_m:hsp11:final",
+    "policy_training_performed": false,
+    "source_artifact_hashes": {
+      "request": "c88ca42ed3ef639069b3d52acedaf2407b3b28b10f4fd8d5f8cb296b0f79f219",
+      "stored_trace": "e62f67cd83b08aecf3b8bb54e5744b33fc44b47b6edc74308db36141d7629bc3",
+      "visual_capture": "ab3861af37184768aba09e5896b8ea5c117c8904e223756eb50977a1846d6a9c"
+    },
+    "suite_id": "stage6-official-decision-risk-v3"
+  },
+  "status": "complete",
+  "summary": {
+    "aggregate_dri_event": -0.21501557632398727,
+    "aggregate_dri_primary": -0.2401177570093455,
+    "aggregate_residual_risk_primary": 0.07699406603948752,
+    "eventual_dri_primary": 0.7980975077881621,
+    "first_delivery_step": null,
+    "prior_risk": 0.0620860927152318,
+    "selected_response_loss_at_commitment": 0.0,
+    "sparse_return": 0.0,
+    "steps_elapsed": 400
+  },
+  "terrain": [
+    [
+      "X",
+      "X",
+      "X",
+      "P",
+      "P",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "D",
+      " ",
+      "X",
+      "X",
+      "X",
+      "X",
+      " ",
+      "S"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "X",
+      "O",
+      "O",
+      "X",
+      "X",
+      "T",
+      "T",
+      "X"
+    ]
+  ],
+  "title": "The answer arrives late"
+}

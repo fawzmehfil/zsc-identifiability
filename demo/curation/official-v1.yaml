@@ -1,0 +1,124 @@
+schema_version: 1
+collection_id: beforecommit-official-v1
+suite_id: official-zsceval-measurement-v3
+entries:
+  - replay_id: clear-before-commitment-v1
+    title: Clear before commitment
+    short_title: Clear early
+    category: clear_before_commitment
+    layout_id: random3_m
+    partner_id: random3_m:hsp36:final
+    left_partner_id: random3_m:hsp11:final
+    right_partner_id: random3_m:hsp36:final
+    evidence_policy: ordinary_progress
+    environment_key: 6541107174436522077
+    ego_seat: 1
+    representative: false
+    featured: true
+    selection_note: >-
+      Illustrative high-identifiability confirmation episode with a successful
+      delivery sequence. Selected deterministically from the highest-return
+      episodes by earliest delivery, then lowest episode index.
+    caption: >-
+      The partner's behavior supports the useful response before the first pot
+      placement. The team later completes multiple deliveries.
+
+  - replay_id: answer-arrives-late-v1
+    title: The answer arrives late
+    short_title: Too late
+    category: late_evidence
+    layout_id: random3_m
+    partner_id: random3_m:hsp11:final
+    left_partner_id: random3_m:hsp11:final
+    right_partner_id: random3_m:hsp12:mid
+    evidence_policy: ordinary_progress
+    environment_key: 7986446422691653799
+    ego_seat: 0
+    representative: false
+    featured: false
+    selection_note: >-
+      Illustrative confirmation episode from the pair with the largest gap
+      between eventual and precommitment primary DRI among pairs with prior
+      risk above 0.05.
+    caption: >-
+      The modes remain hard to separate before commitment even though the full
+      trajectory eventually becomes informative.
+
+  - replay_id: evidence-without-success-v1
+    title: Evidence without success
+    short_title: Informed, still failed
+    category: evidence_outcome_gap
+    layout_id: random3_m
+    partner_id: random3_m:hsp39:final
+    left_partner_id: random3_m:hsp39:final
+    right_partner_id: random3_m:hsp46:final
+    evidence_policy: ordinary_progress
+    environment_key: 7499128558043144021
+    ego_seat: 0
+    representative: false
+    featured: false
+    selection_note: >-
+      Illustrative zero-return confirmation episode from a response-conflicting
+      pair with primary precommitment DRI equal to 1.0.
+    caption: >-
+      The trace is highly diagnostic of the partner mode, but useful evidence
+      does not guarantee a successful team outcome.
+
+  - replay_id: success-with-partial-evidence-v1
+    title: Success with partial evidence
+    short_title: Robust success
+    category: robust_success
+    layout_id: small_corridor
+    partner_id: small_corridor:hsp133:mid
+    left_partner_id: small_corridor:hsp129:mid
+    right_partner_id: small_corridor:hsp133:mid
+    evidence_policy: ordinary_progress
+    environment_key: 5611450421360687943
+    ego_seat: 1
+    representative: false
+    featured: false
+    selection_note: >-
+      Highest-return confirmation episode for this partner, paired with a
+      response-conflicting comparison whose primary precommitment DRI is 0.18.
+    caption: >-
+      The team succeeds even though the pair is only partially identifiable.
+      Return and identifiability measure different properties.
+
+  - replay_id: ordinary-progress-control-v1
+    title: Ordinary progress
+    short_title: Ordinary
+    category: intervention_control
+    layout_id: random3_m
+    partner_id: random3_m:hsp11:final
+    left_partner_id: random3_m:hsp11:final
+    right_partner_id: random3_m:hsp12:mid
+    evidence_policy: ordinary_progress
+    environment_key: 233882139595873395
+    ego_seat: 0
+    representative: false
+    featured: false
+    selection_note: >-
+      Matched environment key and seat for the temporary-role-takeover replay.
+    caption: >-
+      The reference policy follows its ordinary task behavior before the same
+      commitment event used in the intervention comparison.
+
+  - replay_id: temporary-role-takeover-v1
+    title: Temporary role takeover
+    short_title: Intervention
+    category: intervention_treatment
+    layout_id: random3_m
+    partner_id: random3_m:hsp11:final
+    left_partner_id: random3_m:hsp11:final
+    right_partner_id: random3_m:hsp12:mid
+    evidence_policy: temporary_role_takeover
+    environment_key: 233882139595873395
+    ego_seat: 0
+    representative: false
+    featured: false
+    selection_note: >-
+      Registered intervention matched to ordinary-progress-control-v1 by
+      partner, environment key, and ego seat.
+    caption: >-
+      The intervention changes early behavior, but the frozen benchmark did not
+      find a reliable information improvement across partner pairs.

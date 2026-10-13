@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "diagnostics.json": "e05535c3f705ddd45d1ac0cca174710643b102a5d8b4a41618c9663b04746bde",
+    "events.json": "e667d370872744e16d2bafc75750c99e712a4ce283672eabf935bcd54c217b34",
+    "frames.json": "f2d045eca0079312f74d5904895713d39ce9ef5eb77ad3a79d57d349fa1c3806",
+    "initial.json": "c36714f496eec00818cc4ba31888d95fb2286afc2604957476ae354416670b02"
+  },
+  "caption": "The reference policy follows its ordinary task behavior before the same commitment event used in the intervention comparison.",
+  "category": "intervention_control",
+  "collection_id": "beforecommit-official-v1",
+  "commitment": {
+    "definition": "first_successful_ingredient_placement",
+    "frame": 10,
+    "reached": true,
+    "step": 9
+  },
+  "diagnostic_count": 6,
+  "event_count": 543,
+  "featured": false,
+  "frame_count": 401,
+  "partner_modes": {
+    "left": "random3_m:hsp11:final",
+    "right": "random3_m:hsp12:mid"
+  },
+  "replay_id": "ordinary-progress-control-v1",
+  "representative": false,
+  "responses": [
+    {
+      "alias": "Response A",
+      "optimal_for": [
+        "left"
+      ],
+      "response_id": "random3_m:hsp46:final"
+    },
+    {
+      "alias": "Response B",
+      "optimal_for": [
+        "right"
+      ],
+      "response_id": "random3_m:hsp12:final"
+    }
+  ],
+  "schema_version": "beforecommit_replay_1.0.0",
+  "selection_note": "Matched environment key and seat for the temporary-role-takeover replay.",
+  "short_title": "Ordinary",
+  "source": {
+    "checkpoint_hashes": {
+      "ego": "1e16f9e62800f9146e72d7e669c3692436c795df8ae1e725afa024984625f526",
+      "partner": "2cb2f4ac3f9852b1314eb577b470b45ac5ce5f1a23bafb225ae2eed4592617ba"
+    },
+    "ego_policy_id": "1",
+    "ego_seat": 0,
+    "environment_key": 233882139595873395,
+    "evidence_policy": "ordinary_progress",
+    "layout_id": "random3_m",
+    "partner_id": "random3_m:hsp11:final",
+    "policy_training_performed": false,
+    "source_artifact_hashes": {
+      "request": "c88ca42ed3ef639069b3d52acedaf2407b3b28b10f4fd8d5f8cb296b0f79f219",
+      "stored_trace": "e62f67cd83b08aecf3b8bb54e5744b33fc44b47b6edc74308db36141d7629bc3",
+      "visual_capture": "b2a947ed0e47810e673457fce94dc2247e5b0ea7e10201119f013fe16a0c8035"
+    },
+    "suite_id": "stage6-official-decision-risk-v3"
+  },
+  "status": "complete",
+  "summary": {
+    "aggregate_dri_event": -0.21501557632398727,
+    "aggregate_dri_primary": -0.2401177570093455,
+    "aggregate_residual_risk_primary": 0.07699406603948752,
+    "eventual_dri_primary": 0.7980975077881621,
+    "first_delivery_step": null,
+    "prior_risk": 0.0620860927152318,
+    "selected_response_loss_at_commitment": 0.0,
+    "sparse_return": 0.0,
+    "steps_elapsed": 400
+  },
+  "terrain": [
+    [
+      "X",
+      "X",
+      "X",
+      "P",
+      "P",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "D",
+      " ",
+      "X",
+      "X",
+      "X",
+      "X",
+      " ",
+      "S"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "X",
+      "O",
+      "O",
+      "X",
+      "X",
+      "T",
+      "T",
+      "X"
+    ]
+  ],
+  "title": "Ordinary progress"
+}

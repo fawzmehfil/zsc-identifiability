@@ -1,0 +1,391 @@
+{
+  "$defs": {
+    "CommitmentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "definition": {
+          "const": "first_successful_ingredient_placement",
+          "title": "Definition",
+          "type": "string"
+        },
+        "frame": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame"
+        },
+        "reached": {
+          "title": "Reached",
+          "type": "boolean"
+        },
+        "step": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step"
+        }
+      },
+      "required": [
+        "definition",
+        "reached"
+      ],
+      "title": "CommitmentRecord",
+      "type": "object"
+    },
+    "ReplayResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "title": "Alias",
+          "type": "string"
+        },
+        "optimal_for": {
+          "items": {
+            "enum": [
+              "left",
+              "right"
+            ],
+            "type": "string"
+          },
+          "title": "Optimal For",
+          "type": "array"
+        },
+        "response_id": {
+          "title": "Response Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "response_id",
+        "alias",
+        "optimal_for"
+      ],
+      "title": "ReplayResponse",
+      "type": "object"
+    },
+    "ReplaySource": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Checkpoint Hashes",
+          "type": "object"
+        },
+        "ego_policy_id": {
+          "title": "Ego Policy Id",
+          "type": "string"
+        },
+        "ego_seat": {
+          "enum": [
+            0,
+            1
+          ],
+          "title": "Ego Seat",
+          "type": "integer"
+        },
+        "environment_key": {
+          "minimum": 0,
+          "title": "Environment Key",
+          "type": "integer"
+        },
+        "evidence_policy": {
+          "enum": [
+            "ordinary_progress",
+            "temporary_role_takeover",
+            "corridor_yield"
+          ],
+          "title": "Evidence Policy",
+          "type": "string"
+        },
+        "layout_id": {
+          "enum": [
+            "random3_m",
+            "small_corridor"
+          ],
+          "title": "Layout Id",
+          "type": "string"
+        },
+        "partner_id": {
+          "title": "Partner Id",
+          "type": "string"
+        },
+        "policy_training_performed": {
+          "const": false,
+          "default": false,
+          "title": "Policy Training Performed",
+          "type": "boolean"
+        },
+        "source_artifact_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Source Artifact Hashes",
+          "type": "object"
+        },
+        "suite_id": {
+          "title": "Suite Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "suite_id",
+        "layout_id",
+        "environment_key",
+        "ego_seat",
+        "ego_policy_id",
+        "partner_id",
+        "evidence_policy",
+        "checkpoint_hashes",
+        "source_artifact_hashes"
+      ],
+      "title": "ReplaySource",
+      "type": "object"
+    },
+    "ReplaySummary": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate_dri_event": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Aggregate Dri Event"
+        },
+        "aggregate_dri_primary": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Aggregate Dri Primary"
+        },
+        "aggregate_residual_risk_primary": {
+          "minimum": 0,
+          "title": "Aggregate Residual Risk Primary",
+          "type": "number"
+        },
+        "eventual_dri_primary": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Eventual Dri Primary"
+        },
+        "first_delivery_step": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First Delivery Step"
+        },
+        "prior_risk": {
+          "minimum": 0,
+          "title": "Prior Risk",
+          "type": "number"
+        },
+        "selected_response_loss_at_commitment": {
+          "minimum": 0,
+          "title": "Selected Response Loss At Commitment",
+          "type": "number"
+        },
+        "sparse_return": {
+          "title": "Sparse Return",
+          "type": "number"
+        },
+        "steps_elapsed": {
+          "minimum": 1,
+          "title": "Steps Elapsed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sparse_return",
+        "steps_elapsed",
+        "prior_risk",
+        "aggregate_dri_primary",
+        "aggregate_dri_event",
+        "aggregate_residual_risk_primary",
+        "selected_response_loss_at_commitment",
+        "eventual_dri_primary"
+      ],
+      "title": "ReplaySummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Artifacts",
+      "type": "object"
+    },
+    "caption": {
+      "title": "Caption",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "clear_before_commitment",
+        "late_evidence",
+        "evidence_outcome_gap",
+        "robust_success",
+        "intervention_control",
+        "intervention_treatment"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "collection_id": {
+      "title": "Collection Id",
+      "type": "string"
+    },
+    "commitment": {
+      "$ref": "#/$defs/CommitmentRecord"
+    },
+    "diagnostic_count": {
+      "minimum": 1,
+      "title": "Diagnostic Count",
+      "type": "integer"
+    },
+    "event_count": {
+      "minimum": 0,
+      "title": "Event Count",
+      "type": "integer"
+    },
+    "featured": {
+      "title": "Featured",
+      "type": "boolean"
+    },
+    "frame_count": {
+      "minimum": 2,
+      "title": "Frame Count",
+      "type": "integer"
+    },
+    "partner_modes": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "propertyNames": {
+        "enum": [
+          "left",
+          "right"
+        ]
+      },
+      "title": "Partner Modes",
+      "type": "object"
+    },
+    "replay_id": {
+      "title": "Replay Id",
+      "type": "string"
+    },
+    "representative": {
+      "title": "Representative",
+      "type": "boolean"
+    },
+    "responses": {
+      "items": {
+        "$ref": "#/$defs/ReplayResponse"
+      },
+      "title": "Responses",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "beforecommit_replay_1.0.0",
+      "default": "beforecommit_replay_1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection_note": {
+      "title": "Selection Note",
+      "type": "string"
+    },
+    "short_title": {
+      "title": "Short Title",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/ReplaySource"
+    },
+    "status": {
+      "const": "complete",
+      "default": "complete",
+      "title": "Status",
+      "type": "string"
+    },
+    "summary": {
+      "$ref": "#/$defs/ReplaySummary"
+    },
+    "terrain": {
+      "items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Terrain",
+      "type": "array"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    }
+  },
+  "required": [
+    "replay_id",
+    "collection_id",
+    "title",
+    "short_title",
+    "category",
+    "caption",
+    "selection_note",
+    "representative",
+    "featured",
+    "source",
+    "commitment",
+    "terrain",
+    "partner_modes",
+    "responses",
+    "summary",
+    "frame_count",
+    "diagnostic_count",
+    "event_count",
+    "artifacts"
+  ],
+  "title": "ReplayManifest",
+  "type": "object"
+}

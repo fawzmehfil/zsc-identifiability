@@ -1,0 +1,130 @@
+{
+  "artifacts": {
+    "diagnostics.json": "919d50819be5a5dee7877aebdb230d3131493c28d3c9498a6e1774bf7454c9e0",
+    "events.json": "6d63dc6b454700c875e333fd35c43c9377234bcbfe18c106b228a994c6c51b37",
+    "frames.json": "a4957bd7b561059a3cf4c087255d9c32bef9e42338eeee612a92160b27ef6a6f",
+    "initial.json": "5c1c2d8f73c82ec1bb254944f45df82001e942fecdbf496131c085e0a8c1b06e"
+  },
+  "caption": "The partner's behavior supports the useful response before the first pot placement. The team later completes multiple deliveries.",
+  "category": "clear_before_commitment",
+  "collection_id": "beforecommit-official-v1",
+  "commitment": {
+    "definition": "first_successful_ingredient_placement",
+    "frame": 11,
+    "reached": true,
+    "step": 10
+  },
+  "diagnostic_count": 6,
+  "event_count": 466,
+  "featured": true,
+  "frame_count": 401,
+  "partner_modes": {
+    "left": "random3_m:hsp11:final",
+    "right": "random3_m:hsp36:final"
+  },
+  "replay_id": "clear-before-commitment-v1",
+  "representative": false,
+  "responses": [
+    {
+      "alias": "Response A",
+      "optimal_for": [
+        "left"
+      ],
+      "response_id": "random3_m:hsp46:final"
+    },
+    {
+      "alias": "Response B",
+      "optimal_for": [
+        "right"
+      ],
+      "response_id": "random3_m:hsp36:final"
+    }
+  ],
+  "schema_version": "beforecommit_replay_1.0.0",
+  "selection_note": "Illustrative high-identifiability confirmation episode with a successful delivery sequence. Selected deterministically from the highest-return episodes by earliest delivery, then lowest episode index.",
+  "short_title": "Clear early",
+  "source": {
+    "checkpoint_hashes": {
+      "ego": "1e16f9e62800f9146e72d7e669c3692436c795df8ae1e725afa024984625f526",
+      "partner": "1a2bd2d84b36dda975f67a9e11e3ffc4491232a122cbdcba65c1e9cafe190526"
+    },
+    "ego_policy_id": "1",
+    "ego_seat": 1,
+    "environment_key": 6541107174436522077,
+    "evidence_policy": "ordinary_progress",
+    "layout_id": "random3_m",
+    "partner_id": "random3_m:hsp36:final",
+    "policy_training_performed": false,
+    "source_artifact_hashes": {
+      "request": "3a2873357acca674179114cce5979cd125bce0347976901b6baf6e14de5dbb86",
+      "stored_trace": "8e29eebe77295fa02224798a87dfad007e5f4929f931c8f74cefc645452a750f",
+      "visual_capture": "f4efd2f219c73ba296207da78f9172682ed382269dfb3f1e065670f597210996"
+    },
+    "suite_id": "stage6-official-decision-risk-v3"
+  },
+  "status": "complete",
+  "summary": {
+    "aggregate_dri_event": 1.0,
+    "aggregate_dri_primary": 0.984375,
+    "aggregate_residual_risk_primary": 0.0078125,
+    "eventual_dri_primary": 1.0,
+    "first_delivery_step": 31,
+    "prior_risk": 0.5,
+    "selected_response_loss_at_commitment": 0.0,
+    "sparse_return": 170.0,
+    "steps_elapsed": 400
+  },
+  "terrain": [
+    [
+      "X",
+      "X",
+      "X",
+      "P",
+      "P",
+      "X",
+      "X",
+      "X"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "D",
+      " ",
+      "X",
+      "X",
+      "X",
+      "X",
+      " ",
+      "S"
+    ],
+    [
+      "X",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      "X"
+    ],
+    [
+      "X",
+      "O",
+      "O",
+      "X",
+      "X",
+      "T",
+      "T",
+      "X"
+    ]
+  ],
+  "title": "Clear before commitment"
+}

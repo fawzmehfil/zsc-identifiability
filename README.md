@@ -1,138 +1,143 @@
-# ZSC Identifiability
+# BeforeCommit
 
-Research infrastructure for asking a missing question in zero-shot
-coordination: **can an agent identify the response an unfamiliar teammate
-requires before the task makes that information useless?**
+**A visual benchmark for testing whether an agent gets enough useful evidence
+to coordinate with an unfamiliar teammate before an important decision.**
 
-[Final Stage 6 results](phase-6-established-validation/results/README.md) ·
-[Statistical claim audit](phase-6-established-validation/statistical-claim-audit.md) ·
-[Exact model](phase-2-exact-model/README.md) ·
-[Matched benchmark](phase-3-matched-benchmarks/README.md) ·
-[Learned-agent audit](phase-4-learned-audit/README.md) ·
-[Established validation](phase-6-established-validation/README.md) ·
-[Related work](docs/related-work.md) ·
+[Live demo](https://fawzmehfil.github.io/zsc-identifiability/) ·
+[Replay library](https://fawzmehfil.github.io/zsc-identifiability/#replays) ·
+[Readable report](paper/reader-report/) ·
+[Frozen results](phase-6-established-validation/results/README.md) ·
 [MIT license](LICENSE)
 
-## Overview
+![BeforeCommit visual benchmark](docs/assets/beforecommit-hero.png)
 
-Partner diversity does not guarantee that a partner is identifiable in time.
-Two partners can require incompatible responses while behaving alike until
-after an irreversible decision. Conversely, two visibly different partners
-may admit the same response, making identity information irrelevant.
+[Watch the 25-second launch preview](docs/assets/beforecommit-launch.mp4)
 
-This project measures the missing axis with **decision-relevant
-identifiability (DRI)**: the reduction in best-response decision risk provided
-by the evidence available before a task-defined commitment point.
+BeforeCommit turns the completed decision-sufficient identifiability research
+into a replay-first evaluation tool. Two frozen agents enter a cooperative
+cooking task. The evaluated agent does not receive its unfamiliar partner's
+mode as a label. The viewer can inspect what evidence appeared, when the team
+first committed to a response, and how much response-selection risk remained.
 
-```text
-unfamiliar partner
-        |
-        v
-pre-commitment evidence --> residual response risk --> coordination regret
-        ^
-        |
-ordinary task interaction, if one is informative and worth its cost
-```
+## What the viewer shows
 
-DRI is normalized Bayes-risk reduction, not new information theory. The
-contribution is its commitment-timed ZSC operationalization, exact controlled
-benchmark, learned-agent decomposition, and validation on an externally
-selected official partner population.
+- A top-down, frame-exact replay from an official ZSC-Eval checkpoint.
+- The ego agent, unfamiliar partner, held items, interactions, deliveries, and
+  first successful pot placement.
+- Frozen decoder support for the two partner modes at registered checkpoints.
+- The response recommended under the empirical response-library loss matrix.
+- A permanent commitment boundary separating useful early evidence from
+  evidence that arrived too late for the focal decision.
+- Aggregate decision-relevant identifiability (DRI), kept separate from the
+  confidence trace for any one replay.
 
-## Main result
+The public collection contains six curated stories: clear early evidence, late
+evidence, informative failure, success under partial identifiability, and a
+matched ordinary-progress versus natural-intervention comparison.
 
-The final official-checkpoint audit used 50 ZSC-Eval partners, six published
-ZSC method families, two layouts, and a fresh 9,600-episode confirmation set.
-Adding pre-commitment DRI to the registered controls improved held-out regret
-prediction in both layouts. The independent event representation preserved the
-effect direction.
+## Frozen benchmark scope
 
-| Representation | Scope | Held-out ΔR² | ΔMAE | ΔMSE |
-|---|---:|---:|---:|---:|
-| GRU | Overall | +0.0205 | -0.00339 | -0.00137 |
-| GRU | `random3_m` | +0.0243 | -0.00220 | -0.00090 |
-| GRU | `small_corridor` | +0.00745 | -0.00123 | -0.00060 |
-| Event | Overall | +0.0118 | -0.00215 | -0.00079 |
+The underlying official-checkpoint audit used:
 
-The adjusted GRU coefficient relating DRI to regret was -0.180, with a
-clustered 95% interval of [-0.295, -0.079]. Passive DRI exceeded the registered
-permutation null in both layouts after Holm correction (`p = 0.0396`).
+| Scope | Value |
+|---|---:|
+| Official partners | 50 |
+| Published method families | 6 |
+| Layouts | 2 |
+| Physical seats per layout | 2 |
+| Fresh confirmation episodes | 9,600 |
 
-![Held-out predictive value of DRI](phase-6-established-validation/results/figures/dri-predictive-value.png)
+Adding precommitment DRI to the registered controls produced a modest held-out
+predictive gain for normalized response-library regret, `Delta R² = 0.020`.
+The adjusted DRI coefficient was `-0.180`, with a clustered 95% interval of
+`[-0.295, -0.079]`. Neither tested natural intervention reliably increased
+decision-relevant information. The final claim is measurement validity, not a
+new probing algorithm.
 
-The natural-intervention result was negative. Neither
-`temporary_role_takeover` nor `corridor_yield` produced a corrected,
-permutation-supported improvement in decision risk. The final Stage 6 verdict
-is therefore **`complete_measurement_only`**: established-environment evidence
-supports DRI as a measurement, not an active-probing claim.
+## Run the visual benchmark
 
-## Research package
-
-| Component | What it establishes | Status |
-|---|---|---|
-| Exact finite games | Belief updates, Bayes risk, DRI, TV identities, regret bounds, and active-identifiability frontiers | Complete |
-| Matched benchmark | DRI varies while response diversity, competence, task structure, and broad predictability remain fixed | Complete |
-| Learned-agent audit | Memory, evidence acquisition, evidence relevance, and evidence use are separated against exact oracles | Complete |
-| Official-checkpoint validation | DRI adds held-out predictive value in two ZSC-Eval layouts | Complete: measurement only |
-| New repair method | Existing methods closed the synthetic active gap, so a new method was not justified | Intentionally skipped |
-
-Stage 4 trained compact agents only in the exact synthetic benchmark. Stage 6
-performed no partner or coordination-policy training: it used official frozen
-checkpoints and fitted small measurement models only.
-
-## Quick start
-
-Install the exact package and reproduce the finite-game results:
+The deployable replay data is committed, so the viewer requires no model
+runtime or backend:
 
 ```bash
 git clone https://github.com/fawzmehfil/zsc-identifiability.git
-cd zsc-identifiability
+cd zsc-identifiability/web
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173`. Production checks are:
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+## Reproduce the replay export
+
+Capture requires the locally synchronized official checkpoints and pinned
+ZSC-Eval runtime. It performs CPU inference only and rejects a rerun if its
+return, seat, episode length, visible actions, or commitment step differ from
+the archived confirmation trace.
+
+```bash
 uv sync --dev
 
-uv run zsc-identifiability run-suite \
-  --suite phase-2-exact-model/suites/canonical.json \
-  --output phase-2-exact-model/artifacts
+uv run zsc-identifiability demo capture \
+  --curation demo/curation/official-v1.yaml \
+  --output demo/artifacts/replays
 
-uv run zsc-identifiability benchmark run \
-  --suite phase-3-matched-benchmarks/suites/canonical.json \
-  --output phase-3-matched-benchmarks/artifacts
+uv run zsc-identifiability demo export-site \
+  --replays demo/artifacts/replays \
+  --output web/public/static-api
+
+uv run zsc-identifiability demo validate \
+  --site-data web/public/static-api
 ```
 
-Run the repository checks:
+See [the replay artifact contract](demo/README.md) for the versioned schema,
+metric separation, provenance, and license details.
 
-```bash
-uv run pytest
-uv run ruff check .
-uv run mypy src
-```
-
-The official-checkpoint audit uses pinned external assets in isolated runtimes.
-Its complete workflow is documented in
-[Stage 6](phase-6-established-validation/README.md). If the frozen row-level
-analysis is present locally, regenerate the committed publication package with:
-
-```bash
-uv run zsc-identifiability established official redesign publish \
-  --input phase-6-established-validation/artifacts/official-measurement-v3 \
-  --output phase-6-established-validation/results
-```
-
-## Technical shape
+## Technical architecture
 
 | Layer | Implementation |
 |---|---|
-| Formal model | Finite hidden partner modes with early or forced commitment |
-| Exact control | Fraction-backed belief-state dynamic programming and policy-tree enumeration |
-| Benchmarking | Structurally matched populations, shortcut audits, exact frontiers |
-| Learned audit | PyTorch PPO/GRU baselines with exact neural-policy evaluation |
-| Established validation | Pinned ZSC-Eval checkpoints, CPU inference, cross-fitted decision decoders |
-| Reproducibility | Versioned schemas, content hashes, disjoint keys, resumable shards, compact artifacts |
+| Frozen inference | Pinned Python 3.9 ZSC-Eval runtime, CPU only |
+| Replay exporter | Python, Pydantic, deterministic JSON, SHA-256 integrity |
+| Decision diagnostic | Frozen cross-fitted event decoders and empirical response losses |
+| Viewer | React, TypeScript, Phaser, procedural pixel art |
+| Delivery | Static JSON and GitHub Pages, no backend |
+| Verification | Python tests, Vitest, TypeScript checks, replay parity gates |
 
-## Scientific boundary
+The browser artifacts contain normalized world state, actions, rewards, and
+events. They do not contain the model's 1,000-dimensional observation tensors,
+raw checkpoints, or machine-specific asset paths.
 
-The project does not claim that active teammate probing, Bayes-risk reasoning,
-or online partner adaptation is new. It does not claim that the empirical
-response library is globally optimal, that every held-out scheme improves, or
-that the audited task interventions work. See the
-[claim audit](phase-6-established-validation/statistical-claim-audit.md) for
-the exact permissible wording and limitations.
+## Research methodology
+
+The visual benchmark is an interface to the completed research rather than a
+new scientific result. The full package includes:
+
+| Component | What it establishes |
+|---|---|
+| [Exact finite games](phase-2-exact-model/README.md) | Bayes risk, DRI, overlap identities, regret bounds, and intervention thresholds |
+| [Matched benchmark](phase-3-matched-benchmarks/README.md) | DRI varies while competence, response diversity, predictability, and identity information are controlled |
+| [Learned-agent audit](phase-4-learned-audit/README.md) | Evidence acquisition, memory, and decision use are separated against exact oracles |
+| [Official validation](phase-6-established-validation/README.md) | DRI adds held-out predictive value across two ZSC-Eval layouts |
+
+DRI is normalized Bayes-risk reduction, not new information theory. It asks
+whether response-relevant evidence was available before a task-defined
+commitment time. Exact partner identity is unnecessary when multiple partners
+require the same response.
+
+## Limitations
+
+The official audit covers two Overcooked layouts, dyadic teams, fixed partner
+modes, one selected commitment definition, and an approximate response
+library. The predictive effect is modest and observational. The interface does
+not imply that DRI measures human-like understanding, that every held-out
+scheme improves, or that the tested interventions create active probing.
+
+The upstream environment and checkpoint licenses and pinned revisions are
+documented in [the official asset card](phase-6-established-validation/official-assets-and-license-card.md).

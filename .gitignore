@@ -8,6 +8,16 @@ __pycache__/
 *.pyc
 .DS_Store
 
+# BeforeCommit build and capture intermediates. Deployable replay JSON lives in
+# web/public/static-api and is intentionally versioned.
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+web/vite.config.js
+web/vite.config.d.ts
+demo/artifacts/
+docs/assets/launch-frames/
+
 # Internal research process documents are kept locally, not published.
 identifiability-gap-research-plan.md
 phase-1-literature/

@@ -34,6 +34,7 @@ def main():
         "official_response_rollout",
         "official_trace_rollout",
         "official_method_rollout",
+        "official_demo_replay",
     }
     if operation in official_operations:
         from stage6_legacy_runtime.official_eval import run_official_operation
