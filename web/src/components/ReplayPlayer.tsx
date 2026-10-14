@@ -13,6 +13,8 @@ export function ReplayPlayer({
   presentation = false,
   initialPlaying = false,
   initialFrame = 0,
+  initialSpeed = 1,
+  forcePlayingIndicator = false,
   controlledFrame,
   onControlledFrame,
 }: {
@@ -20,6 +22,8 @@ export function ReplayPlayer({
   presentation?: boolean;
   initialPlaying?: boolean;
   initialFrame?: number;
+  initialSpeed?: (typeof SPEEDS)[number];
+  forcePlayingIndicator?: boolean;
   controlledFrame?: number;
   onControlledFrame?: (frame: number) => void;
 }) {
@@ -27,7 +31,7 @@ export function ReplayPlayer({
     clampFrame(initialFrame, replay.frames.length),
   );
   const [playing, setPlaying] = useState(initialPlaying);
-  const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
+  const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(initialSpeed);
   const frameIndex = controlledFrame ?? internalFrame;
   const setFrame = (value: number) => {
     const next = clampFrame(value, replay.frames.length);
@@ -71,7 +75,7 @@ export function ReplayPlayer({
       </div>
       <CommitmentTimeline manifest={replay.manifest} frame={frameIndex} diagnostics={replay.diagnostics} events={replay.events} onSeek={setFrame} />
       <div className="machine-controls">
-        <button className="control-main" onClick={() => setPlaying((value) => !value)}>{playing ? "Ⅱ Pause" : "▶ Play"}</button>
+        <button className="control-main" onClick={() => setPlaying((value) => !value)}>{playing || forcePlayingIndicator ? "Ⅱ Pause" : "▶ Play"}</button>
         <button onClick={() => setFrame(frameIndex - 1)} aria-label="Previous frame">‹</button>
         <button onClick={() => setFrame(frameIndex + 1)} aria-label="Next frame">›</button>
         <div className="speed-controls" aria-label="Playback speed">

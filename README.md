@@ -11,7 +11,7 @@ to coordinate with an unfamiliar teammate before an important decision.**
 
 ![BeforeCommit visual benchmark](docs/assets/beforecommit-hero.png)
 
-[Watch the 25-second launch preview](docs/assets/beforecommit-launch.mp4)
+[Watch the complete replay at 2× speed](docs/assets/beforecommit-full-replay-2x.mp4)
 
 BeforeCommit turns the completed decision-sufficient identifiability research
 into a replay-first evaluation tool. Two frozen agents enter a cooperative
