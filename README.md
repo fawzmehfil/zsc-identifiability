@@ -14,7 +14,7 @@ reverse. BeforeCommit makes that question inspectable frame by frame using froze
 ZSC-Eval policies, commitment-timed diagnostics, and deterministic replay artifacts.
 
 <p align="center">
-  <img src="docs/assets/beforecommit-hero.png" alt="BeforeCommit visual benchmark" width="900" />
+  <img src="docs/assets/beforecommit-readme-hero.png" alt="BeforeCommit replay and precommitment decision diagnostic" width="900" />
 </p>
 
 <p align="center">
@@ -81,7 +81,7 @@ Each public replay contains:
 - Exact visual state, actions, rewards, interactions, and delivery events.
 - Frozen decoder support for the candidate coordination responses at registered checkpoints.
 - An empirical response-library loss for the recorded partner mode.
-- A commitment boundary at the first successful pot placement.
+- A commitment boundary at the first successful ingredient placement.
 - Aggregate precommitment DRI kept separate from the confidence trace of one episode.
 
 The six curated replays cover clear early evidence, evidence that arrives too late, informative
